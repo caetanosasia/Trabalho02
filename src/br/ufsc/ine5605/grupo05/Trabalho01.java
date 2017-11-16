@@ -20,7 +20,7 @@ public class Trabalho01 {
         ControladorPrincipal.getInstance().exibeTelaPrincipal();
         */
         TelaPrincipal telaPrincipal;
-        telaPrincipal = new TelaPrincipal();
+        telaPrincipal = new TelaPrincipal(ControladorPrincipal.getInstance());
     }
     
 }

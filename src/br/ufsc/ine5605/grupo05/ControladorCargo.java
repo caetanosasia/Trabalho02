@@ -24,8 +24,10 @@ public class ControladorCargo implements IControladorCargo {
     //private ArrayList<Cargo> cargos;
     private int ultimoCodigo;
     private static ControladorCargo instance;
+    private TelaCargo telaCargo;
     private TelaCadastroCargo telaCadastroCargo;
     private CargoDAO cargoDAO;
+    private FuncionarioDAO funcDAO;
     private Date horarioD;
     
     
@@ -117,9 +119,23 @@ public class ControladorCargo implements IControladorCargo {
     
     @Override
     public void deletarCargoPeloCodigo (int codigoCargo) throws ParseException, CadastroIncorretoException{
-            ArrayList<Funcionario> listaFuncionarios = new ArrayList<>();
+            ArrayList<Funcionario> listaFuncionarios = (ArrayList<Funcionario>) funcDAO.getList();
             ArrayList<Cargo> listaCargos = (ArrayList<Cargo>) cargoDAO.getListC();
-            listaFuncionarios = ControladorFuncionario.getInstance().getFuncionarios();
+            //listaFuncionarios = ControladorFuncionario.getInstance().getFuncionarios();
+            Cargo cargoDeletar = null;
+            for(Cargo cargoRef : listaCargos){
+                if(cargoRef.getCodigo() == codigoCargo){
+                    cargoDeletar = cargoRef;
+                    break;
+                }
+            }
+            if(listaFuncionarios.isEmpty() && cargoDeletar != null){
+                listaCargos.remove(cargoDeletar);
+            }else{
+                JOptionPane.showMessageDialog(null, "Não é possivel deletar Cargo");
+            }
+            
+            /*
             for(Funcionario func : listaFuncionarios){
                 if(func.getCargo().getCodigo() == codigoCargo){
                     //TelaCargo.getInstance().mensagemExisteFuncionarioNesteCargo();
@@ -133,7 +149,7 @@ public class ControladorCargo implements IControladorCargo {
                     //TelaCargo.getInstance().mensagemCargoDeletadoComSucesso();
                     //TelaCargo.getInstance().exibeTela();
                 }
-            }  
+            }  */
     }
     
     
@@ -183,11 +199,12 @@ public class ControladorCargo implements IControladorCargo {
      * @throws Exception 
      */
     public void exibeTelaCargo() throws CadastroIncorretoException, ParseException{
-        TelaCargo.getInstance().iniciaComponentes();
+        this.telaCargo = new TelaCargo(this);
+        telaCargo.setVisible(true);
     }
 
     public void voltar() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        
     }
 
    

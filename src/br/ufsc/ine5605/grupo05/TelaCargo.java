@@ -110,11 +110,11 @@ public class TelaCargo extends JFrame {
         
         btCadastrar = new JButton("Cadastrar");           
         btVoltar = new JButton("Voltar");               
-        btExcluir = new JButton("Excluir Cargo");
+        btExcluir = new JButton("Excluir");
         
         btCadastrar.setActionCommand("Cadastrar");
         btVoltar.setActionCommand("Voltar");
-        btExcluir.setActionCommand("Excluir Cargo");
+        btExcluir.setActionCommand("Excluir");
         
         painelBotoes = new JPanel();
         barraRolagem = new JScrollPane(tabela);
@@ -149,10 +149,10 @@ public class TelaCargo extends JFrame {
          public void actionPerformed(java.awt.event.ActionEvent e) {
                   
             if(e.getActionCommand().equals("Excluir")){
-                int linhaSelecionada = tabela.getSelectedRow();  
-                Cargo cargoRef;
+                
                 try {
-                    cargoRef = owner.buscarCargoPeloCodigo(linhaSelecionada);
+                    int linhaSelecionada = tabela.getSelectedRow();  
+                    Cargo cargoRef = owner.buscarCargoPeloCodigo(linhaSelecionada);
                     owner.deletarCargoPeloCodigo(cargoRef.getCodigo());
                     modelo.atualizarDados(owner.getCargosH());
                     modelo.fireTableRowsDeleted(linhaSelecionada, linhaSelecionada);

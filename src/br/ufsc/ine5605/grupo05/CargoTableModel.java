@@ -41,7 +41,7 @@ public class CargoTableModel extends AbstractTableModel{
         this.atualizarDados(novosCargos);
     }
     
-    public void atualizarDados( HashMap<Integer, Cargo> novosCargos){
+    public void atualizarDados(HashMap<Integer, Cargo> novosCargos){
         cargos.removeAll(cargos);
         Cargo cargo;
         int i = 0;

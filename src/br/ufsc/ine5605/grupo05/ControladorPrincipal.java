@@ -19,6 +19,7 @@ import java.util.logging.Logger;
 public class ControladorPrincipal {
     
     private static ControladorPrincipal instance;
+    private TelaPrincipal telaPrincipal;
     
     private Scanner sc;
     private Date horarioDoSistema;
@@ -38,7 +39,7 @@ public class ControladorPrincipal {
     
     
     public void fechaTelaPrincipal(){
-	    TelaPrincipal.getInstance().setVisible(false);
+	    telaPrincipal.setVisible(false);
     }
     /**
      * Exibe a tela de funcionarios
@@ -93,7 +94,8 @@ public class ControladorPrincipal {
      * @throws Exception 
      */
     public void exibeTelaPrincipal() throws CadastroIncorretoException, ParseException {
-        TelaPrincipal.getInstance().exibeTela();
+        this.telaPrincipal = new TelaPrincipal(this);
+        telaPrincipal.setVisible(true);
     }
     
     public Date getHorarioDoSistema() {

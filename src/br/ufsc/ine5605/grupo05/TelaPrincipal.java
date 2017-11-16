@@ -41,9 +41,9 @@ public class TelaPrincipal extends JFrame{
     private Container container;
     private Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
     
-    public TelaPrincipal(){
+    public TelaPrincipal(ControladorPrincipal owner){
         super("Tela Principal");
-        this.sc = new Scanner(System.in);
+        //this.sc = new Scanner(System.in);
         
         container = getContentPane();
         container.setLayout(new GridBagLayout());
@@ -208,11 +208,11 @@ public class TelaPrincipal extends JFrame{
         }
     }
     
-    public static TelaPrincipal getInstance() {
+    /*public static TelaPrincipal getInstance() {
         if(instance == null) {
             instance = new TelaPrincipal();
         }
         
         return instance;
-    }
+    }*/
 }

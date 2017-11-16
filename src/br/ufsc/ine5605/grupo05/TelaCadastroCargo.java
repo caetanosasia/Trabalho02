@@ -63,7 +63,7 @@ public class TelaCadastroCargo extends JFrame {
         
         setSize(350, 150);     
         setLocation(dim.width/2 - this.getSize().width/2, dim.height/2 - this.getSize().height/2);
-        setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
    
     }
 
@@ -146,18 +146,30 @@ public class TelaCadastroCargo extends JFrame {
                         horarioInicio = ControladorCargo.getInstance().horarioInicio(nivel);
                         horarioFinal = ControladorCargo.getInstance().horarioFinal(nivel);
                         owner.cadastraCargo(tfNome.getText(), nivel, horarioInicio, horarioFinal);
+                        JOptionPane.showMessageDialog(null,"Cadastro feito com sucesso");
+                        setVisible(false);
+                        owner.exibeTelaCargo();
                     } catch (ParseException ex) {
                         JOptionPane.showMessageDialog(null, "Cadastro Incorreto");
                         //Logger.getLogger(TelaCadastroCargo.class.getName()).log(Level.SEVERE, null, ex);
+                    } catch (CadastroIncorretoException ex) {
+                         JOptionPane.showMessageDialog(null, "Cadastro Incorreto");
+                         //Logger.getLogger(TelaCadastroCargo.class.getName()).log(Level.SEVERE, null, ex);
                     }
                 }else{
                     try {
                         horarioInicio = ControladorCargo.getInstance().horarioInicio(nivel);
                         horarioFinal = ControladorCargo.getInstance().horarioFinal(nivel);
                         owner.cadastraCargo(tfNome.getText(), nivel, horarioInicio, horarioFinal);
+                        JOptionPane.showMessageDialog(null,"Cadastro feito com sucesso");
+                        setVisible(false);
+                        owner.exibeTelaCargo();
                     } catch (ParseException ex) {
                         JOptionPane.showMessageDialog(null, "Cadastro Incorreto");
                         //Logger.getLogger(TelaCadastroCargo.class.getName()).log(Level.SEVERE, null, ex);
+                    } catch (CadastroIncorretoException ex) {
+                         JOptionPane.showMessageDialog(null, "Cadastro Incorreto");
+                         //Logger.getLogger(TelaCadastroCargo.class.getName()).log(Level.SEVERE, null, ex);
                     }
                 }
             }else if(e.getActionCommand().equals("Voltar")){
