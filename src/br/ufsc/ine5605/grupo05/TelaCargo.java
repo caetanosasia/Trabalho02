@@ -9,14 +9,51 @@ import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Scanner;
+import br.ufsc.ine5605.grupo05.NivelAcesso;
+import br.ufsc.ine5605.grupo05.ControladorCargo;
+import br.ufsc.ine5605.grupo05.Cargo;
+import java.awt.BorderLayout;
+import java.util.Scanner;
+import java.awt.Container;
+import java.awt.Dimension;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.Toolkit;
+import java.awt.event.ActionListener;
+import java.util.HashMap;
+import javax.swing.DefaultCellEditor;
+import javax.swing.JButton;
+import javax.swing.JComboBox;
+import javax.swing.JFrame;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTable;
+import javax.swing.table.DefaultTableCellRenderer;
+import javax.swing.table.TableColumn;
 
 /**
  *
  * @author Guilherme
  */
-public class TelaCargo {
+public class TelaCargo extends JFrame {
     
+    private ControladorCargo owner;
     private Scanner sc;
+        
+    private CargoTableModel modelo;    
+    private JPanel painelFundo;
+    private JPanel painelBotoes;
+    private JTable tabela;
+    private JScrollPane barraRolagem;
+    private JButton btCadastrar;
+    private JButton btExcluir;
+    private JButton btVoltar;    
+     
+    private GerenciadorDeBotoes gerenciadorBotoes;
+    
+    private Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
+    
     private static TelaCargo instance;
     
     public TelaCargo() {
@@ -29,7 +66,94 @@ public class TelaCargo {
         }
         return instance;
     }
+    public TelaCargo(ControladorCargo owner) {
+        super("Menu Cargos"); 
+        
+        this.owner = owner;
+        sc = new Scanner(System.in);
+                        
+        this.iniciaComponentes();        
+        
+        setLocation(dim.width/2-this.getSize().width/2, dim.height/2-this.getSize().height/2);
+    }
     
+    public void iniciaComponentes (){
+        criaJTable();
+        criaJanela();  
+    }
+    
+    public void setupNivelAcesso(JTable tabela, TableColumn colunaCargo){
+        JComboBox<NivelAcesso> cbNivelAcesso = new JComboBox<>(NivelAcesso.values());      
+        colunaCargo.setCellEditor(new DefaultCellEditor(cbNivelAcesso));
+        DefaultTableCellRenderer renderer = new DefaultTableCellRenderer();
+        renderer.setToolTipText("Click for combo box");
+        colunaCargo.setCellRenderer(renderer);
+    }
+    
+    void atualizaCargo(String novoNomeCargo, int codigoCargo) {
+        owner.alterarNomeCargoPeloCodigo(novoNomeCargo, codigoCargo);
+        modelo.atualizarDados(owner.getCargos());
+    }
+    
+    
+    public void criaJTable() {
+        modelo = new CargoTableModel(this, owner.getCargos());
+        tabela = new JTable(modelo);
+        tabela.setModel(modelo);
+        setupNivelAcesso(tabela,tabela.getColumnModel().getColumn(2));
+    }
+    
+    private void criaJanela() {        
+        gerenciadorBotoes = new GerenciadorDeBotoes();
+        
+        btCadastrar = new JButton("Cadastrar");           
+        btVoltar = new JButton("Voltar");               
+        btExcluir = new JButton("Excluir Cargo");
+        
+        btCadastrar.setActionCommand(OpcoesMenuCargo.CADASTRAR.toString());
+        btVoltar.setActionCommand(OpcoesMenuCargo.VOLTAR.toString());
+        btExcluir.setActionCommand(OpcoesMenuCargo.EXCLUIR.toString());
+        
+        painelBotoes = new JPanel();
+        barraRolagem = new JScrollPane(tabela);
+        painelFundo = new JPanel();
+        painelFundo.setLayout(new BorderLayout());
+        
+        painelFundo.add(BorderLayout.CENTER, barraRolagem);
+        painelBotoes.add(btCadastrar);
+        painelBotoes.add(btVoltar);
+        painelBotoes.add(btExcluir);
+        painelFundo.add(BorderLayout.SOUTH, painelBotoes);
+
+        getContentPane().add(painelFundo);
+        setSize(500, 320);
+        
+        btCadastrar.addActionListener(gerenciadorBotoes);
+        btVoltar.addActionListener(gerenciadorBotoes);
+        btExcluir.addActionListener(gerenciadorBotoes);
+    }
+    
+    private class GerenciadorDeBotoes implements ActionListener {
+
+         @Override
+         public void actionPerformed(java.awt.event.ActionEvent e) {
+                  
+            if(e.getActionCommand().equals(OpcoesMenuCargo.EXCLUIR.name())){
+                int linhaSelecionada = tabela.getSelectedRow();  
+                owner.deletarCargoPeloCodigo((codigoCargo) modelo.buscarCargoPeloCodigo(codigoCargo));
+                modelo.atualizarDados(owner.getCargos());
+                modelo.fireTableRowsDeleted(linhaSelecionada, linhaSelecionada);
+            }
+            else if(e.getActionCommand().equals(OpcoesMenuCargo.VOLTAR.name())){
+                owner.voltar();
+            }            
+            else if(e.getActionCommand().equals(OpcoesMenuCargo.CADASTRAR.name())){
+                owner.exibeTelaCadastroCargo();
+                setVisible(false);
+            }     
+        }   
+    }
+        
     /**
      * Exibe a tela de cargos
      * @throws CadastroIncorretoException
@@ -37,6 +161,7 @@ public class TelaCargo {
      * @throws ParseException
      * @throws Exception 
      */    
+    /*
     public void exibeTela() throws CadastroIncorretoException, ParseException {
         int opcao = 0;        
         do{
@@ -63,6 +188,7 @@ public class TelaCargo {
      * @throws ParseException
      * @throws Exception 
      */
+    /*
     public void trataOpcao(int opcao) throws CadastroIncorretoException, ParseException {
         switch(opcao){
         case 1:
@@ -92,6 +218,7 @@ public class TelaCargo {
      * Exibe o cargo através do código
      * @throws Exception 
      */
+    /*
     public void telaExibeCargoPeloCodigo() throws CadastroIncorretoException, ParseException{
         System.out.println("\nBem vindo a tela de buscar cargo");
         System.out.println("\nDigite o código do cargo desejado");
@@ -108,6 +235,7 @@ public class TelaCargo {
     /**
      * Altera o nome do cargo
      */
+    /*
     public void telaAlterarNomeCargo() {
         try {
             System.out.println("\nBem vindo a tela de alterar nome do cargo");
@@ -138,6 +266,7 @@ public class TelaCargo {
      * @throws FuncionarioComCargoException
      * @throws Exception 
      */
+    /*
     public void telaDeletaCargo() throws CadastroIncorretoException, ParseException {
 	
         if (!ControladorCargo.getInstance().haCargos()) {
@@ -162,6 +291,7 @@ public class TelaCargo {
      * Cadastra cargo
      * @throws CadastroIncorretoException 
      */
+    /*
     public void telaCadastraCargo() throws CadastroIncorretoException {
 		try {
 
@@ -227,7 +357,7 @@ public class TelaCargo {
                                     
                                 }
                             }
-                        }*/
+                        }
                         ControladorCargo.getInstance().cadastraCargo(nomeCargo, NIVELACESSO, horarioInicial, horarioFinal);
                         System.out.println("\nCargo cadastrado com sucesso! ");
                     }
@@ -242,6 +372,7 @@ public class TelaCargo {
      * Exibe cargo
      * @param cargo 
      */
+    /*
     public void exibeCargo(Cargo cargo) {
 		System.out.println("-----------------------------");
 		System.out.println("Nome do cargo: " + cargo.getNomeCargo() + " \nNumero do codigo: " + cargo.getCodigo());
@@ -250,6 +381,7 @@ public class TelaCargo {
     /**
      * Imprime uma mensagem que não há cargos
      */
+    /*
     public void mensagemNaoHaCargos() {
 	System.out.println("Nao ha cargos cadastrados\n");
     }
@@ -257,6 +389,7 @@ public class TelaCargo {
     /**
      * Imprime uma mensagem de código inválido
      */
+    /*
     public void mensagemCodigoInvalido() {
         System.out.println("Codigo Invalido");
     }
@@ -264,6 +397,7 @@ public class TelaCargo {
     /**
      * Imprime uma mensagem que não há funcionários em um cargo
      */
+    /*
     public void mensagemExisteFuncionarioNesteCargo() {
         System.out.println("Existe pelo menos um funcionário neste cargo, por isso ele não pode ser deletado");
     }
@@ -271,7 +405,9 @@ public class TelaCargo {
     /**
      * Imprime uma mensagem de cargo deletado com sucesso
      */
+    /*
     public void mensagemCargoDeletadoComSucesso() {
         System.out.println("\nCargo deletado com sucesso");
     }
+    */
 }

@@ -12,6 +12,7 @@ import java.util.Date;
 
 
 import br.ufsc.ine5605.grupo05.ControladorFuncionario;
+import java.util.HashMap;
 /**
  *
  * @author Guilherme
@@ -21,6 +22,7 @@ public class ControladorCargo implements IControladorCargo {
     private ArrayList<Cargo> cargos;
     private int ultimoCodigo;
     private static ControladorCargo instance;
+    private TelaCadastroCargo telaCadastroCaargo;
     
     
     private ControladorCargo() {
@@ -52,6 +54,10 @@ public class ControladorCargo implements IControladorCargo {
         for (Cargo cargo : this.cargos) {
              TelaCargo.getInstance().exibeCargo(cargo);
         }
+    }
+    public void exibeTelaCadastroCargo() {
+        this.telaCadastroCargo = new TelaCadastroCargo(this);
+        telaCadastroCargo.setVisible(true);
     }
     
     @Override
@@ -95,9 +101,10 @@ public class ControladorCargo implements IControladorCargo {
             }  
     }
     
+    
     public ArrayList<Cargo> getCargos() {
         return this.cargos;
-    } 
+    }
     
     /**
      * Verifica se há cargos no ArrayList de cargos
@@ -138,4 +145,6 @@ public class ControladorCargo implements IControladorCargo {
     public void exibeTelaCargo() throws CadastroIncorretoException, ParseException{
         TelaCargo.getInstance().exibeTela();
     }
+
+   
 }
