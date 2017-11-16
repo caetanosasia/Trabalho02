@@ -90,7 +90,7 @@ public class TelaCargo extends JFrame {
         colunaCargo.setCellRenderer(renderer);
     }
     
-    void atualizaCargo(String novoNomeCargo, int codigoCargo) {
+    public void atualizaCargo(String novoNomeCargo, int codigoCargo) {
         owner.alterarNomeCargoPeloCodigo(novoNomeCargo, codigoCargo);
         modelo.atualizarDados(owner.getCargos());
     }
@@ -131,6 +131,14 @@ public class TelaCargo extends JFrame {
         btCadastrar.addActionListener(gerenciadorBotoes);
         btVoltar.addActionListener(gerenciadorBotoes);
         btExcluir.addActionListener(gerenciadorBotoes);
+    }
+
+    public void atualizaCargo(Cargo cargo) {
+        
+    }
+
+    public void exibeCargo(Cargo cargo) {
+    
     }
     
     private class GerenciadorDeBotoes implements ActionListener {

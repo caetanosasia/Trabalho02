@@ -10,6 +10,7 @@ package br.ufsc.ine5605.grupo05;
  * @author Usuário
  */
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import javax.swing.table.AbstractTableModel;
 
@@ -19,12 +20,19 @@ import javax.swing.table.AbstractTableModel;
  */
 public class CargoTableModel extends AbstractTableModel{
 
+    private String nomeCargo;
+    private NivelAcesso NIVELACESSO;
+    private int codigo;
+    private Date horarioInicio;
+    private Date horarioFinal;
+    
+    
     private static final int CODIGO = 0;
-    private static final int NOME = 1;
-    private static final int PARTIDO = 2;
+    private static final int NOMECARGO = 1;
+    private static final int NIVEL = 2;
     private TelaCargo owner;
     
-    private String[] cabecalho = new String[] { "Nome", "NivelAcesso"};
+    private String[] cabecalho = new String[] {"Codigo", "Nome", "NivelAcesso"};
     private ArrayList<Cargo> cargos;
     
     public CargoTableModel( TelaCargo owner, HashMap<Integer, Cargo> novosCargos){
@@ -75,11 +83,11 @@ public class CargoTableModel extends AbstractTableModel{
         Cargo cargo = (Cargo) cargos.get(linha); 
                
         switch(coluna){
-           case NOME:
+           case NOMECARGO:
                cargo.setNomeCargo((String)value);                
                break;
-           case PARTIDO:
-               cargo.setPartido(()value);
+           case NIVEL:
+               cargo.setNIVELACESSO((NivelAcesso)value);
                break;
         }        
         owner.atualizaCargo(cargo);
@@ -96,16 +104,16 @@ public class CargoTableModel extends AbstractTableModel{
         switch(coluna){
             case CODIGO:
                 return cargo.getCodigo();
-            case NOME:
+            case NOMECARGO:
                 return cargo.getNomeCargo();
-            case PARTIDO:
-                 return cargo.getNivelAcesso();
+            case NIVEL:
+                 return cargo.getNIVELACESSO();
         }
         return null;
     }
     
-    public Cidadao getCandidato(int indiceLinha) {
+    /*public Cidadao getCandidato(int indiceLinha) {
         return cargos.get(indiceLinha);        
-    }    
+    } */   
    
 }

@@ -6,12 +6,14 @@
 package br.ufsc.ine5605.grupo05;
 
 import java.util.Date;
+import java.io.Serializable;
 
 /**
  *
  * @author Guilherme
  */
-public class Cargo {
+public class Cargo implements Serializable{
+    private static final long serialVersionUID = 1L;
     private String nomeCargo;
     private NivelAcesso NIVELACESSO;
     private int codigo;

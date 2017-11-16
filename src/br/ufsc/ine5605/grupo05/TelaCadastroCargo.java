@@ -27,7 +27,7 @@ import javax.swing.JTextField;
 
 /**
  *
- * @author Usuário
+ * @author Guilherme
  */
 public class TelaCadastroCargo extends JFrame {
     

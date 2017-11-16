@@ -13,20 +13,22 @@ import java.util.Date;
 
 import br.ufsc.ine5605.grupo05.ControladorFuncionario;
 import java.util.HashMap;
+import javax.swing.JOptionPane;
 /**
  *
  * @author Guilherme
  */
 public class ControladorCargo implements IControladorCargo {
     
-    private ArrayList<Cargo> cargos;
+    //private ArrayList<Cargo> cargos;
     private int ultimoCodigo;
     private static ControladorCargo instance;
     private TelaCadastroCargo telaCadastroCaargo;
+    private CargoDAO cargoDAO;
     
     
     private ControladorCargo() {
-	this.cargos = new ArrayList<>();
+	this.cargoDAO = new CargoDAO();
         this.ultimoCodigo = 100;
     }
     
@@ -42,16 +44,17 @@ public class ControladorCargo implements IControladorCargo {
     public void cadastraCargo(String nomeCargo, NivelAcesso NIVELACESSO, Date horarioInicial, Date horarioFinal) {
         int codigo = gerarCodigo();
         Cargo novoCargo = new Cargo(nomeCargo, codigo, NIVELACESSO, horarioInicial, horarioFinal);
-        this.cargos.add(novoCargo);
+        this.cargoDAO.put(novoCargo);
     }
     
     @Override
     public void exibeCargos() {
-        if (this.cargos.isEmpty()) {
-            TelaCargo.getInstance().mensagemNaoHaCargos();
+        /*if (this.cargoDAO.isEmpty()) {
+            JOptionPane.showMessageDialog(null, "Não existe cargo");
+            //TelaCargo.getInstance().mensagemNaoHaCargos();
             return;
-        }
-        for (Cargo cargo : this.cargos) {
+        }*/
+        for (Cargo cargo : this.cargoDAO.getList()) {
              TelaCargo.getInstance().exibeCargo(cargo);
         }
     }
@@ -146,7 +149,7 @@ public class ControladorCargo implements IControladorCargo {
         TelaCargo.getInstance().exibeTela();
     }
 
-    void voltar() {
+    public void voltar() {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
