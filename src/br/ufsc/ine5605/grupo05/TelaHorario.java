@@ -40,7 +40,7 @@ public class TelaHorario extends JFrame{
     
     private Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
     
-    public TelaHorario(){
+    public TelaHorario(ControladorCargo owner){
         
         super("Cadastro do Horario Especial"); 
         container = getContentPane();
@@ -111,6 +111,7 @@ public class TelaHorario extends JFrame{
                     String horario = tfHorario.getText();
                     Date novaData = ControladorPrincipal.getInstance().converterStringEmHora(horario);
                     ControladorCargo.getInstance().atualizaHorarioD(novaData);
+                    setVisible(false);
                 } catch (ParseException ex) {
                     JOptionPane.showMessageDialog(null, "Cadastro Incorreto");
                     //Logger.getLogger(TelaHorario.class.getName()).log(Level.SEVERE, null, ex);

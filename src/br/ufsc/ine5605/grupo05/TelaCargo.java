@@ -166,7 +166,13 @@ public class TelaCargo extends JFrame {
                 modelo.fireTableRowsDeleted(linhaSelecionada, linhaSelecionada);*/
             }
             else if(e.getActionCommand().equals("Voltar")){
-                owner.voltar();
+                try {
+                    owner.voltar();
+                } catch (CadastroIncorretoException ex) {
+                    Logger.getLogger(TelaCargo.class.getName()).log(Level.SEVERE, null, ex);
+                } catch (ParseException ex) {
+                    Logger.getLogger(TelaCargo.class.getName()).log(Level.SEVERE, null, ex);
+                }
             }            
             else if(e.getActionCommand().equals("Cadastrar")){
                 owner.exibeTelaCadastroCargo();

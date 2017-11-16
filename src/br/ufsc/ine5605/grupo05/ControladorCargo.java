@@ -26,6 +26,7 @@ public class ControladorCargo implements IControladorCargo {
     private static ControladorCargo instance;
     private TelaCargo telaCargo;
     private TelaCadastroCargo telaCadastroCargo;
+    private TelaHorario telaHorario;
     private CargoDAO cargoDAO;
     private FuncionarioDAO funcDAO;
     private Date horarioD;
@@ -34,7 +35,7 @@ public class ControladorCargo implements IControladorCargo {
     private ControladorCargo() {
 	this.cargoDAO = new CargoDAO();
         this.ultimoCodigo = 100;
-        this.horarioD = null;
+        this.horarioD = new Date();
     }
     
     public static ControladorCargo getInstance() {
@@ -56,9 +57,10 @@ public class ControladorCargo implements IControladorCargo {
         this.horarioD = horarioNovo;
     }
     
-    public Date horarioInicio(NivelAcesso nivel) throws ParseException{
+    public Date horarioInicio(NivelAcesso nivel) throws ParseException, CadastroIncorretoException{
         Date horarioInicio = null;
         if(nivel.equals(NivelAcesso.ESPECIAL)){
+            this.exibeTelaHorario();
             return horarioD;
         }else{
             String horario = "00:00";
@@ -67,9 +69,10 @@ public class ControladorCargo implements IControladorCargo {
         }
     }
     
-    public Date horarioFinal(NivelAcesso nivel) throws ParseException{
+    public Date horarioFinal(NivelAcesso nivel) throws ParseException, CadastroIncorretoException{
         Date horarioInicio = null;
         if(nivel.equals(NivelAcesso.ESPECIAL)){
+            this.exibeTelaHorario();
             return horarioD;
         }else{
             String horario = "00:00";
@@ -203,8 +206,14 @@ public class ControladorCargo implements IControladorCargo {
         telaCargo.setVisible(true);
     }
 
-    public void voltar() {
-        
+    public void exibeTelaHorario() throws CadastroIncorretoException, ParseException{
+        this.telaHorario = new TelaHorario(this);
+        telaHorario.setVisible(true);
+    }
+    
+    public void voltar() throws CadastroIncorretoException, ParseException {
+        this.telaCargo.setVisible(false);
+        ControladorPrincipal.getInstance().exibeTelaPrincipal();
     }
 
    
