@@ -12,6 +12,7 @@ import java.util.Date;
 
 
 import br.ufsc.ine5605.grupo05.ControladorFuncionario;
+import java.util.Collection;
 import java.util.HashMap;
 import javax.swing.JOptionPane;
 /**
@@ -23,13 +24,15 @@ public class ControladorCargo implements IControladorCargo {
     //private ArrayList<Cargo> cargos;
     private int ultimoCodigo;
     private static ControladorCargo instance;
-    private TelaCadastroCargo telaCadastroCaargo;
+    private TelaCadastroCargo telaCadastroCargo;
     private CargoDAO cargoDAO;
+    private Date horarioD;
     
     
     private ControladorCargo() {
 	this.cargoDAO = new CargoDAO();
         this.ultimoCodigo = 100;
+        this.horarioD = null;
     }
     
     public static ControladorCargo getInstance() {
@@ -47,6 +50,32 @@ public class ControladorCargo implements IControladorCargo {
         this.cargoDAO.put(novoCargo);
     }
     
+    public void atualizaHorarioD(Date horarioNovo) throws ParseException{
+        this.horarioD = horarioNovo;
+    }
+    
+    public Date horarioInicio(NivelAcesso nivel) throws ParseException{
+        Date horarioInicio = null;
+        if(nivel.equals(NivelAcesso.ESPECIAL)){
+            return horarioD;
+        }else{
+            String horario = "00:00";
+            Date horarioZero = ControladorPrincipal.getInstance().converterStringEmHora(horario);
+            return horarioInicio = horarioZero;
+        }
+    }
+    
+    public Date horarioFinal(NivelAcesso nivel) throws ParseException{
+        Date horarioInicio = null;
+        if(nivel.equals(NivelAcesso.ESPECIAL)){
+            return horarioD;
+        }else{
+            String horario = "00:00";
+            Date horarioZero = ControladorPrincipal.getInstance().converterStringEmHora(horario);
+            return horarioInicio = horarioZero;
+        }
+    }
+    
     @Override
     public void exibeCargos() {
         /*if (this.cargoDAO.isEmpty()) {
@@ -54,7 +83,7 @@ public class ControladorCargo implements IControladorCargo {
             //TelaCargo.getInstance().mensagemNaoHaCargos();
             return;
         }*/
-        for (Cargo cargo : this.cargoDAO.getList()) {
+        for (Cargo cargo : this.cargoDAO.getListC()) {
              TelaCargo.getInstance().exibeCargo(cargo);
         }
     }
@@ -65,19 +94,21 @@ public class ControladorCargo implements IControladorCargo {
     
     @Override
     public Cargo buscarCargoPeloCodigo(int codigoCargo) throws CadastroIncorretoException, ParseException{  
-        for(Cargo cargo : cargos){
+        ArrayList<Cargo> listaCargos = (ArrayList<Cargo>) cargoDAO.getListC();
+        for(Cargo cargo : listaCargos){
             if(cargo.getCodigo() == codigoCargo){
                 return cargo;
             }
         }
-        TelaCargo.getInstance().mensagemCodigoInvalido();
-        TelaCargo.getInstance().exibeTela();
+        //TelaCargo.getInstance().mensagemCodigoInvalido();
+        //TelaCargo.getInstance().exibeTela();
         return null;
     }
     
     @Override
     public void alterarNomeCargoPeloCodigo (String novoNomeCargo, int codigoCargo){
-        for(Cargo cargoRef : cargos){
+        ArrayList<Cargo> listaCargos = (ArrayList<Cargo>) cargoDAO.getListC();
+        for(Cargo cargoRef : listaCargos){
             if(cargoRef.getCodigo() == codigoCargo){
                 cargoRef.setNomeCargo(novoNomeCargo);
             }
@@ -87,26 +118,31 @@ public class ControladorCargo implements IControladorCargo {
     @Override
     public void deletarCargoPeloCodigo (int codigoCargo) throws ParseException, CadastroIncorretoException{
             ArrayList<Funcionario> listaFuncionarios = new ArrayList<>();
+            ArrayList<Cargo> listaCargos = (ArrayList<Cargo>) cargoDAO.getListC();
             listaFuncionarios = ControladorFuncionario.getInstance().getFuncionarios();
             for(Funcionario func : listaFuncionarios){
                 if(func.getCargo().getCodigo() == codigoCargo){
-                    TelaCargo.getInstance().mensagemExisteFuncionarioNesteCargo();
+                    //TelaCargo.getInstance().mensagemExisteFuncionarioNesteCargo();
                     return;
                 }
             }
 
-            for(Cargo cargo : cargos){
+            for(Cargo cargo : listaCargos){
                 if(cargo.getCodigo() == codigoCargo){
-                    cargos.remove(cargo);
-                    TelaCargo.getInstance().mensagemCargoDeletadoComSucesso();
-                    TelaCargo.getInstance().exibeTela();
+                    listaCargos.remove(cargo);
+                    //TelaCargo.getInstance().mensagemCargoDeletadoComSucesso();
+                    //TelaCargo.getInstance().exibeTela();
                 }
             }  
     }
     
     
-    public ArrayList<Cargo> getCargos() {
-        return this.cargos;
+    public HashMap<Integer, Cargo> getCargosH() {
+        return cargoDAO.getListH();
+    }
+    
+    public Collection<Cargo> getCargosC() {
+        return cargoDAO.getListC();
     }
     
     /**
@@ -114,8 +150,9 @@ public class ControladorCargo implements IControladorCargo {
      * @return reotrna true se há cargos
      */
     public boolean haCargos() {
-	if (this.cargos.isEmpty()) {
-            TelaCargo.getInstance().mensagemNaoHaCargos();
+        ArrayList<Cargo> listaCargos = (ArrayList<Cargo>) cargoDAO.getListC();
+	if (listaCargos.isEmpty()) {
+            //TelaCargo.getInstance().mensagemNaoHaCargos();
             return false;
 	}
 	return true;
@@ -146,7 +183,7 @@ public class ControladorCargo implements IControladorCargo {
      * @throws Exception 
      */
     public void exibeTelaCargo() throws CadastroIncorretoException, ParseException{
-        TelaCargo.getInstance().exibeTela();
+        TelaCargo.getInstance().iniciaComponentes();
     }
 
     public void voltar() {

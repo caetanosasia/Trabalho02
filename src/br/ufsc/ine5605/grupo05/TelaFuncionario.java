@@ -258,7 +258,7 @@ public class TelaFuncionario extends JFrame implements ActionListener{
      */
     public void cadastraFuncionario() throws ParseException, CadastroIncorretoException{
         try {    
-            if(!ControladorCargo.getInstance().getCargos().isEmpty()) {
+            if(!ControladorCargo.getInstance().getCargosH().isEmpty()) {
                 System.out.println("Digite o nome do Funcionario");
                 sc.nextLine();
                 String nome = sc.nextLine();

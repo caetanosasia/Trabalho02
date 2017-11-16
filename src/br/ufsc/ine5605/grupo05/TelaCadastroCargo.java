@@ -15,6 +15,7 @@ import java.awt.GridBagLayout;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.text.ParseException;
 import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -113,7 +114,7 @@ public class TelaCadastroCargo extends JFrame {
         constraints.fill = GridBagConstraints.HORIZONTAL;
         constraints.gridx = 1;
         constraints.gridy = 4;
-        btCadastro.setActionCommand(OpcoesCadastroCargo.CADASTRAR.name());
+        btCadastro.setActionCommand("Cadastrar");
         container.add(btCadastro, constraints);
                 
         btCancel = new JButton();
@@ -121,8 +122,10 @@ public class TelaCadastroCargo extends JFrame {
         constraints.fill = GridBagConstraints.HORIZONTAL;
         constraints.gridx = 0;
         constraints.gridy = 4;
-        btCancel.setActionCommand(OpcoesCadastroCargo.CANCELAR.name());
+        btCancel.setActionCommand("Voltar");
         container.add(btCancel, constraints);
+        
+        
     }  
 
     private class GerenciadorDeBotoes implements ActionListener{
@@ -130,28 +133,68 @@ public class TelaCadastroCargo extends JFrame {
         @Override
         public void actionPerformed(ActionEvent e) {
             
-            if(e.getActionCommand().equals(OpcoesCadastroCargo.CADASTRAR.name())){
-                Integer codigoCandidato = -1;
+            if(e.getActionCommand().equals("Cadastrar")){
+                Integer codigoRef = -1;
+                Date horarioInicio = null;
+                Date horarioFinal = null;
                               
-                try {
-                    codigoCandidato = Integer.valueOf(tfSalario.getText());
-                    owner.cadastraCargo();
-                    JOptionPane.showMessageDialog(null, "Novo Cargo Cadastrado:\n"
-                    + "\nNome: " + tfNome.getText()  
-                    + "\nPartido: " + bjNiveisAcesso.getSelectedItem().toString()
-                    + "\nCodigo: " + tfSalario.getText() );
-                } catch (AlteracaoIncorretaException ex) {
-                    JOptionPane.showMessageDialog(null, "Algo de errado aconteceu" );
-                } catch (CadastroIncorretoException ex) {  
-                    Logger.getLogger(TelaCadastroCandidato.class.getName()).log(Level.SEVERE, null, ex);
+                codigoRef = ControladorCargo.getInstance().getUltimoCodigo();
+                String codigoCargo = codigoRef + "";
+                NivelAcesso nivel = (NivelAcesso) bjNiveisAcesso.getSelectedItem();
+                if(nivel.equals(NivelAcesso.ESPECIAL)){
+                    try {
+                        horarioInicio = ControladorCargo.getInstance().horarioInicio(nivel);
+                        horarioFinal = ControladorCargo.getInstance().horarioFinal(nivel);
+                        owner.cadastraCargo(tfNome.getText(), nivel, horarioInicio, horarioFinal);
+                    } catch (ParseException ex) {
+                        JOptionPane.showMessageDialog(null, "Cadastro Incorreto");
+                        //Logger.getLogger(TelaCadastroCargo.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                }else{
+                    try {
+                        horarioInicio = ControladorCargo.getInstance().horarioInicio(nivel);
+                        horarioFinal = ControladorCargo.getInstance().horarioFinal(nivel);
+                        owner.cadastraCargo(tfNome.getText(), nivel, horarioInicio, horarioFinal);
+                    } catch (ParseException ex) {
+                        JOptionPane.showMessageDialog(null, "Cadastro Incorreto");
+                        //Logger.getLogger(TelaCadastroCargo.class.getName()).log(Level.SEVERE, null, ex);
+                    }
                 }
-                tfCodigo.setText(null);
+            }else if(e.getActionCommand().equals("Voltar")){
+                setVisible(false);
+                try {
+                    owner.exibeTelaCargo();
+                } catch (CadastroIncorretoException ex) {
+                    Logger.getLogger(TelaCadastroCargo.class.getName()).log(Level.SEVERE, null, ex);
+                } catch (ParseException ex) {
+                    Logger.getLogger(TelaCadastroCargo.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }   
+                
+
+
+
+
+//owner.cadastraCargo();
+                /*JOptionPane.showMessageDialog(null, "Novo Cargo Cadastrado:\n"
+                        + "\nNome: " + tfNome.getText()
+                        + "\nNivel: " + bjNiveisAcesso.getSelectedItem().toString()
+                        + "\nCodigo: " + codigoCargo );
+                //tfCodigo.setText(null);
                 tfNome.setText(null);
             }
-            else if(e.getActionCommand().equals(OpcoesCadastroCandidato.CANCELAR.name())){
+            else if(e.getActionCommand().equals("Voltar")){
                 setVisible(false);
-                owner.exibeTelaCandidato();
-            }             
-        }  
+                try {
+                    owner.exibeTelaCargo();
+                } catch (CadastroIncorretoException ex) {
+                    Logger.getLogger(TelaCadastroCargo.class.getName()).log(Level.SEVERE, null, ex);
+                } catch (ParseException ex) {
+                    Logger.getLogger(TelaCadastroCargo.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }*/            
+        }
+        
     }
+    
 }

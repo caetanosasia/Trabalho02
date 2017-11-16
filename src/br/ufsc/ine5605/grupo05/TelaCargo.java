@@ -21,6 +21,8 @@ import java.awt.GridBagLayout;
 import java.awt.Toolkit;
 import java.awt.event.ActionListener;
 import java.util.HashMap;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.DefaultCellEditor;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
@@ -92,12 +94,12 @@ public class TelaCargo extends JFrame {
     
     public void atualizaCargo(String novoNomeCargo, int codigoCargo) {
         owner.alterarNomeCargoPeloCodigo(novoNomeCargo, codigoCargo);
-        modelo.atualizarDados(owner.getCargos());
+        modelo.atualizarDados(owner.getCargosH());
     }
     
     
     public void criaJTable() {
-        modelo = new CargoTableModel(this, owner.getCargos());
+        modelo = new CargoTableModel(this, owner.getCargosH());
         tabela = new JTable(modelo);
         tabela.setModel(modelo);
         setupNivelAcesso(tabela,tabela.getColumnModel().getColumn(2));
@@ -110,9 +112,9 @@ public class TelaCargo extends JFrame {
         btVoltar = new JButton("Voltar");               
         btExcluir = new JButton("Excluir Cargo");
         
-        btCadastrar.setActionCommand(OpcoesMenuCargo.CADASTRAR.toString());
-        btVoltar.setActionCommand(OpcoesMenuCargo.VOLTAR.toString());
-        btExcluir.setActionCommand(OpcoesMenuCargo.EXCLUIR.toString());
+        btCadastrar.setActionCommand("Cadastrar");
+        btVoltar.setActionCommand("Voltar");
+        btExcluir.setActionCommand("Excluir Cargo");
         
         painelBotoes = new JPanel();
         barraRolagem = new JScrollPane(tabela);
@@ -146,16 +148,27 @@ public class TelaCargo extends JFrame {
          @Override
          public void actionPerformed(java.awt.event.ActionEvent e) {
                   
-            if(e.getActionCommand().equals(OpcoesMenuCargo.EXCLUIR.name())){
+            if(e.getActionCommand().equals("Excluir")){
                 int linhaSelecionada = tabela.getSelectedRow();  
-                owner.deletarCargoPeloCodigo((codigoCargo) modelo.buscarCargoPeloCodigo(codigoCargo));
+                Cargo cargoRef;
+                try {
+                    cargoRef = owner.buscarCargoPeloCodigo(linhaSelecionada);
+                    owner.deletarCargoPeloCodigo(cargoRef.getCodigo());
+                    modelo.atualizarDados(owner.getCargosH());
+                    modelo.fireTableRowsDeleted(linhaSelecionada, linhaSelecionada);
+                } catch (CadastroIncorretoException ex) {
+                    Logger.getLogger(TelaCargo.class.getName()).log(Level.SEVERE, null, ex);
+                } catch (ParseException ex) {
+                    Logger.getLogger(TelaCargo.class.getName()).log(Level.SEVERE, null, ex);
+                }
+                /*owner.deletarCargoPeloCodigo(cargoRef.getCodigo());
                 modelo.atualizarDados(owner.getCargos());
-                modelo.fireTableRowsDeleted(linhaSelecionada, linhaSelecionada);
+                modelo.fireTableRowsDeleted(linhaSelecionada, linhaSelecionada);*/
             }
-            else if(e.getActionCommand().equals(OpcoesMenuCargo.VOLTAR.name())){
+            else if(e.getActionCommand().equals("Voltar")){
                 owner.voltar();
             }            
-            else if(e.getActionCommand().equals(OpcoesMenuCargo.CADASTRAR.name())){
+            else if(e.getActionCommand().equals("Cadastrar")){
                 owner.exibeTelaCadastroCargo();
                 setVisible(false);
             }     

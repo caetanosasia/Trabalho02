@@ -126,7 +126,15 @@ public class TelaPrincipal extends JFrame{
                     JOptionPane.showMessageDialog(null, "Cadastro Incorreto");
                 }*/
             } else if(e.getActionCommand().equals(OpcoesMenuPrincipal.CARGO.name())){
-                //ControladorPrincipal.getInstance().exibeTelaCargo();
+                try {
+                    ControladorPrincipal.getInstance().exibeTelaCargo();
+                } catch (CadastroIncorretoException ex) {
+                    JOptionPane.showMessageDialog(null, "Cadastro Incorreto");
+                    //Logger.getLogger(TelaPrincipal.class.getName()).log(Level.SEVERE, null, ex);
+                } catch (ParseException ex) {
+                    JOptionPane.showMessageDialog(null, "Cadastro Incorreto");
+                    //Logger.getLogger(TelaPrincipal.class.getName()).log(Level.SEVERE, null, ex);
+                }
             } else if(e.getActionCommand().equals(OpcoesMenuPrincipal.ACESSO.name())){
                 //ControladorPrincipal.getInstance().exibeTelaAcesso();
             } else if(e.getActionCommand().equals(OpcoesMenuPrincipal.RELATORIO.name())){

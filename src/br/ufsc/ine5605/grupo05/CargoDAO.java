@@ -55,8 +55,12 @@ public class CargoDAO implements Serializable{
         
     }
     
-    public Collection<Cargo> getList(){
-        return cacheCargos.values();
+    public HashMap<Integer, Cargo> getListH(){
+        return this.cacheCargos;
+    }
+    
+    public Collection<Cargo> getListC(){
+        return this.cacheCargos.values();
     }
     
     public void remove(Cargo cargo){

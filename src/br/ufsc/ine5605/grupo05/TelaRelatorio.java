@@ -121,7 +121,7 @@ public class TelaRelatorio {
      * @throws Exception 
      */
     private void listarCargos() throws CadastroIncorretoException, ParseException {
-        ArrayList<Cargo> cargos = ControladorCargo.getInstance().getCargos();
+        ArrayList<Cargo> cargos = (ArrayList<Cargo>) ControladorCargo.getInstance().getCargosC();
         if(cargos.isEmpty()){
             System.out.println("Não há cargos");
         } else {
