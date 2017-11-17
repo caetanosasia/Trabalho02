@@ -35,6 +35,7 @@ public class TelaFuncionario extends JFrame implements ActionListener{
 
     private Scanner sc;
     private static TelaFuncionario instance;
+    private FuncionarioDAO funcionarioDAO;
     
     private JLabel bemVindo;
 	private JLabel lMatricula;
@@ -42,11 +43,14 @@ public class TelaFuncionario extends JFrame implements ActionListener{
 	private JLabel lDataNasc;
 	private JLabel lTelefone;
 	private JLabel lCargo;
-	private JLabel lTipos;
+	private JLabel lSalario;
+        private JLabel lCPF;
 	private JTextField tMatricula;
 	private JTextField tNome;
 	private JTextField tDataNasc;
 	private JTextField tTelefone;
+        private JTextField tSalario;
+	private JTextField tCPF;
 	private JComboBox<Cargo> cCargo;
 	private JButton bAdicionar;
 	private JButton bEditar;
@@ -60,6 +64,7 @@ public class TelaFuncionario extends JFrame implements ActionListener{
     public TelaFuncionario(){
         super("Tela de Funcionarios");
         //this.sc = new Scanner(System.in);
+        funcionarioDAO = new FuncionarioDAO();
 	this.inic();
     }
     
@@ -145,7 +150,7 @@ public class TelaFuncionario extends JFrame implements ActionListener{
 		this.tTelefone = new JTextField();
 		this.lCargo = new JLabel();
 		this.cCargo = new JComboBox<>();
-		this.lTipos = new JLabel();
+		this.lSalario = new JLabel();
 		this.bAdicionar = new JButton();
 		this.bRemover = new JButton();
 		this.bVoltar = new JButton();
@@ -165,7 +170,7 @@ public class TelaFuncionario extends JFrame implements ActionListener{
 		this.lDataNasc.setText("Digite a Data de Nascimento");
 		this.lTelefone.setText("Digite o Telefone");
 		this.lCargo.setText("Escolha o Cargo");
-		this.lTipos.setText("Escolha o tipo de Veículo");
+		this.lSalario.setText("Escolha o tipo de Veículo");
 		this.bAdicionar.setText("Adicionar Funcionário");
 		this.bEditar.setText("Editar Funcionário");
 		this.bVoltar.setText("Voltar");
@@ -365,8 +370,60 @@ public class TelaFuncionario extends JFrame implements ActionListener{
         System.out.println("Matrícula Invalida");
     }
     
-    public void actionPerformed(ActionEvent e) {
-    }
+	public void atualizaLista() {
+		DefaultTableModel tModelo = new DefaultTableModel();
+		tModelo.addColumn("Matricula");
+		tModelo.addColumn("Nome");
+		tModelo.addColumn("Nascimento");
+		tModelo.addColumn("Telefone");
+                tModelo.addColumn("Salario");
+		tModelo.addColumn("Cargo");
+                tModelo.addColumn("CPF");
+                tModelo.addColumn("Erros");
+
+                ArrayList<Funcionario> listaFuncionarios = (ArrayList<Funcionario>) funcionarioDAO.getList();
+		for (Funcionario f : listaFuncionarios){
+			tModelo.addRow(new Object[]{f.getMatricula(), f.getNome(), f.getNascimento(), f.getTelefone(), f.getSalario(), f.getCargo(), f.getCpf(), f.getErrosAcesso()});
+		}
+
+		this.tbFuncionarios.setModel(tModelo);
+		this.repaint();
+
+	}
+        
+	public void sair() {
+		this.dispose();
+	}
+
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		if (e.getActionCommand().equals("Adicionar")){
+			ControladorFuncionario.getInstance().exibeTelaCadastroFuncionario();
+		}
+		if (e.getActionCommand().equals("Editar")){
+			try {
+				Funcionario f = ControladorFuncionario.getInstance().getFuncionario((Integer) this.tbFuncionarios.getValueAt(this.tbFuncionarios.getSelectedRow(), 0));
+				ControladorFuncionario.getInstance().exibeTelaCadastroFuncionario(f);
+			} catch (ArrayIndexOutOfBoundsException e2) {
+				JOptionPane.showMessageDialog(null, "Selecione um Funcionário");
+			}
+
+		}
+		if (e.getActionCommand().equals("Remover")){
+			Integer m = (Integer) this.tbFuncionarios.getValueAt(this.tbFuncionarios.getSelectedRow(),0);
+			ControladorFuncionario.getInstance().excluiFuncionario(ControladorFuncionario.getInstance().getFuncionario(m));
+		}
+		if (e.getActionCommand().equals("Voltar")){
+			this.setVisible(false);
+			ControladorPrincipal.getInstance().exibeTelaPrincipal();
+		}
+		if (e.getActionCommand().equals("Sair")){
+			this.sair();
+		}
+		if (e.getActionCommand().equals("Ver")) {
+			
+		}
+	}
 }
     
 

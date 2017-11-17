@@ -153,6 +153,7 @@ public class TelaCargo extends JFrame {
                 try {
                     int linhaSelecionada = tabela.getSelectedRow();  
                     Cargo cargoRef = owner.buscarCargoPeloCodigo(linhaSelecionada);
+                    //owner.excluiCandidato((Candidato) modelo.getCandidato(linhaSelecionada));
                     owner.deletarCargoPeloCodigo(cargoRef.getCodigo());
                     modelo.atualizarDados(owner.getCargosH());
                     modelo.fireTableRowsDeleted(linhaSelecionada, linhaSelecionada);

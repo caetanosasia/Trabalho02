@@ -35,7 +35,7 @@ public class CargoTableModel extends AbstractTableModel{
     private String[] cabecalho = new String[] {"Codigo", "Nome", "NivelAcesso"};
     private ArrayList<Cargo> cargos;
     
-    public CargoTableModel( TelaCargo owner, HashMap<Integer, Cargo> novosCargos){
+    public CargoTableModel(TelaCargo owner, HashMap<Integer, Cargo> novosCargos){
         this.owner = owner;
         this.cargos = new ArrayList<>();
         this.atualizarDados(novosCargos);
@@ -79,6 +79,7 @@ public class CargoTableModel extends AbstractTableModel{
          return true; 
      }
      
+    @Override
     public void setValueAt(Object value, int linha, int coluna) {
         Cargo cargo = (Cargo) cargos.get(linha); 
                

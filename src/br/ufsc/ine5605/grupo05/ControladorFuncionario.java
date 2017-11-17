@@ -19,6 +19,7 @@ public class ControladorFuncionario {
     private FuncionarioDAO funcionarioDAO = new FuncionarioDAO();
     private int ultimaMatricula = 10000;
     private static ControladorFuncionario instance;
+    private TelaCadastroFuncionario telaCadastra;
     
     private ControladorFuncionario() {
     }
@@ -170,7 +171,14 @@ public class ControladorFuncionario {
      * @throws Exception 
      */
     public void exibeTelaFuncionario() throws ParseException, CadastroIncorretoException {
-        TelaFuncionario.getInstance().exibeTela();
+		TelaFuncionario.getInstance().setVisible(true);
+		TelaFuncionario.getInstance().atualizaLista();
+    }
+    
+    public void exibeTelaCadastroFuncionario(){
+		TelaFuncionario.getInstance().setVisible(false);
+		this.telaCadastra = new TelaCadastroFuncionario();
+		this.telaCadastra.setVisible(true);
     }
     
     

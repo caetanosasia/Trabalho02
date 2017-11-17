@@ -22,7 +22,7 @@ import javax.swing.JOptionPane;
 public class ControladorCargo implements IControladorCargo {
     
     //private ArrayList<Cargo> cargos;
-    private int ultimoCodigo;
+    private static int ultimoCodigo = 100;
     private static ControladorCargo instance;
     private TelaCargo telaCargo;
     private TelaCadastroCargo telaCadastroCargo;
@@ -34,7 +34,6 @@ public class ControladorCargo implements IControladorCargo {
     
     private ControladorCargo() {
 	this.cargoDAO = new CargoDAO();
-        this.ultimoCodigo = 100;
         this.horarioD = new Date();
     }
     
@@ -51,6 +50,7 @@ public class ControladorCargo implements IControladorCargo {
         int codigo = gerarCodigo();
         Cargo novoCargo = new Cargo(nomeCargo, codigo, NIVELACESSO, horarioInicial, horarioFinal);
         this.cargoDAO.put(novoCargo);
+        this.setUltimoCodigo(codigo);
     }
     
     public void atualizaHorarioD(Date horarioNovo) throws ParseException{
@@ -133,7 +133,7 @@ public class ControladorCargo implements IControladorCargo {
                     break;
                 }
             }*/
-            if((!listaFuncionarios.isEmpty()) && cargoDeletar != null){
+            if((listaFuncionarios.isEmpty()) && cargoDeletar != null){
                 cargoDAO.remove(cargoDeletar);
             }else{
                 JOptionPane.showMessageDialog(null, "Não é possivel deletar Cargo");
