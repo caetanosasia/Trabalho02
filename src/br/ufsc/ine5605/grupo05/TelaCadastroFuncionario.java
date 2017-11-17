@@ -9,6 +9,7 @@ import java.awt.Container;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
@@ -20,10 +21,12 @@ import javax.swing.JTextField;
  *
  * @author Lucas Falcão
  */
-public class TelaCadastroFuncionario extends JFrame{
+public class TelaCadastroFuncionario extends JFrame implements ActionListener{
     private JLabel bemVindo;
 	private JLabel lbCadastro;
 	private JLabel lbMatricula;
+        private JLabel lbSalario;
+        private JLabel lbCPF;
 	private JLabel lbNome;
 	private JLabel lbCargo;
 	private JLabel lbDataNascimento;
@@ -35,6 +38,8 @@ public class TelaCadastroFuncionario extends JFrame{
 	private JTextField tfMatricula;
 	private JTextField tfTelefone;
 	private JTextField tfDataNascimento;
+        private JTextField tfSalario;
+        private JTextField tfCPF;
 	private JComboBox<Cargo> bjCargos;
 	private Funcionario f;
 
@@ -69,6 +74,10 @@ public class TelaCadastroFuncionario extends JFrame{
 		this.tfTelefone = new JTextField();
 		this.lbDataNascimento = new JLabel("Digite a Data de Nascimento");
 		this.tfDataNascimento = new JTextField();
+                this.lbSalario = new JLabel("Digite o Salario");
+		this.tfSalario = new JTextField();
+		this.lbCPF = new JLabel("Digite o CPF");
+		this.tfCPF = new JTextField();
 		this.lbCargo = new JLabel("Escolha o Cargo");
 		this.bjCargos = new JComboBox<>(Cargo.values());
 		if (this.f == null) {
@@ -166,11 +175,13 @@ public class TelaCadastroFuncionario extends JFrame{
 	}
 
 	public void edita(){
-		this.tfDataNascimento.setText(""+this.f.getDataNascimento());
+		this.tfDataNascimento.setText(""+this.f.getNascimento());
 		this.bjCargos.setSelectedItem(this.f.getCargo());
-		this.tfMatricula.setText(this.f.getNumeroMatricula()+"");
+		this.tfMatricula.setText(this.f.getMatricula()+"");
 		this.tfNome.setText(this.f.getNome());
 		this.tfTelefone.setText(this.f.getTelefone()+"");
+                this.tfSalario.setText(this.f.getTelefone()+"");
+                this.tfTelefone.setText(this.f.getTelefone()+"");
 	}
 	@Override
 	public void atualizaLista() {
