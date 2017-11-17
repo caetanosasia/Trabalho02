@@ -112,8 +112,8 @@ public class CargoTableModel extends AbstractTableModel{
         return null;
     }
     
-    /*public Cidadao getCandidato(int indiceLinha) {
+    public Cargo getCargo(int indiceLinha) {
         return cargos.get(indiceLinha);        
-    } */   
+    }    
    
 }

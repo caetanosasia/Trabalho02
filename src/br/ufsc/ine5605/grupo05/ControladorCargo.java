@@ -99,15 +99,16 @@ public class ControladorCargo implements IControladorCargo {
     
     @Override
     public Cargo buscarCargoPeloCodigo(int codigoCargo) throws CadastroIncorretoException, ParseException{  
-        ArrayList<Cargo> listaCargos = (ArrayList<Cargo>) cargoDAO.getListC();
+        Cargo retornaCargo = cargoDAO.get(codigoCargo);
+        return retornaCargo;
+        /*ArrayList<Cargo> listaCargos = (ArrayList<Cargo>) cargoDAO.getListC();
         for(Cargo cargo : listaCargos){
             if(cargo.getCodigo() == codigoCargo){
                 return cargo;
             }
-        }
+        }*/
         //TelaCargo.getInstance().mensagemCodigoInvalido();
         //TelaCargo.getInstance().exibeTela();
-        return null;
     }
     
     @Override
@@ -125,15 +126,15 @@ public class ControladorCargo implements IControladorCargo {
             ArrayList<Funcionario> listaFuncionarios = (ArrayList<Funcionario>) funcDAO.getList();
             ArrayList<Cargo> listaCargos = (ArrayList<Cargo>) cargoDAO.getListC();
             //listaFuncionarios = ControladorFuncionario.getInstance().getFuncionarios();
-            Cargo cargoDeletar = null;
-            for(Cargo cargoRef : listaCargos){
+            Cargo cargoDeletar = buscarCargoPeloCodigo(codigoCargo);
+            /*for(Cargo cargoRef : listaCargos){
                 if(cargoRef.getCodigo() == codigoCargo){
                     cargoDeletar = cargoRef;
                     break;
                 }
-            }
-            if(listaFuncionarios.isEmpty() && cargoDeletar != null){
-                listaCargos.remove(cargoDeletar);
+            }*/
+            if((!listaFuncionarios.isEmpty()) && cargoDeletar != null){
+                cargoDAO.remove(cargoDeletar);
             }else{
                 JOptionPane.showMessageDialog(null, "Não é possivel deletar Cargo");
             }

@@ -51,7 +51,7 @@ public class CargoDAO implements Serializable{
     }
     
     public Cargo get(Integer codigo){
-        return cacheCargos.get(codigo);
+        return (Cargo) cacheCargos.get(codigo);
         
     }
     
@@ -64,7 +64,7 @@ public class CargoDAO implements Serializable{
     }
     
     public void remove(Cargo cargo){
-        cacheCargos.remove(cargo.getCodigo());
+        cacheCargos.remove(cargo.getCodigo(), cargo);
         persist();
     }
     
