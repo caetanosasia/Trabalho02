@@ -207,7 +207,7 @@ public class TelaCadastroFuncionario extends JFrame{
 			this.setVisible(false);
 			ControladorFuncionario.getInstance().exibeTelaFuncionario();
 		}
-		if (e.getActionCommand().equals("Sair")) {
+		if (e.getActionCommand().equals("Sa")) {
 			this.sair();
 		}
 	}
