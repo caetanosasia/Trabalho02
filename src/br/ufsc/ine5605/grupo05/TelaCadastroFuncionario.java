@@ -79,7 +79,7 @@ public class TelaCadastroFuncionario extends JFrame implements ActionListener{
 		this.lbCPF = new JLabel("Digite o CPF");
 		this.tfCPF = new JTextField();
 		this.lbCargo = new JLabel("Escolha o Cargo");
-		this.bjCargos = new JComboBox<>(Cargo.values());
+		this.bjCargos = new JComboBox<>();
 		if (this.f == null) {
 			this.btCadastro = new JButton("Cadastrar");
 			this.btCadastro.setActionCommand("Cadastrar");
@@ -157,6 +157,22 @@ public class TelaCadastroFuncionario extends JFrame implements ActionListener{
 		constraints.gridx = 1;
 		constraints.gridy = 7;
 		container.add(this.btCancelar, constraints);
+                constraints.fill = GridBagConstraints.HORIZONTAL;
+		constraints.gridx = 0;
+		constraints.gridy = 8;
+		container.add(this.lbSalario, constraints);
+		constraints.fill = GridBagConstraints.HORIZONTAL;
+		constraints.gridx = 1;
+		constraints.gridy = 8;
+		container.add(this.tfSalario, constraints);
+		constraints.fill = GridBagConstraints.HORIZONTAL;
+		constraints.gridx = 0;
+		constraints.gridy = 9;
+		container.add(this.lbCPF, constraints);
+		constraints.fill = GridBagConstraints.HORIZONTAL;
+		constraints.gridx = 1;
+		constraints.gridy = 9;
+		container.add(this.tfCPF, constraints);
 
 
 //		configurando o layout
@@ -180,14 +196,14 @@ public class TelaCadastroFuncionario extends JFrame implements ActionListener{
 		this.tfMatricula.setText(this.f.getMatricula()+"");
 		this.tfNome.setText(this.f.getNome());
 		this.tfTelefone.setText(this.f.getTelefone()+"");
-                this.tfSalario.setText(this.f.getTelefone()+"");
-                this.tfTelefone.setText(this.f.getTelefone()+"");
+                this.tfSalario.setText(this.f.getSalario()+"");
+                this.tfTelefone.setText(this.f.getCpf()+"");
 	}
-	@Override
+	
 	public void atualizaLista() {
 	}
 
-	@Override
+	
 	public void sair() {
 		this.dispose();
 	}
