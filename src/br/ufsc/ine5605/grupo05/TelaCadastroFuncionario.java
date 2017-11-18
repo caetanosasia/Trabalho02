@@ -177,10 +177,6 @@ public class TelaCadastroFuncionario extends JFrame implements ActionListener{
 
 //		configurando o layout
 		this.setSize(800,600);
-
-//		Fechar
-		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-
 	}
 
 	public void limpa(){
@@ -210,10 +206,10 @@ public class TelaCadastroFuncionario extends JFrame implements ActionListener{
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		if (e.getActionCommand().equals("Cadastrar")) {
+		/*if (e.getActionCommand().equals("Cadastrar")) {
 			if(this.bjCargos.getSelectedItem().equals(Cargo.COMUM)){
 				this.setVisible(false);
-				ControladorFuncionario.getInstance().exibeTelaPermissões(Integer.parseInt(this.tfMatricula.getText()), this.tfNome.getText(), Integer.parseInt(this.tfDataNascimento.getText()), Integer.parseInt(this.tfTelefone.getText()), (Cargo) this.bjCargos.getSelectedItem());
+				ControladorFuncionario.getInstance().exibeTelaPermissoes(Integer.parseInt(this.tfMatricula.getText()), this.tfNome.getText(), Integer.parseInt(this.tfDataNascimento.getText()), Integer.parseInt(this.tfTelefone.getText()), (Cargo) this.bjCargos.getSelectedItem());
 			} else {
 				String msg = ControladorFuncionario.getInstance().cadastraFuncionario(Integer.parseInt(this.tfMatricula.getText()), this.tfNome.getText(), Integer.parseInt(this.tfDataNascimento.getText()), Integer.parseInt(this.tfTelefone.getText()), (Cargo) this.bjCargos.getSelectedItem());
 				this.limpa();
@@ -236,7 +232,7 @@ public class TelaCadastroFuncionario extends JFrame implements ActionListener{
 		}
 		if (e.getActionCommand().equals("Sa")) {
 			this.sair();
-		}
+		}*/
 	}
 
 }

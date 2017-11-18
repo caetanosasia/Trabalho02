@@ -30,17 +30,23 @@ import javax.swing.JTextField;
  */
 public class TelaHorario extends JFrame{
     private JLabel lbCadastro;
-    private JLabel lbHorario;
+    private JLabel lbHorarioInicial;
+    private JLabel lbHorarioFinal;
     private JButton btCadastro;
     private JButton btCancel;
-    private JTextField tfHorario;  
+    private JTextField tfHorarioInicial;  
+    private JTextField tfHorarioFinal;  
     
     private GerenciadorDeBotoes gerenciadorBotoes;
     private Container container;
     
     private Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
     
-    public TelaHorario(ControladorCargo owner){
+    private static TelaHorario instance;
+    private String nome;
+    private NivelAcesso nivel;
+    
+    public TelaHorario(){
         
         super("Cadastro do Horario Especial"); 
         container = getContentPane();
@@ -56,6 +62,13 @@ public class TelaHorario extends JFrame{
         setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
    
     }
+    
+    public static TelaHorario getInstance() {
+        if(instance == null) {
+            instance = new TelaHorario();
+        }
+        return instance;
+    }
 
    private void iniciaComponentes(){
         
@@ -69,20 +82,35 @@ public class TelaHorario extends JFrame{
         constraints.gridy = 0;
         container.add(lbCadastro, constraints);
         
-        lbHorario = new JLabel();
-        lbHorario.setText("Horario");
+        lbHorarioInicial = new JLabel();
+        lbHorarioInicial.setText("Horario Inicial");
         constraints.fill = GridBagConstraints.HORIZONTAL;
         constraints.gridx = 0;
         constraints.gridy = 1;
-        container.add(lbHorario, constraints);
+        container.add(lbHorarioInicial, constraints);
         
-        tfHorario = new JTextField();      
+        tfHorarioInicial = new JTextField();      
         constraints.fill = GridBagConstraints.HORIZONTAL;
         constraints.gridx = 1;
         constraints.gridy = 1;
-        tfHorario.setSize(100, 20);
-        tfHorario.setPreferredSize(new Dimension(100,20));
-        container.add(tfHorario, constraints);    
+        tfHorarioInicial.setSize(100, 20);
+        tfHorarioInicial.setPreferredSize(new Dimension(100,20));
+        container.add(tfHorarioInicial, constraints);    
+        
+        lbHorarioFinal = new JLabel();
+        lbHorarioFinal.setText("Horario Final");
+        constraints.fill = GridBagConstraints.HORIZONTAL;
+        constraints.gridx = 0;
+        constraints.gridy = 2;
+        container.add(lbHorarioFinal, constraints);
+        
+        tfHorarioFinal = new JTextField();      
+        constraints.fill = GridBagConstraints.HORIZONTAL;
+        constraints.gridx = 1;
+        constraints.gridy = 2;
+        tfHorarioFinal.setSize(100, 20);
+        tfHorarioFinal.setPreferredSize(new Dimension(100,20));
+        container.add(tfHorarioFinal, constraints);    
              
         btCadastro = new JButton();
         btCadastro.setText("Cadastrar Horario");
@@ -100,6 +128,11 @@ public class TelaHorario extends JFrame{
         btCancel.setActionCommand("Voltar");
         container.add(btCancel, constraints);
     }  
+   
+    public void semiCadastro(String nome, NivelAcesso nivel) {
+        this.nome = nome;
+        this.nivel = nivel;
+    }
 
     private class GerenciadorDeBotoes implements ActionListener{
         
@@ -108,15 +141,23 @@ public class TelaHorario extends JFrame{
             
             if(e.getActionCommand().equals("Cadastrar")){           
                 try {
-                    String horario = tfHorario.getText();
-                    Date novaData = ControladorPrincipal.getInstance().converterStringEmHora(horario);
-                    ControladorCargo.getInstance().atualizaHorarioD(novaData);
+                    
+                    String horarioInicial = tfHorarioInicial.getText();
+                    String horarioFinal = tfHorarioFinal.getText();
+                    Date novaDataInicial = ControladorPrincipal.getInstance().converterStringEmHora(horarioInicial);
+                    Date novaDataFinal = ControladorPrincipal.getInstance().converterStringEmHora(horarioFinal);
+                    
+                    ControladorCargo.getInstance().cadastraCargo(nome, nivel, novaDataInicial, novaDataFinal);
+                    JOptionPane.showMessageDialog(null,"Cadastro feito com sucesso");
                     setVisible(false);
+                    ControladorCargo.getInstance().exibeTelaCargo();
                 } catch (ParseException ex) {
                     JOptionPane.showMessageDialog(null, "Cadastro Incorreto");
                     //Logger.getLogger(TelaHorario.class.getName()).log(Level.SEVERE, null, ex);
+                } catch (CadastroIncorretoException ex) {
+                    Logger.getLogger(TelaHorario.class.getName()).log(Level.SEVERE, null, ex);
                 }
-                tfHorario.setText(null);
+                tfHorarioInicial.setText(null);
             }
             else if(e.getActionCommand().equals("Voltar")){
                 setVisible(false);

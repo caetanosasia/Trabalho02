@@ -8,48 +8,148 @@ package br.ufsc.ine5605.grupo05;
 import java.text.ParseException;
 import java.util.Date;
 import java.util.Scanner;
+import java.awt.BorderLayout;
+import java.util.Scanner;
+import java.awt.Container;
+import java.awt.Dimension;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.Toolkit;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.util.HashMap;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.DefaultCellEditor;
+import javax.swing.JButton;
+import javax.swing.JComboBox;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTable;
+import javax.swing.JTextField;
+import javax.swing.table.DefaultTableCellRenderer;
+import javax.swing.table.TableColumn;
 
 /**
  *
  * @author Guilherme
  */
-public class TelaAcesso {
+public class TelaAcesso extends JFrame{
    
     private Scanner sc;
     private static TelaAcesso instance;
+       
+    private JLabel lbAcesso;
+    private JLabel lbMatricula;
+    private JButton btAcesso;
+    private JButton btCancel;
+    private JTextField tfMatricula;
     
+    private GerenciadorDeBotoes gerenciadorBotoes;
+    private Container container;
+    
+    private Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
 
     public TelaAcesso() {
-        this.sc = new Scanner(System.in);
+        super("Tela de Acesso");
+        
+        container = getContentPane();
+        container.setLayout(new GridBagLayout());
+        
+        this.iniciaComponentes();
+        
+        btAcesso.addActionListener(gerenciadorBotoes);
+        btCancel.addActionListener(gerenciadorBotoes);  
+        
+        setSize(350, 150);     
+        setLocation(dim.width/2 - this.getSize().width/2, dim.height/2 - this.getSize().height/2);
     }
     
-    public static TelaAcesso getInstance() {
-        if(instance == null) {
-            instance = new TelaAcesso();
+    private void iniciaComponentes() {
+        GridBagConstraints constraints = new GridBagConstraints();        
+        gerenciadorBotoes = new GerenciadorDeBotoes();
+        
+        lbAcesso = new JLabel();
+        lbAcesso.setText("Acessar:");
+        constraints.fill = GridBagConstraints.HORIZONTAL;
+        constraints.gridx = 0;
+        constraints.gridy = 0;
+        container.add(lbAcesso, constraints);
+        
+        lbMatricula = new JLabel();
+        lbMatricula.setText("Matricula");
+        constraints.fill = GridBagConstraints.HORIZONTAL;
+        constraints.gridx = 0;
+        constraints.gridy = 2;
+        lbMatricula.setSize(100, 20);
+        lbMatricula.setPreferredSize(new Dimension(100,20));
+        container.add(lbMatricula, constraints);
+        
+        tfMatricula = new JTextField();      
+        constraints.fill = GridBagConstraints.HORIZONTAL;
+        constraints.gridx = 1;
+        constraints.gridy = 2;
+        container.add(tfMatricula, constraints);
+        
+        btAcesso = new JButton();
+        btAcesso.setText("Acessar");
+        constraints.fill = GridBagConstraints.HORIZONTAL;
+        constraints.gridx = 1;
+        constraints.gridy = 4;
+        btAcesso.setActionCommand("Acessar");
+        container.add(btAcesso, constraints);
+        
+        btCancel = new JButton();
+        btCancel.setText("Voltar");
+        constraints.fill = GridBagConstraints.HORIZONTAL;
+        constraints.gridx = 0;
+        constraints.gridy = 4;
+        btCancel.setActionCommand("Voltar");
+        container.add(btCancel, constraints);
+    }  
+
+    public void acessoNegado() {
+        JOptionPane.showMessageDialog(null, "Acesso Negado");
+    }
+
+    public void acessoPermitido() {
+        JOptionPane.showMessageDialog(null, "Acesso Permitido");
+    }
+    
+    private class GerenciadorDeBotoes implements ActionListener{
+
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            int matricula = -1;
+            if(e.getActionCommand().equals("Acessar")){
+                try {
+                    matricula = Integer.parseInt(tfMatricula.getText());
+                } catch (NumberFormatException f) {
+                    JOptionPane.showMessageDialog(null, "Formato inválido de Matrícula");
+                    //do something! anything to handle the exception.
+                }   
+                try {
+                    ControladorAcesso.getInstance().tentativaDeAcesso(matricula);
+                } catch (ParseException ex) {
+                    Logger.getLogger(TelaAcesso.class.getName()).log(Level.SEVERE, null, ex);
+                } catch (CadastroIncorretoException ex) {
+                    Logger.getLogger(TelaAcesso.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            } else if(e.getActionCommand().equals("Voltar")){
+                setVisible(false);
+                try {
+                    ControladorPrincipal.getInstance().exibeTelaPrincipal();
+                } catch (CadastroIncorretoException ex) {
+                    Logger.getLogger(TelaCadastroCargo.class.getName()).log(Level.SEVERE, null, ex);
+                } catch (ParseException ex) {
+                    Logger.getLogger(TelaCadastroCargo.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+            
         }
-        return instance;
-    }
-    
-    /**
-     * Exibe a tela de acesso
-     * @throws ParseException
-     * @throws CadastroIncorretoException
-     * @throws FuncionarioComCargoException
-     * @throws Exception 
-     */    
-    public void exibeTela() throws ParseException, CadastroIncorretoException {
-        int opcao = 0;        
-        do{
-            System.out.println("\nMenu dos Acessos!");
-            System.out.println("-----------------------------------");
-            System.out.println("1 - Entrar no setor financeiro");
-            System.out.println("2 - Lista de todos os acessos");
-            System.out.println("0 - Voltar");
-            System.out.println("Selecione uma opção:");
-            while (!sc.hasNextInt()) sc.next();
-            opcao = sc.nextInt();
-            trataOpcao(opcao);
-        } while(opcao != -1);
     }
     
     /**
@@ -60,7 +160,7 @@ public class TelaAcesso {
      * @throws FuncionarioComCargoException
      * @throws Exception 
      */
-    public void trataOpcao(int opcao) throws ParseException, CadastroIncorretoException {
+    /*public void trataOpcao(int opcao) throws ParseException, CadastroIncorretoException {
         switch(opcao){
         case 1:
             acessarSetorFinanceiro();
@@ -75,32 +175,18 @@ public class TelaAcesso {
         default:
             break;
         }
-    }
+    }*/
     
     /**
      * Faz o acesso ao setor financeiro
      * @throws CadastroIncorretoException
      * @throws ParseException 
      */
-    public void acessarSetorFinanceiro() throws CadastroIncorretoException, ParseException{
-        System.out.println("\n Bem vindo ao setor financeiro, para continuar digite a sua matricula:");
-        while (!sc.hasNextInt()) sc.next();
-        int matricula = sc.nextInt();
-        ControladorAcesso.getInstance().tentativaDeAcesso(matricula);
-        
-    }
     
-    /**
-     * Imprime uma mensagem se o acesso é permitido
-     */
-    public void acessoPermitido() {
-        System.out.println("Acesso permitido");
-    }
-    
-    /**
-     * Imprime uma mensagem se o acesso é negado
-     */
-    public void acessoNegado() {
-        System.out.println("Acesso negado");
+    public static TelaAcesso getInstance() {
+        if(instance == null) {
+            instance = new TelaAcesso();
+        }
+        return instance;
     }
 }

@@ -42,12 +42,5 @@ public interface IControladorCargo {
        */
     public void alterarNomeCargoPeloCodigo (String novoNomeCargo, int codigoCargo);
       
-    /**
-     * Deleta o cargo através de seu código
-     * @param codigoCargo código do cargo a ser deletado
-     * @throws FuncionarioComCargoException
-     * @throws ParseException
-     * @throws Exception 
-     */
-    public void deletarCargoPeloCodigo (int codigoCargo) throws FuncionarioComCargoException, ParseException, Exception;
+    
 }

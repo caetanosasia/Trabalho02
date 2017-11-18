@@ -94,7 +94,7 @@ public class ControladorPrincipal {
      * @throws Exception 
      */
     public void exibeTelaPrincipal() throws CadastroIncorretoException, ParseException {
-        this.telaPrincipal = new TelaPrincipal(this);
+        this.telaPrincipal = new TelaPrincipal();
         telaPrincipal.setVisible(true);
     }
     

@@ -29,12 +29,10 @@ public class ControladorCargo implements IControladorCargo {
     private TelaHorario telaHorario;
     private CargoDAO cargoDAO;
     private FuncionarioDAO funcDAO;
-    private Date horarioD;
     
     
     private ControladorCargo() {
 	this.cargoDAO = new CargoDAO();
-        this.horarioD = new Date();
     }
     
     public static ControladorCargo getInstance() {
@@ -53,33 +51,6 @@ public class ControladorCargo implements IControladorCargo {
         this.setUltimoCodigo(codigo);
     }
     
-    public void atualizaHorarioD(Date horarioNovo) throws ParseException{
-        this.horarioD = horarioNovo;
-    }
-    
-    public Date horarioInicio(NivelAcesso nivel) throws ParseException, CadastroIncorretoException{
-        Date horarioInicio = null;
-        if(nivel.equals(NivelAcesso.ESPECIAL)){
-            this.exibeTelaHorario();
-            return horarioD;
-        }else{
-            String horario = "00:00";
-            Date horarioZero = ControladorPrincipal.getInstance().converterStringEmHora(horario);
-            return horarioInicio = horarioZero;
-        }
-    }
-    
-    public Date horarioFinal(NivelAcesso nivel) throws ParseException, CadastroIncorretoException{
-        Date horarioInicio = null;
-        if(nivel.equals(NivelAcesso.ESPECIAL)){
-            this.exibeTelaHorario();
-            return horarioD;
-        }else{
-            String horario = "00:00";
-            Date horarioZero = ControladorPrincipal.getInstance().converterStringEmHora(horario);
-            return horarioInicio = horarioZero;
-        }
-    }
     
     @Override
     public void exibeCargos() {
@@ -121,9 +92,10 @@ public class ControladorCargo implements IControladorCargo {
         }
     }
     
-    @Override
-    public void deletarCargoPeloCodigo (int codigoCargo) throws ParseException, CadastroIncorretoException{
-            ArrayList<Funcionario> listaFuncionarios = (ArrayList<Funcionario>) funcDAO.getList();
+    public void deletarCargo (Cargo cargo) throws ParseException, CadastroIncorretoException{
+        this.cargoDAO.remove(cargo);
+        
+        /*ArrayList<Funcionario> listaFuncionarios = (ArrayList<Funcionario>) funcDAO.getList();
             ArrayList<Cargo> listaCargos = (ArrayList<Cargo>) cargoDAO.getListC();
             //listaFuncionarios = ControladorFuncionario.getInstance().getFuncionarios();
             Cargo cargoDeletar = buscarCargoPeloCodigo(codigoCargo);
@@ -132,14 +104,14 @@ public class ControladorCargo implements IControladorCargo {
                     cargoDeletar = cargoRef;
                     break;
                 }
-            }*/
+            }
             if((listaFuncionarios.isEmpty()) && cargoDeletar != null){
                 cargoDAO.remove(cargoDeletar);
             }else{
                 JOptionPane.showMessageDialog(null, "Não é possivel deletar Cargo");
-            }
+    }
             
-            /*
+            
             for(Funcionario func : listaFuncionarios){
                 if(func.getCargo().getCodigo() == codigoCargo){
                     //TelaCargo.getInstance().mensagemExisteFuncionarioNesteCargo();
@@ -208,13 +180,13 @@ public class ControladorCargo implements IControladorCargo {
     }
 
     public void exibeTelaHorario() throws CadastroIncorretoException, ParseException{
-        this.telaHorario = new TelaHorario(this);
-        telaHorario.setVisible(true);
+        //this.telaHorario = new TelaHorario(this);
+        //telaHorario.setVisible(true);
+        TelaHorario.getInstance().setVisible(true);
     }
     
     public void voltar() throws CadastroIncorretoException, ParseException {
         this.telaCargo.setVisible(false);
-        ControladorPrincipal.getInstance().exibeTelaPrincipal();
     }
 
    

@@ -41,7 +41,6 @@ public class ControladorAcesso {
         if(funcionario == null){
             this.acessosSemMatricula++;
             TelaAcesso.getInstance().acessoNegado();
-            TelaAcesso.getInstance().exibeTela();
             
         }else if (funcionario.getErrosAcesso()>=3 && funcionario.getCargo().getNIVELACESSO() != NivelAcesso.NULO){
             Acesso novoAcesso = new Acesso(ControladorPrincipal.getInstance().getHorarioDoSistema(), funcionario, false);
@@ -153,7 +152,7 @@ public class ControladorAcesso {
      * @throws Exception 
      */
     public void exibeTelaAcesso() throws ParseException, CadastroIncorretoException {
-        TelaAcesso.getInstance().exibeTela();
+        TelaAcesso.getInstance().setVisible(true);
     }
     
     /**

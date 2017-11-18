@@ -16,6 +16,7 @@ import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.text.ParseException;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -62,12 +63,10 @@ public class TelaCadastroCargo extends JFrame {
         bjNiveisAcesso.addActionListener(gerenciadorBotoes);   
         
         setSize(350, 150);     
-        setLocation(dim.width/2 - this.getSize().width/2, dim.height/2 - this.getSize().height/2);
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-   
+        setLocation(dim.width/2 - this.getSize().width/2, dim.height/2 - this.getSize().height/2);   
     }
 
-   private void iniciaComponentes(){
+    private void iniciaComponentes(){
         
         GridBagConstraints constraints = new GridBagConstraints();        
         gerenciadorBotoes = new GerenciadorDeBotoes();        
@@ -129,26 +128,37 @@ public class TelaCadastroCargo extends JFrame {
     }  
 
     private class GerenciadorDeBotoes implements ActionListener{
+      
+     
         
         @Override
         public void actionPerformed(ActionEvent e) {
             
-            if(e.getActionCommand().equals("Cadastrar")){
-                Integer codigoRef = -1;
-                Date horarioInicio = null;
-                Date horarioFinal = null;
+            Integer codigoRef = -1;
+            Date horarioInicio = null;
+            Date horarioFinal = null;
                               
-                codigoRef = ControladorCargo.getInstance().getUltimoCodigo();
-                String codigoCargo = codigoRef + "";
-                NivelAcesso nivel = (NivelAcesso) bjNiveisAcesso.getSelectedItem();
+            codigoRef = ControladorCargo.getInstance().getUltimoCodigo();
+            String codigoCargo = codigoRef + "";
+            NivelAcesso nivel = (NivelAcesso) bjNiveisAcesso.getSelectedItem();
+            
+            if(e.getActionCommand().equals("Cadastrar")){
+                
                 if(nivel.equals(NivelAcesso.ESPECIAL)){
                     try {
-                        horarioInicio = ControladorCargo.getInstance().horarioInicio(nivel);
-                        horarioFinal = ControladorCargo.getInstance().horarioFinal(nivel);
-                        owner.cadastraCargo(tfNome.getText(), nivel, horarioInicio, horarioFinal);
-                        JOptionPane.showMessageDialog(null,"Cadastro feito com sucesso");
+                        ControladorCargo.getInstance().exibeTelaHorario();
+                        TelaHorario.getInstance().semiCadastro(tfNome.getText(), nivel);
+                        //ArrayList<Date> horarioEspecial = ControladorCargo.getInstance().horarioEspecial(nivel);
+                        
+                        //horarioInicio = horarioEspecial.get(0);
+                        //horarioFinal = horarioEspecial.get(1);
+                        
+                        //owner.cadastraCargo(tfNome.getText(), nivel, horarioInicio, horarioFinal);
+                        
                         setVisible(false);
-                        owner.exibeTelaCargo();
+                        //owner.exibeTelaCargo();
+                        
+                        
                     } catch (ParseException ex) {
                         JOptionPane.showMessageDialog(null, "Cadastro Incorreto");
                         //Logger.getLogger(TelaCadastroCargo.class.getName()).log(Level.SEVERE, null, ex);
@@ -158,8 +168,8 @@ public class TelaCadastroCargo extends JFrame {
                     }
                 }else{
                     try {
-                        horarioInicio = ControladorCargo.getInstance().horarioInicio(nivel);
-                        horarioFinal = ControladorCargo.getInstance().horarioFinal(nivel);
+                        horarioInicio = ControladorPrincipal.getInstance().converterStringEmHora("00:00");
+                        horarioFinal = ControladorPrincipal.getInstance().converterStringEmHora("00:00");
                         owner.cadastraCargo(tfNome.getText(), nivel, horarioInicio, horarioFinal);
                         JOptionPane.showMessageDialog(null,"Cadastro feito com sucesso");
                         setVisible(false);

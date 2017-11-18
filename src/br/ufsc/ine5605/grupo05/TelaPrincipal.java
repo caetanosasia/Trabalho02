@@ -41,7 +41,7 @@ public class TelaPrincipal extends JFrame{
     private Container container;
     private Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
     
-    public TelaPrincipal(ControladorPrincipal owner){
+    public TelaPrincipal(){
         super("Tela Principal");
         //this.sc = new Scanner(System.in);
         
@@ -136,7 +136,13 @@ public class TelaPrincipal extends JFrame{
                     //Logger.getLogger(TelaPrincipal.class.getName()).log(Level.SEVERE, null, ex);
                 }
             } else if(e.getActionCommand().equals(OpcoesMenuPrincipal.ACESSO.name())){
-                //ControladorPrincipal.getInstance().exibeTelaAcesso();
+                try {
+                    ControladorPrincipal.getInstance().exibeTelaAcesso();
+                } catch (ParseException ex) {
+                    Logger.getLogger(TelaPrincipal.class.getName()).log(Level.SEVERE, null, ex);
+                } catch (CadastroIncorretoException ex) {
+                    Logger.getLogger(TelaPrincipal.class.getName()).log(Level.SEVERE, null, ex);
+                }
             } else if(e.getActionCommand().equals(OpcoesMenuPrincipal.RELATORIO.name())){
                 //ControladorPrincipal.getInstance().exibeTelaRelatorio();
             } else if(e.getActionCommand().equals(OpcoesMenuPrincipal.HORARIO.name())){
@@ -208,11 +214,11 @@ public class TelaPrincipal extends JFrame{
         }
     }
     
-    /*public static TelaPrincipal getInstance() {
+    public static TelaPrincipal getInstance() {
         if(instance == null) {
             instance = new TelaPrincipal();
         }
         
         return instance;
-    }*/
+    }
 }

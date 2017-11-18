@@ -397,7 +397,7 @@ public class TelaFuncionario extends JFrame implements ActionListener{
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		if (e.getActionCommand().equals("Adicionar")){
+		/*if (e.getActionCommand().equals("Adicionar")){
 			ControladorFuncionario.getInstance().exibeTelaCadastroFuncionario();
 		}
 		if (e.getActionCommand().equals("Editar")){
@@ -422,7 +422,7 @@ public class TelaFuncionario extends JFrame implements ActionListener{
 		}
 		if (e.getActionCommand().equals("Ver")) {
 			
-		}
+		}*/
 	}
 }
     
