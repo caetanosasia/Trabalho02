@@ -16,11 +16,14 @@ import java.util.Date;
 public class ControladorAcesso {
     private ArrayList<Acesso> acessos;
     private int acessosSemMatricula;
+    private int ultimoCodigo = 100;
     private static ControladorAcesso instance;
+    private AcessoDAO acessoDAO = new AcessoDAO();
     
     private ControladorAcesso() {
-        this.acessos = new ArrayList<>();
+        this.acessos = new ArrayList<Acesso>(acessoDAO.getList());
         this.acessosSemMatricula = 0;
+        this.ultimoCodigo = getUltimoCodigo();
     }
     
     public static ControladorAcesso getInstance() {
@@ -31,6 +34,14 @@ public class ControladorAcesso {
         return instance;
     }
     
+    public int getUltimoCodigo() {
+        int ultimoCodigo = 100;
+        for(Acesso acessoRef : acessoDAO.getList()) {
+            ultimoCodigo = acessoRef.getCodigoAcesso();
+        }
+        return ultimoCodigo;
+    }
+    
     /**
      * Verifica a tentativa de acesso à sala do financeiro
      * @param matriculaFuncionario matricula do funcionário que quer tentar acessar
@@ -38,41 +49,42 @@ public class ControladorAcesso {
      */
     public void tentativaDeAcesso(int matriculaFuncionario) throws ParseException, CadastroIncorretoException {
         Funcionario funcionario = ControladorFuncionario.getInstance().buscarFuncionarioPelaMatricula(matriculaFuncionario);
+        int codigo = gerarCodigo();
         if(funcionario == null){
             this.acessosSemMatricula++;
             TelaAcesso.getInstance().acessoNegado();
             
         }else if (funcionario.getErrosAcesso()>=3 && funcionario.getCargo().getNIVELACESSO() != NivelAcesso.NULO){
-            Acesso novoAcesso = new Acesso(ControladorPrincipal.getInstance().getHorarioDoSistema(), funcionario, false);
+            Acesso novoAcesso = new Acesso(codigo, ControladorPrincipal.getInstance().getHorarioDoSistema(), funcionario, false);
             novoAcesso.setMotivoNaoAcesso(MotivoAcessoNegado.ACESSOBLOQUEADO);
             funcionario.setErrosAcessoAutomatico();
-            this.acessos.add(novoAcesso);
+            acessoDAO.put(novoAcesso);
             TelaAcesso.getInstance().acessoNegado();
             ControladorFuncionario.getInstance().verificarNumeroAcessosNegados(funcionario);
             
         } else if(funcionario.getCargo().getNIVELACESSO().equals(NivelAcesso.LIVRE)){
-            Acesso novoAcesso = new Acesso(ControladorPrincipal.getInstance().getHorarioDoSistema(), funcionario, true);
-            this.acessos.add(novoAcesso);
+            Acesso novoAcesso = new Acesso(codigo, ControladorPrincipal.getInstance().getHorarioDoSistema(), funcionario, true);
+            acessoDAO.put(novoAcesso);
             TelaAcesso.getInstance().acessoPermitido();
             
         }else if(funcionario.getCargo().getNIVELACESSO().equals(NivelAcesso.NULO)){
-            Acesso novoAcesso = new Acesso(ControladorPrincipal.getInstance().getHorarioDoSistema(), funcionario, false);
+            Acesso novoAcesso = new Acesso(codigo, ControladorPrincipal.getInstance().getHorarioDoSistema(), funcionario, false);
             novoAcesso.setMotivoNaoAcesso(MotivoAcessoNegado.SEMACESSO);
             funcionario.setErrosAcessoAutomatico();
-            this.acessos.add(novoAcesso);
+            acessoDAO.put(novoAcesso);
             TelaAcesso.getInstance().acessoNegado();
             ControladorFuncionario.getInstance().verificarNumeroAcessosNegados(funcionario);
             
         }else if(funcionario.getCargo().getNIVELACESSO().equals(NivelAcesso.COMUM)){
             if(ehHorarioComercial()){
-                Acesso novoAcesso = new Acesso(ControladorPrincipal.getInstance().getHorarioDoSistema(), funcionario, true);
-                this.acessos.add(novoAcesso);
+                Acesso novoAcesso = new Acesso(codigo, ControladorPrincipal.getInstance().getHorarioDoSistema(), funcionario, true);
+                acessoDAO.put(novoAcesso);
                 TelaAcesso.getInstance().acessoPermitido();
             } else {
-                Acesso novoAcesso = new Acesso(ControladorPrincipal.getInstance().getHorarioDoSistema(), funcionario, false);
+                Acesso novoAcesso = new Acesso(codigo, ControladorPrincipal.getInstance().getHorarioDoSistema(), funcionario, false);
                 novoAcesso.setMotivoNaoAcesso(MotivoAcessoNegado.HORARIONAOPERMITIDO);
                 funcionario.setErrosAcessoAutomatico();
-                this.acessos.add(novoAcesso);
+                acessoDAO.put(novoAcesso);
                 TelaAcesso.getInstance().acessoNegado();
                 ControladorFuncionario.getInstance().verificarNumeroAcessosNegados(funcionario);
             }
@@ -81,14 +93,14 @@ public class ControladorAcesso {
             Date horarioInicial = funcionario.getCargo().getHorarioInicio();
             Date horarioFinal = funcionario.getCargo().getHorarioFinal();
             if(ehHorarioEspecial(horarioInicial, horarioFinal)) {
-                Acesso novoAcesso = new Acesso(ControladorPrincipal.getInstance().getHorarioDoSistema(), funcionario, true);
-                this.acessos.add(novoAcesso);
+                Acesso novoAcesso = new Acesso(codigo, ControladorPrincipal.getInstance().getHorarioDoSistema(), funcionario, true);
+                acessoDAO.put(novoAcesso);
                 TelaAcesso.getInstance().acessoPermitido();
             } else {
-                Acesso novoAcesso = new Acesso(ControladorPrincipal.getInstance().getHorarioDoSistema(), funcionario, false);
+                Acesso novoAcesso = new Acesso(codigo, ControladorPrincipal.getInstance().getHorarioDoSistema(), funcionario, false);
                 novoAcesso.setMotivoNaoAcesso(MotivoAcessoNegado.HORARIONAOPERMITIDO);
                 funcionario.setErrosAcessoAutomatico();
-                this.acessos.add(novoAcesso);
+                acessoDAO.put(novoAcesso);
                 TelaAcesso.getInstance().acessoNegado();
                 ControladorFuncionario.getInstance().verificarNumeroAcessosNegados(funcionario);
             }
@@ -115,7 +127,7 @@ public class ControladorAcesso {
     }
     
     public ArrayList<Acesso> getAcessosNegadosSemAcesso() {
-      ArrayList<Acesso> acessosNegadosSemAcessos = new ArrayList<>();
+        ArrayList<Acesso> acessosNegadosSemAcessos = new ArrayList<>();
         for(Acesso acessoRef: acessos){
             if(acessoRef.getMotivoNaoAcesso().equals(MotivoAcessoNegado.SEMACESSO)){
                 acessosNegadosSemAcessos.add(acessoRef);
@@ -179,6 +191,11 @@ public class ControladorAcesso {
             return true;
         }
         return false;
+    }
+    
+    public int gerarCodigo() {
+        this.ultimoCodigo++;
+        return ultimoCodigo;
     }
     
     /**

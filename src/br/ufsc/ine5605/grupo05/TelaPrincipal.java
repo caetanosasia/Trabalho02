@@ -121,18 +121,18 @@ public class TelaPrincipal extends JFrame{
                 try {
                     ControladorPrincipal.getInstance().exibeTelaFuncionario();
                 } catch (ParseException ex) {
-                    JOptionPane.showMessageDialog(null, "Cadastro Incorreto");
+                    JOptionPane.showMessageDialog(null, "");
                 } catch (CadastroIncorretoException ex) {
-                    JOptionPane.showMessageDialog(null, "Cadastro Incorreto");
+                    JOptionPane.showMessageDialog(null, "");
                 }
             } else if(e.getActionCommand().equals(OpcoesMenuPrincipal.CARGO.name())){
                 try {
                     ControladorPrincipal.getInstance().exibeTelaCargo();
                 } catch (CadastroIncorretoException ex) {
-                    JOptionPane.showMessageDialog(null, "Cadastro Incorreto");
+                    JOptionPane.showMessageDialog(null, "");
                     //Logger.getLogger(TelaPrincipal.class.getName()).log(Level.SEVERE, null, ex);
                 } catch (ParseException ex) {
-                    JOptionPane.showMessageDialog(null, "Cadastro Incorreto");
+                    JOptionPane.showMessageDialog(null, "");
                     //Logger.getLogger(TelaPrincipal.class.getName()).log(Level.SEVERE, null, ex);
                 }
             } else if(e.getActionCommand().equals(OpcoesMenuPrincipal.ACESSO.name())){
@@ -144,7 +144,13 @@ public class TelaPrincipal extends JFrame{
                     Logger.getLogger(TelaPrincipal.class.getName()).log(Level.SEVERE, null, ex);
                 }
             } else if(e.getActionCommand().equals(OpcoesMenuPrincipal.RELATORIO.name())){
-                //ControladorPrincipal.getInstance().exibeTelaRelatorio();
+                try {
+                    ControladorPrincipal.getInstance().exibeTelaRelatorio();
+                } catch (CadastroIncorretoException ex) {
+                    Logger.getLogger(TelaPrincipal.class.getName()).log(Level.SEVERE, null, ex);
+                } catch (ParseException ex) {
+                    Logger.getLogger(TelaPrincipal.class.getName()).log(Level.SEVERE, null, ex);
+                }
             } else if(e.getActionCommand().equals(OpcoesMenuPrincipal.HORARIO.name())){
                 //ControladorPrincipal.getInstance().horarioDoSistema();
             }

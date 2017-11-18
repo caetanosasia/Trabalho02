@@ -23,6 +23,7 @@ public class ControladorFuncionario {
     private TelaCadastroFuncionario telaCadastra;
     
     private ControladorFuncionario() {
+        this.ultimaMatricula = getUltimaMatricula();
     }
     
     public static ControladorFuncionario getInstance() {
@@ -30,6 +31,14 @@ public class ControladorFuncionario {
             instance = new ControladorFuncionario();
         }
         return instance;
+    }
+    
+    public int getUltimaMatricula() {
+        int ultimaMatricula = 10000;
+        for(Funcionario funcRef : funcionarioDAO.getList()) {
+            ultimaMatricula = funcRef.getMatricula();
+        }
+        return ultimaMatricula;
     }
     
     /*public void trataOpcao(int opcao) throws ParseException, CadastroIncorretoException{

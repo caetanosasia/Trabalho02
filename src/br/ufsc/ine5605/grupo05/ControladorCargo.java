@@ -23,7 +23,7 @@ import javax.swing.JOptionPane;
 public class ControladorCargo implements IControladorCargo {
     
     //private ArrayList<Cargo> cargos;
-    private static int ultimoCodigo = 100;
+    private int ultimoCodigo = 100;
     private static ControladorCargo instance;
     private TelaCargo telaCargo;
     private TelaCadastroCargo telaCadastroCargo;
@@ -36,6 +36,7 @@ public class ControladorCargo implements IControladorCargo {
     private ControladorCargo() {
 	this.cargoDAO = new CargoDAO();
         this.cgmodel = new CargoTableModel(telaCargo, cargoDAO.getListH());
+        this.ultimoCodigo = getUltimoCodigoPersist();
     }
     
     public static ControladorCargo getInstance() {
@@ -66,6 +67,15 @@ public class ControladorCargo implements IControladorCargo {
              TelaCargo.getInstance().exibeCargo(cargo);
         }
     }
+    
+    public int getUltimoCodigoPersist() {
+        int ultimoCodigo = 100;
+        for(Cargo cargoRef : cargoDAO.getListC()) {
+            ultimoCodigo = cargoRef.getCodigo();
+        }
+        return ultimoCodigo;
+    }
+    
     public void exibeTelaCadastroCargo() {
         this.telaCadastroCargo = new TelaCadastroCargo(this);
         telaCadastroCargo.setVisible(true);
@@ -95,40 +105,20 @@ public class ControladorCargo implements IControladorCargo {
         }
     }
     
-    public void deletarCargo (Cargo cargo) throws ParseException, CadastroIncorretoException{
-        this.cargoDAO.remove(cargo);
+    public void deletarCargo(Cargo cargo) throws ParseException, CadastroIncorretoException{
         
-        /*ArrayList<Funcionario> listaFuncionarios = (ArrayList<Funcionario>) funcDAO.getList();
-            ArrayList<Cargo> listaCargos = (ArrayList<Cargo>) cargoDAO.getListC();
-            //listaFuncionarios = ControladorFuncionario.getInstance().getFuncionarios();
-            Cargo cargoDeletar = buscarCargoPeloCodigo(codigoCargo);
-            /*for(Cargo cargoRef : listaCargos){
-                if(cargoRef.getCodigo() == codigoCargo){
-                    cargoDeletar = cargoRef;
-                    break;
-                }
-            }
-            if((listaFuncionarios.isEmpty()) && cargoDeletar != null){
-                cargoDAO.remove(cargoDeletar);
-            }else{
-                JOptionPane.showMessageDialog(null, "Não é possivel deletar Cargo");
-    }
+//        if(!funcDAO.getList().isEmpty()){
+//            for(Funcionario funcRef : funcDAO.getList()){
+//                if(funcRef.getCargo().equals(cargo)){
+//                    JOptionPane.showMessageDialog(null, "Cargo não pôde ser deletado"
+//                            +"\nExiste pelo menos um funcionario neste cargo.");
+//                    return;
+//                }
+//            }
+//        }
+        
+        this.cargoDAO.remove(cargo);
             
-            
-            for(Funcionario func : listaFuncionarios){
-                if(func.getCargo().getCodigo() == codigoCargo){
-                    //TelaCargo.getInstance().mensagemExisteFuncionarioNesteCargo();
-                    return;
-                }
-            }
-
-            for(Cargo cargo : listaCargos){
-                if(cargo.getCodigo() == codigoCargo){
-                    listaCargos.remove(cargo);
-                    //TelaCargo.getInstance().mensagemCargoDeletadoComSucesso();
-                    //TelaCargo.getInstance().exibeTela();
-                }
-            }  */
     }
     
     

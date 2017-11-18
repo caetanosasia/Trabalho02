@@ -5,19 +5,28 @@
  */
 package br.ufsc.ine5605.grupo05;
 
+import java.io.Serializable;
 import java.util.Date;
 
 /**
  *
  * @author Guilherme
  */
-public class Acesso {
+public class Acesso implements Serializable{
+    private int codigoAcesso;
+
+    public int getCodigoAcesso() {
+        return codigoAcesso;
+    }
+    
+    private static final long serialVersionUID = 1L;
     private final Date horarioDeAcesso;
     private final Funcionario funcionario;
     private final boolean conseguiuAcessar;
     private MotivoAcessoNegado motivoNaoAcesso;
 
-    public Acesso(Date horarioDeAcesso, Funcionario funcionario, boolean conseguiuAcessar) {
+    public Acesso(int codigoAcesso, Date horarioDeAcesso, Funcionario funcionario, boolean conseguiuAcessar) {
+        this.codigoAcesso = codigoAcesso;
         this.horarioDeAcesso = horarioDeAcesso;
         this.funcionario = funcionario;
         this.conseguiuAcessar = conseguiuAcessar;

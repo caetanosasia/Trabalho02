@@ -44,7 +44,7 @@ public class ControladorRelatorio {
      * @throws Exception 
      */    
     public void exibeTelaRelatorio() throws CadastroIncorretoException, ParseException {
-        TelaRelatorio.getInstance().exibeTela();
+        TelaRelatorio.getInstance().setVisible(true);
     }
 
 }
