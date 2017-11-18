@@ -10,6 +10,11 @@ import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.text.ParseException;
+import java.util.ArrayList;
+import java.util.Vector;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
@@ -42,13 +47,17 @@ public class TelaCadastroFuncionario extends JFrame implements ActionListener{
         private JTextField tfCPF;
 	private JComboBox<Cargo> bjCargos;
 	private Funcionario f;
+        
+        private Vector listaCargos;
 
 	public TelaCadastroFuncionario() {
 		this.inic();
+                this.listaCargos = new Vector();
 	}
 
 	public TelaCadastroFuncionario(Funcionario funcionario){
 		this.f = funcionario;
+                this.listaCargos = new Vector();
 		this.inic();
 		this.edita();
 	}
@@ -66,8 +75,6 @@ public class TelaCadastroFuncionario extends JFrame implements ActionListener{
 		} else {
 			this.bemVindo = new JLabel("Edição de Funcionários");
 		}
-		this.lbMatricula = new JLabel("Digite a Matricula");
-		this.tfMatricula = new JTextField();
 		this.lbNome = new JLabel("Digite o Nome");
 		this.tfNome = new JTextField();
 		this.lbTelefone = new JLabel("Digite o Telefone");
@@ -79,7 +86,7 @@ public class TelaCadastroFuncionario extends JFrame implements ActionListener{
 		this.lbCPF = new JLabel("Digite o CPF");
 		this.tfCPF = new JTextField();
 		this.lbCargo = new JLabel("Escolha o Cargo");
-		this.bjCargos = new JComboBox<>();
+		this.bjCargos = new JComboBox<>(listaCargos);
 		if (this.f == null) {
 			this.btCadastro = new JButton("Cadastrar");
 			this.btCadastro.setActionCommand("Cadastrar");
@@ -103,7 +110,7 @@ public class TelaCadastroFuncionario extends JFrame implements ActionListener{
 		constraints.fill = GridBagConstraints.HORIZONTAL;
 		constraints.gridy = 0;
 		container.add(this.bemVindo, constraints);
-		if (this.f == null) {
+		/*if (this.f == null) {
 			constraints.fill = GridBagConstraints.HORIZONTAL;
 			constraints.gridx = 0;
 			constraints.gridy = 1;
@@ -112,7 +119,7 @@ public class TelaCadastroFuncionario extends JFrame implements ActionListener{
 			constraints.gridx = 1;
 			constraints.gridy = 1;
 			container.add(this.tfMatricula, constraints);
-		}
+		}*/
 		constraints.fill = GridBagConstraints.HORIZONTAL;
 		constraints.gridx = 0;
 		constraints.gridy = 2;
@@ -151,27 +158,27 @@ public class TelaCadastroFuncionario extends JFrame implements ActionListener{
 		container.add(this.btCadastro, constraints);
 		constraints.fill = GridBagConstraints.HORIZONTAL;
 		constraints.gridx = 0;
-		constraints.gridy = 7;
+		constraints.gridy = 9;
 		container.add(this.btSair, constraints);
 		constraints.fill = GridBagConstraints.HORIZONTAL;
 		constraints.gridx = 1;
-		constraints.gridy = 7;
+		constraints.gridy = 9;
 		container.add(this.btCancelar, constraints);
                 constraints.fill = GridBagConstraints.HORIZONTAL;
 		constraints.gridx = 0;
-		constraints.gridy = 8;
+		constraints.gridy = 7;
 		container.add(this.lbSalario, constraints);
 		constraints.fill = GridBagConstraints.HORIZONTAL;
 		constraints.gridx = 1;
-		constraints.gridy = 8;
+		constraints.gridy = 7;
 		container.add(this.tfSalario, constraints);
 		constraints.fill = GridBagConstraints.HORIZONTAL;
 		constraints.gridx = 0;
-		constraints.gridy = 9;
+		constraints.gridy = 8;
 		container.add(this.lbCPF, constraints);
 		constraints.fill = GridBagConstraints.HORIZONTAL;
 		constraints.gridx = 1;
-		constraints.gridy = 9;
+		constraints.gridy = 8;
 		container.add(this.tfCPF, constraints);
 
 
@@ -206,33 +213,53 @@ public class TelaCadastroFuncionario extends JFrame implements ActionListener{
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		/*if (e.getActionCommand().equals("Cadastrar")) {
-			if(this.bjCargos.getSelectedItem().equals(Cargo.COMUM)){
+		if (e.getActionCommand().equals("Cadastrar")) {
+			/*if(this.bjCargos.getSelectedItem().equals(Cargo.COMUM)){
 				this.setVisible(false);
 				ControladorFuncionario.getInstance().exibeTelaPermissoes(Integer.parseInt(this.tfMatricula.getText()), this.tfNome.getText(), Integer.parseInt(this.tfDataNascimento.getText()), Integer.parseInt(this.tfTelefone.getText()), (Cargo) this.bjCargos.getSelectedItem());
 			} else {
 				String msg = ControladorFuncionario.getInstance().cadastraFuncionario(Integer.parseInt(this.tfMatricula.getText()), this.tfNome.getText(), Integer.parseInt(this.tfDataNascimento.getText()), Integer.parseInt(this.tfTelefone.getText()), (Cargo) this.bjCargos.getSelectedItem());
 				this.limpa();
 				JOptionPane.showMessageDialog(null, msg);
-			}
-			this.setVisible(false);
+			}*/
+			
 
-			ControladorFuncionario.getInstance().exibeTelaFuncionario();
+                    try {
+                        
+                        this.setVisible(false);
+                        ControladorFuncionario.getInstance().exibeTelaFuncionario();
+                    } catch (ParseException ex) {
+                        Logger.getLogger(TelaCadastroFuncionario.class.getName()).log(Level.SEVERE, null, ex);
+                    } catch (CadastroIncorretoException ex) {
+                        Logger.getLogger(TelaCadastroFuncionario.class.getName()).log(Level.SEVERE, null, ex);
+                    }
 		}
 		if (e.getActionCommand().equals("Editar")) {
 			String msg = ControladorFuncionario.getInstance().alteraFuncionario(Integer.parseInt(this.tfMatricula.getText()), this.tfNome.getText(), Integer.parseInt(this.tfDataNascimento.getText()), Integer.parseInt(this.tfTelefone.getText()), (Cargo) this.bjCargos.getSelectedItem());
 			JOptionPane.showMessageDialog(null, msg);
 			this.limpa();
 			this.setVisible(false);
-			ControladorFuncionario.getInstance().exibeTelaFuncionario();
+                    try {
+                        ControladorFuncionario.getInstance().exibeTelaFuncionario();
+                    } catch (ParseException ex) {
+                        Logger.getLogger(TelaCadastroFuncionario.class.getName()).log(Level.SEVERE, null, ex);
+                    } catch (CadastroIncorretoException ex) {
+                        Logger.getLogger(TelaCadastroFuncionario.class.getName()).log(Level.SEVERE, null, ex);
+                    }
 		}
 		if(e.getActionCommand().equals("Cancelar")){
 			this.setVisible(false);
-			ControladorFuncionario.getInstance().exibeTelaFuncionario();
+                    try {
+                        ControladorFuncionario.getInstance().exibeTelaFuncionario();
+                    } catch (ParseException ex) {
+                        Logger.getLogger(TelaCadastroFuncionario.class.getName()).log(Level.SEVERE, null, ex);
+                    } catch (CadastroIncorretoException ex) {
+                        Logger.getLogger(TelaCadastroFuncionario.class.getName()).log(Level.SEVERE, null, ex);
+                    }
 		}
-		if (e.getActionCommand().equals("Sa")) {
+		if (e.getActionCommand().equals("Sair")) {
 			this.sair();
-		}*/
+		}
 	}
 
 }

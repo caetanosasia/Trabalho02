@@ -9,6 +9,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Vector;
 
 /**
  *
@@ -52,6 +53,14 @@ public class ControladorFuncionario {
         default:
             break;
         }
+    }
+    
+    public Vector listaDeCargos(){
+       Vector novoVetor = new Vector();
+       ArrayList<Cargo> cargoAuxilia = new ArrayList<>();
+       for(int i = 0; i <= 10; i++ ){
+           
+       }
     }
     
     /**

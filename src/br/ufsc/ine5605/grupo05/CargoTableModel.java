@@ -19,13 +19,6 @@ import javax.swing.table.AbstractTableModel;
  * @author Eduardo
  */
 public class CargoTableModel extends AbstractTableModel{
-
-    private String nomeCargo;
-    private NivelAcesso NIVELACESSO;
-    private int codigo;
-    private Date horarioInicio;
-    private Date horarioFinal;
-    
     
     private static final int CODIGO = 0;
     private static final int NOMECARGO = 1;
