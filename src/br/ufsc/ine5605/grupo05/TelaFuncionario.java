@@ -82,7 +82,7 @@ public class TelaFuncionario extends JFrame implements ActionListener{
      * @throws FuncionarioComCargoException
      * @throws Exception 
      */
-    public void exibeTela() throws ParseException, CadastroIncorretoException {
+    /*public void exibeTela() throws ParseException, CadastroIncorretoException {
         int opcao = 0;        
         do{
             System.out.println("\nMenu dos Funcionarios!");;
@@ -98,7 +98,7 @@ public class TelaFuncionario extends JFrame implements ActionListener{
             ControladorFuncionario.getInstance().trataOpcao(opcao);
         } while(opcao != -1);     
         
-    }
+    }*/
     
     /**
      * Trata opção da tela
@@ -195,32 +195,32 @@ public class TelaFuncionario extends JFrame implements ActionListener{
 
 //        Adicionando e instanciando na Tela os componentes
 		constraints.fill = GridBagConstraints.HORIZONTAL;
-		constraints.gridx = 1;
+		constraints.gridx = 0;
 		constraints.gridy = 0;
 		container.add(this.bemVindo, constraints);
 		constraints.fill = GridBagConstraints.HORIZONTAL;
 		constraints.gridx = 0;
-		constraints.gridy = 0;
+		constraints.gridy = 3;
 		container.add(this.bAdicionar, constraints);
 		constraints.fill = GridBagConstraints.HORIZONTAL;
 		constraints.gridx = 1;
-		constraints.gridy = 1;
+		constraints.gridy = 3;
 		container.add(this.bEditar, constraints);
 		constraints.fill = GridBagConstraints.HORIZONTAL;
 		constraints.gridx = 2;
-		constraints.gridy = 1;
+		constraints.gridy = 3;
 		container.add(this.bRemover, constraints);
 		constraints.fill = GridBagConstraints.HORIZONTAL;
-		constraints.gridx = 0;
-		constraints.gridy = 4;
+		constraints.gridx = 3;
+		constraints.gridy = 3;
 		container.add(this.bSair, constraints);
 		constraints.fill = GridBagConstraints.HORIZONTAL;
-		constraints.gridx = 2;
-		constraints.gridy = 4;
+		constraints.gridx = 4;
+		constraints.gridy = 3;
 		container.add(this.bVoltar, constraints);
 		constraints.fill = GridBagConstraints.HORIZONTAL;
 		constraints.gridx = 1;
-		constraints.gridy = 2;
+		constraints.gridy = 1;
 		container.add(this.tbFuncionarios, constraints);
 //        tabela
 		this.tbFuncionarios.setFillsViewportHeight(true);
@@ -261,7 +261,7 @@ public class TelaFuncionario extends JFrame implements ActionListener{
      * @throws FuncionarioComCargoException
      * @throws Exception 
      */
-    public void cadastraFuncionario() throws ParseException, CadastroIncorretoException{
+   /* public void cadastraFuncionario() throws ParseException, CadastroIncorretoException{
         try {    
             if(!ControladorCargo.getInstance().getCargosH().isEmpty()) {
                 System.out.println("Digite o nome do Funcionario");
@@ -303,14 +303,14 @@ public class TelaFuncionario extends JFrame implements ActionListener{
             System.out.println("Formato Incorreto de Preenchimento");
             return;
         }   
-    }
+    }*/
     
     /**
      * Altera o cargo de um funcionário
      * @throws CadastroIncorretoException
      * @throws Exception 
      */
-    public void alteraCargoFuncionario() throws CadastroIncorretoException, ParseException{
+    /*public void alteraCargoFuncionario() throws CadastroIncorretoException, ParseException{
         System.out.println("Digite a matricula do Funcionario que deseja alterar o Cargo");
         while (!sc.hasNextInt()) sc.next();
         int matricula = sc.nextInt();
@@ -330,7 +330,7 @@ public class TelaFuncionario extends JFrame implements ActionListener{
         }else if(func == null){
                 new CadastroIncorretoException("Esse funcionario não existe no nosso sistema");
         }
-    }
+    }*/
     
     /**
      * Deleta um funcionário

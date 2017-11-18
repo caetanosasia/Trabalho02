@@ -32,7 +32,7 @@ public class ControladorFuncionario {
         return instance;
     }
     
-    public void trataOpcao(int opcao) throws ParseException, CadastroIncorretoException{
+    /*public void trataOpcao(int opcao) throws ParseException, CadastroIncorretoException{
         switch(opcao){
         case 1:
             TelaFuncionario.getInstance().cadastraFuncionario();
@@ -53,15 +53,7 @@ public class ControladorFuncionario {
         default:
             break;
         }
-    }
-    
-    public Vector listaDeCargos(){
-       Vector novoVetor = new Vector();
-       ArrayList<Cargo> cargoAuxilia = new ArrayList<>();
-       for(int i = 0; i <= 10; i++ ){
-           
-       }
-    }
+    }*/
     
     /**
      * Cadastra um novo funcionario e inseri no ArrayList de funcionarios
@@ -81,12 +73,27 @@ public class ControladorFuncionario {
         }
     }
     
+    public String alteraFuncionario(Integer matricula, String nome, String nascimento, double telefone, Cargo cargo, double cpf) {
+	ArrayList<Funcionario> listaFuncionario = (ArrayList<Funcionario>) funcionarioDAO.getList();
+        for (Funcionario f : listaFuncionario) {
+            if (f.getMatricula() == matricula) {
+       		f.setCargo(cargo);
+		f.setNome(nome);
+		f.setTelefone(telefone);
+                f.setCpf(cpf);
+		this.funcionarioDAO.persist();
+		return "Funcionario " + nome + " alterado com sucesso";
+            }
+        }
+		return "Funcionario não existe ou não pode ser alterado";
+    }
+    
     /**
      * Altera o cargo de um funcionario ultilizando-se da sua matricula
      * @param matriculaFuncionario matricula do funcionario que deseja alterar o cargo
      * @param cargo novo cargo do funcionario
      */
-    public void alterarCargoFuncionarioPelaMatricula (int matriculaFuncionario, Cargo cargo) {
+    /*public void alterarCargoFuncionarioPelaMatricula (int matriculaFuncionario, Cargo cargo) {
         ArrayList<Funcionario> funcLista = (ArrayList<Funcionario>) funcionarioDAO.getList();
         for (Funcionario funcionario : funcLista){
             if (funcionario.getMatricula() == matriculaFuncionario){
@@ -94,7 +101,7 @@ public class ControladorFuncionario {
                 break;
             }
         }
-    }
+    }*/
     
     /**
      * Busca um funcionario utilizando de sua matricula
@@ -171,6 +178,7 @@ public class ControladorFuncionario {
         }
         return dataConvertida;
     }
+    
     
     /**
      * Exibe a tela de um funcionário

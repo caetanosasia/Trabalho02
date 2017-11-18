@@ -12,6 +12,7 @@ package br.ufsc.ine5605.grupo05;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.Vector;
 import javax.swing.table.AbstractTableModel;
 
 /**
@@ -110,4 +111,16 @@ public class CargoTableModel extends AbstractTableModel{
         return cargos.get(indiceLinha);        
     }    
    
+    public Vector listarCargosParaFuncionarios(){
+        Vector novoVetor = new Vector();
+        int cont = getRowCount();
+        int j = 1;
+        for(int i = 0; i < cont; i++){
+            String cargoRef = (String) getValueAt(i,j);
+            if(cargoRef != null){
+                novoVetor.add(cargoRef);
+            }
+        }
+        return novoVetor;
+    }
 }

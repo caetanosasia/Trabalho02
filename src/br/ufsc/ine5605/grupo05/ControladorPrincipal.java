@@ -38,9 +38,9 @@ public class ControladorPrincipal {
     }
     
     
-    public void fechaTelaPrincipal(){
+    /*public void fechaTelaPrincipal(){
 	    telaPrincipal.setVisible(false);
-    }
+    }*/
     /**
      * Exibe a tela de funcionarios
      * @throws ParseException
@@ -49,7 +49,7 @@ public class ControladorPrincipal {
      * @throws Exception 
      */
     public void exibeTelaFuncionario() throws ParseException, CadastroIncorretoException {
-        this.fechaTelaPrincipal();
+        //this.fechaTelaPrincipal();
         ControladorFuncionario.getInstance().exibeTelaFuncionario();
     }
 

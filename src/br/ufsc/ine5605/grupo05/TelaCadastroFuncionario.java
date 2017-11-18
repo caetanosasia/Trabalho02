@@ -12,6 +12,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.text.ParseException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.Vector;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -52,12 +53,12 @@ public class TelaCadastroFuncionario extends JFrame implements ActionListener{
 
 	public TelaCadastroFuncionario() {
 		this.inic();
-                this.listaCargos = new Vector();
+                this.listaCargos = ControladorCargo.getInstance().listaCargosParaFuncionarios();
 	}
 
 	public TelaCadastroFuncionario(Funcionario funcionario){
 		this.f = funcionario;
-                this.listaCargos = new Vector();
+                this.listaCargos = ControladorCargo.getInstance().listaCargosParaFuncionarios();
 		this.inic();
 		this.edita();
 	}
@@ -86,7 +87,7 @@ public class TelaCadastroFuncionario extends JFrame implements ActionListener{
 		this.lbCPF = new JLabel("Digite o CPF");
 		this.tfCPF = new JTextField();
 		this.lbCargo = new JLabel("Escolha o Cargo");
-		this.bjCargos = new JComboBox<>(listaCargos);
+		this.bjCargos = new JComboBox<Cargo>(listaCargos);
 		if (this.f == null) {
 			this.btCadastro = new JButton("Cadastrar");
 			this.btCadastro.setActionCommand("Cadastrar");
@@ -225,17 +226,30 @@ public class TelaCadastroFuncionario extends JFrame implements ActionListener{
 			
 
                     try {
+                        String nome = tfNome.getText();
+                        String dataNascimento = tfDataNascimento.getText();
+                        double  salario = Double.parseDouble(tfSalario.getText());
+                        double cpf = Double.parseDouble(tfCPF.getText());
+                        double telefone = Double.parseDouble(tfTelefone.getText());
+                        Cargo cargo = (Cargo) bjCargos.getSelectedItem();
                         
+                        ControladorFuncionario.getInstance().cadastrarFuncionario(nome, dataNascimento, telefone, salario, cargo, cpf);
                         this.setVisible(false);
+                        JOptionPane.showMessageDialog(null, "Cadastro feito com sucesso");
                         ControladorFuncionario.getInstance().exibeTelaFuncionario();
                     } catch (ParseException ex) {
-                        Logger.getLogger(TelaCadastroFuncionario.class.getName()).log(Level.SEVERE, null, ex);
+                        JOptionPane.showMessageDialog(null, "Data formato inválido");
+                        //Logger.getLogger(TelaCadastroFuncionario.class.getName()).log(Level.SEVERE, null, ex);
                     } catch (CadastroIncorretoException ex) {
+                        JOptionPane.showMessageDialog(null, "Cadastro Incorreto");
                         Logger.getLogger(TelaCadastroFuncionario.class.getName()).log(Level.SEVERE, null, ex);
-                    }
+                    } catch (NumberFormatException f) {
+                        JOptionPane.showMessageDialog(null, "Formato inválido");
+                    //do something! anything to handle the exception.
+                }
 		}
 		if (e.getActionCommand().equals("Editar")) {
-			String msg = ControladorFuncionario.getInstance().alteraFuncionario(Integer.parseInt(this.tfMatricula.getText()), this.tfNome.getText(), Integer.parseInt(this.tfDataNascimento.getText()), Integer.parseInt(this.tfTelefone.getText()), (Cargo) this.bjCargos.getSelectedItem());
+			String msg = ControladorFuncionario.getInstance().alteraFuncionario(Integer.parseInt(this.tfMatricula.getText()), this.tfNome.getText(), this.tfDataNascimento.getText(), Double.parseDouble(this.tfTelefone.getText()), (Cargo) this.bjCargos.getSelectedItem(), Double.parseDouble(this.tfCPF.getText()));
 			JOptionPane.showMessageDialog(null, msg);
 			this.limpa();
 			this.setVisible(false);

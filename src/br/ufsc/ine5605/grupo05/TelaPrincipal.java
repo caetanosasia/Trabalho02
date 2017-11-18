@@ -118,13 +118,13 @@ public class TelaPrincipal extends JFrame{
         public void actionPerformed(ActionEvent e) {
             
             if(e.getActionCommand().equals(OpcoesMenuPrincipal.FUNCIONARIO.name())){
-               /* try {
+                try {
                     ControladorPrincipal.getInstance().exibeTelaFuncionario();
                 } catch (ParseException ex) {
                     JOptionPane.showMessageDialog(null, "Cadastro Incorreto");
                 } catch (CadastroIncorretoException ex) {
                     JOptionPane.showMessageDialog(null, "Cadastro Incorreto");
-                }*/
+                }
             } else if(e.getActionCommand().equals(OpcoesMenuPrincipal.CARGO.name())){
                 try {
                     ControladorPrincipal.getInstance().exibeTelaCargo();

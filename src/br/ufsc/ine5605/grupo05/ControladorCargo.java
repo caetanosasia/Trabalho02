@@ -14,6 +14,7 @@ import java.util.Date;
 import br.ufsc.ine5605.grupo05.ControladorFuncionario;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.Vector;
 import javax.swing.JOptionPane;
 /**
  *
@@ -29,10 +30,12 @@ public class ControladorCargo implements IControladorCargo {
     private TelaHorario telaHorario;
     private CargoDAO cargoDAO;
     private FuncionarioDAO funcDAO;
+    private CargoTableModel cgmodel;
     
     
     private ControladorCargo() {
 	this.cargoDAO = new CargoDAO();
+        this.cgmodel = new CargoTableModel(telaCargo, cargoDAO.getListH());
     }
     
     public static ControladorCargo getInstance() {
@@ -183,6 +186,10 @@ public class ControladorCargo implements IControladorCargo {
         //this.telaHorario = new TelaHorario(this);
         //telaHorario.setVisible(true);
         TelaHorario.getInstance().setVisible(true);
+    }
+    
+    public Vector listaCargosParaFuncionarios(){
+        return cgmodel.listarCargosParaFuncionarios();
     }
     
     public void voltar() throws CadastroIncorretoException, ParseException {

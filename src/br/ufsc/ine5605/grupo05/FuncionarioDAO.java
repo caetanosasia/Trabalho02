@@ -64,7 +64,7 @@ public class FuncionarioDAO implements Serializable{
         persist();
     }
     
-    private void persist(){
+    void persist(){
         try{
             FileOutputStream fOS = new FileOutputStream(fileName);
             ObjectOutputStream oOS = new ObjectOutputStream(fOS);
