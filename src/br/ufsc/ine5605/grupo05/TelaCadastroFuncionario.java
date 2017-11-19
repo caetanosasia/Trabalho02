@@ -62,7 +62,6 @@ public class TelaCadastroFuncionario extends JFrame{
             super("Cadastro de Funcionario");
             container = getContentPane();
             container.setLayout(new GridBagLayout());
-            this.listaCargos = ControladorCargo.getInstance().listaCargosParaFuncionarios();
             
             this.iniciaComponentes();
             
@@ -80,7 +79,6 @@ public class TelaCadastroFuncionario extends JFrame{
             this.f = funcionario;
             container = getContentPane();
             container.setLayout(new GridBagLayout());
-            this.listaCargos = ControladorCargo.getInstance().listaCargosParaFuncionarios();
             
             this.iniciaEdicao();
             
@@ -313,8 +311,8 @@ public class TelaCadastroFuncionario extends JFrame{
                     if (e.getActionCommand().equals("Editar")) {
                             String matriculaString = tfMatricula.getText();
                             int matricula = Integer.parseInt(matriculaString);
-                            String msg = ControladorFuncionario.getInstance().alteraFuncionario(matricula, tfNome.getText(), tfDataNascimento.getText(), Double.parseDouble(tfTelefone.getText()), (Cargo) bjCargos.getSelectedItem(), Double.parseDouble(tfCPF.getText()));
-                            JOptionPane.showMessageDialog(null, msg);
+                            //String msg = ControladorFuncionario.getInstance().alteraFuncionario(matricula, tfNome.getText(), tfDataNascimento.getText(), Double.parseDouble(tfTelefone.getText()), (Cargo) bjCargos.getSelectedItem(), Double.parseDouble(tfCPF.getText()));
+                            //JOptionPane.showMessageDialog(null, msg);
                             limpa();
                             setVisible(false);
                         try {

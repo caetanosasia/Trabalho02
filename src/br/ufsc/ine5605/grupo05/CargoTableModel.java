@@ -17,7 +17,7 @@ import javax.swing.table.AbstractTableModel;
 
 /**
  *
- * @author Eduardo
+ * @author Lucas Falcão
  */
 public class CargoTableModel extends AbstractTableModel{
     
@@ -40,9 +40,9 @@ public class CargoTableModel extends AbstractTableModel{
         Cargo cargo;
         int i = 0;
         for(Integer keyEleitor : novosCargos.keySet()){ // Percorrre as chaves do HashMap
-            cargo = novosCargos.get(keyEleitor);      // Seleciona o eleitor correspondente 
-            if(!cargos.contains(cargo)){              // Se o eleitor nao existe  
-               cargos.add(i, cargo);                  // Novo eleitor 
+            cargo = novosCargos.get(keyEleitor);      // Seleciona o cargo correspondente 
+            if(!cargos.contains(cargo)){              // Se o cargo nao existe  
+               cargos.add(i, cargo);                  // Novo cargo 
             }
             i++;                                           // Nova posicao 
         }        
@@ -110,17 +110,4 @@ public class CargoTableModel extends AbstractTableModel{
     public Cargo getCargo(int indiceLinha) {
         return cargos.get(indiceLinha);        
     }    
-   
-    public Vector listarCargosParaFuncionarios(){
-        Vector novoVetor = new Vector();
-        int cont = getRowCount();
-        int j = 1;
-        for(int i = 0; i < cont; i++){
-            String cargoRef = (String) getValueAt(i,j);
-            if(cargoRef != null){
-                novoVetor.add(cargoRef);
-            }
-        }
-        return novoVetor;
-    }
 }

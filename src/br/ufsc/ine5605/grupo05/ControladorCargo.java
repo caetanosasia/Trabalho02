@@ -130,6 +130,12 @@ public class ControladorCargo implements IControladorCargo {
         return cargoDAO.getListC();
     }
     
+    public Vector getCargoVector() {
+        Vector listaCargos = new Vector();
+        listaCargos.addAll(cargoDAO.getListC());
+        return listaCargos;
+    }
+    
     /**
      * Verifica se há cargos no ArrayList de cargos
      * @return reotrna true se há cargos
@@ -176,10 +182,6 @@ public class ControladorCargo implements IControladorCargo {
         //this.telaHorario = new TelaHorario(this);
         //telaHorario.setVisible(true);
         TelaHorario.getInstance().setVisible(true);
-    }
-    
-    public Vector listaCargosParaFuncionarios(){
-        return cgmodel.listarCargosParaFuncionarios();
     }
     
     public void voltar() throws CadastroIncorretoException, ParseException {

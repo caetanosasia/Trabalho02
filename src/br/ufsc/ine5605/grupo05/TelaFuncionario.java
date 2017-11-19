@@ -45,7 +45,7 @@ public class TelaFuncionario extends JFrame{
     private Scanner sc;
     private CargoDAO cargoDAO;
         
-    private CargoTableModel modelo;    
+    private FuncionarioTableModel modelo;    
     private JPanel painelFundo;
     private JPanel painelBotoes;
     private JTable tabela;
@@ -55,7 +55,6 @@ public class TelaFuncionario extends JFrame{
     private JButton btVoltar;    
      
     private GerenciarBotoes gerenciadorBotoes;
-    private Vector listaCargos = new Vector();
     
     private Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
     
@@ -77,7 +76,6 @@ public class TelaFuncionario extends JFrame{
         
         this.owner = owner;
         cargoDAO = new CargoDAO();
-        listaCargos
                         
         this.iniciaComponentes();        
         
@@ -90,21 +88,21 @@ public class TelaFuncionario extends JFrame{
     }
     
     public void setupCargo(JTable tabela, TableColumn colunaCargo){
-        JComboBox<Cargo> cbCargo = new JComboBox<>(owner.getCargosH());
+        JComboBox<Cargo> cbCargo = new JComboBox<>(ControladorCargo.getInstance().getCargoVector());
         colunaCargo.setCellEditor(new DefaultCellEditor(cbCargo));
         DefaultTableCellRenderer renderer = new DefaultTableCellRenderer();
         renderer.setToolTipText("Click for combo box");
         colunaCargo.setCellRenderer(renderer);
     }
     
-    public void atualizaCargo(String novoNomeCargo, int codigoCargo) {
-        owner.alterarNomeCargoPeloCodigo(novoNomeCargo, codigoCargo);
-        modelo.atualizarDados(owner.getCargosH());
-    }
+//    public void atualizaCargo(String novoNomeCargo, int codigoCargo) {
+//        owner.alterarNomeCargoPeloCodigo(novoNomeCargo, codigoCargo);
+//        modelo.atualizarDados(owner.getCargosH());
+//    }
     
     
     public void criaJTable() {
-        modelo = new FuncionarioTableModel(this, owner.getCargosH());
+        modelo = new FuncionarioTableModel(this, funcionarioDAO.getListH());
         tabela = new JTable(modelo);
         tabela.setModel(modelo);
         setupCargo(tabela,tabela.getColumnModel().getColumn(2));
@@ -343,20 +341,13 @@ public class TelaFuncionario extends JFrame{
                             ControladorFuncionario.getInstance().exibeTelaCadastroFuncionario();
                     }
                     if (e.getActionCommand().equals("Editar")){
-                            try {
-                                    Funcionario f = funcionarioDAO.get((Integer) this.tbFuncionarios.getValueAt(this.tbFuncionarios.getSelectedRow(), 0));
-                                    ControladorFuncionario.getInstance().exibeTelaCadastroFuncionario(f);
-                            } catch (ArrayIndexOutOfBoundsException e2) {
-                                    JOptionPane.showMessageDialog(null, "Selecione um Funcionário");
-                            }
-
+                            
                     }
                     if (e.getActionCommand().equals("Remover")){
-                            Integer m = (Integer) this.tbFuncionarios.getValueAt(this.tbFuncionarios.getSelectedRow(),0);
-                            ControladorFuncionario.getInstance().excluiFuncionario(ControladorFuncionario.getInstance().getFuncionario(m));
+                        //ControladorFuncionario.getInstance().excluiFuncionario(ControladorFuncionario.getInstance().getFuncionario(m));
                     }
                     if (e.getActionCommand().equals("Voltar")){
-                            this.setVisible(false);
+                            setVisible(false);
                         try {
                             ControladorPrincipal.getInstance().exibeTelaPrincipal();
                         } catch (CadastroIncorretoException ex) {
@@ -366,7 +357,7 @@ public class TelaFuncionario extends JFrame{
                         }
                     }
                     if (e.getActionCommand().equals("Sair")){
-                            this.sair();
+                            sair();
                     }
             }
         }

@@ -70,7 +70,7 @@ public class TelaHorario extends JFrame{
         return instance;
     }
 
-   private void iniciaComponentes(){
+    private void iniciaComponentes(){
         
         GridBagConstraints constraints = new GridBagConstraints();        
         gerenciadorBotoes = new GerenciadorDeBotoes();        

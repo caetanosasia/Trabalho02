@@ -59,12 +59,16 @@ public class FuncionarioDAO implements Serializable{
         return cacheFuncionarios.values();
     }
     
+    public HashMap<Integer, Funcionario> getListH(){
+        return this.cacheFuncionarios;
+    }
+    
     public void remove(Funcionario funcionario){
         cacheFuncionarios.remove(funcionario.getMatricula());
         persist();
     }
     
-    void persist(){
+    private void persist(){
         try{
             FileOutputStream fOS = new FileOutputStream(fileName);
             ObjectOutputStream oOS = new ObjectOutputStream(fOS);

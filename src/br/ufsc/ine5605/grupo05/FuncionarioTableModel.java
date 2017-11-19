@@ -14,7 +14,7 @@ import javax.swing.table.AbstractTableModel;
 
 /**
  *
- * @author Eduardo
+ * @author Lucas Falcão
  */
 public class FuncionarioTableModel extends AbstractTableModel{
     
@@ -46,12 +46,12 @@ public class FuncionarioTableModel extends AbstractTableModel{
         lfuncionarios.removeAll(lfuncionarios);
         Funcionario funcionario;
         int i = 0;
-        for(Integer keyEleitor : novosFuncionarios.keySet()){ // Percorrre as chaves do HashMap
-            funcionario = novosFuncionarios.get(keyEleitor);      // Seleciona o eleitor correspondente 
-            if(!lfuncionarios.contains(funcionario)){              // Se o eleitor nao existe  
-               lfuncionarios.add(i, funcionario);                  // Novo eleitor 
+        for(Integer keyEleitor : novosFuncionarios.keySet()){ 
+            funcionario = novosFuncionarios.get(keyEleitor);      
+            if(!lfuncionarios.contains(funcionario)){               
+               lfuncionarios.add(i, funcionario);                  
             }
-            i++;                                           // Nova posicao 
+            i++;                                           
         }        
     }    
         
@@ -116,17 +116,4 @@ public class FuncionarioTableModel extends AbstractTableModel{
     public Funcionario getCargo(int indiceLinha) {
         return lfuncionarios.get(indiceLinha);        
     }    
-   
-    /*public Vector listarCargosParaFuncionarios(){
-        Vector novoVetor = new Vector();
-        int cont = getRowCount();
-        int j = 1;
-        for(int i = 0; i < cont; i++){
-            String cargoRef = (String) getValueAt(i,j);
-            if(cargoRef != null){
-                novoVetor.add(cargoRef);
-            }
-        }
-        return novoVetor;
-    }*/
 }

@@ -152,7 +152,7 @@ public class TelaPrincipal extends JFrame{
                     Logger.getLogger(TelaPrincipal.class.getName()).log(Level.SEVERE, null, ex);
                 }
             } else if(e.getActionCommand().equals(OpcoesMenuPrincipal.HORARIO.name())){
-                //ControladorPrincipal.getInstance().horarioDoSistema();
+                ControladorPrincipal.getInstance().exibeTelaSistema();
             }
         }
     }
@@ -170,25 +170,25 @@ public class TelaPrincipal extends JFrame{
      * @throws FuncionarioComCargoException
      * @throws Exception 
      */
-    public void exibeTela() throws CadastroIncorretoException, ParseException {
-        int opcao = 0;        
-        do{
-            System.out.println("\nBem vindo ao sistema!");;
-            System.out.println("-----------------------------------");
-            System.out.println("1 - Menu de Funcionarios");
-            System.out.println("2 - Menu de Cargos");
-            System.out.println("3 - Menu de Acesso");
-            System.out.println("4 - Menu de Relatórios");
-            System.out.println("5 - Alterar horário do sistema");
-            System.out.println("0 - Encerrar");
-            System.out.println("Selecione uma opção:");
-            while (!sc.hasNextInt()) sc.next();
-            opcao = sc.nextInt();
-            trataOpcao(opcao);
-        } while(opcao != 0);     
-        System.exit(0);
-        
-    }
+//    public void exibeTela() throws CadastroIncorretoException, ParseException {
+//        int opcao = 0;        
+//        do{
+//            System.out.println("\nBem vindo ao sistema!");;
+//            System.out.println("-----------------------------------");
+//            System.out.println("1 - Menu de Funcionarios");
+//            System.out.println("2 - Menu de Cargos");
+//            System.out.println("3 - Menu de Acesso");
+//            System.out.println("4 - Menu de Relatórios");
+//            System.out.println("5 - Alterar horário do sistema");
+//            System.out.println("0 - Encerrar");
+//            System.out.println("Selecione uma opção:");
+//            while (!sc.hasNextInt()) sc.next();
+//            opcao = sc.nextInt();
+//            trataOpcao(opcao);
+//        } while(opcao != 0);     
+//        System.exit(0);
+//        
+//    }
     
     /**
      * Trata a opção da tela
@@ -198,27 +198,27 @@ public class TelaPrincipal extends JFrame{
      * @throws FuncionarioComCargoException
      * @throws Exception 
     */ 
-    public void trataOpcao(int opcao) throws CadastroIncorretoException, ParseException{
-        switch(opcao){
-        case 1:
-            ControladorPrincipal.getInstance().exibeTelaFuncionario();
-            break;
-        case 2:
-            ControladorPrincipal.getInstance().exibeTelaCargo();
-            break;
-        case 3:
-            ControladorPrincipal.getInstance().exibeTelaAcesso();
-            break;
-        case 4:
-            ControladorPrincipal.getInstance().exibeTelaRelatorio();
-            break;
-        case 5:
-            ControladorPrincipal.getInstance().horarioDoSistema();
-            break;
-        default:
-            break;
-        }
-    }
+//    public void trataOpcao(int opcao) throws CadastroIncorretoException, ParseException{
+//        switch(opcao){
+//        case 1:
+//            ControladorPrincipal.getInstance().exibeTelaFuncionario();
+//            break;
+//        case 2:
+//            ControladorPrincipal.getInstance().exibeTelaCargo();
+//            break;
+//        case 3:
+//            ControladorPrincipal.getInstance().exibeTelaAcesso();
+//            break;
+//        case 4:
+//            ControladorPrincipal.getInstance().exibeTelaRelatorio();
+//            break;
+//        case 5:
+//            ControladorPrincipal.getInstance().exibeTelaSistema();
+//            break;
+//        default:
+//            break;
+//        }
+//    }
     
     public static TelaPrincipal getInstance() {
         if(instance == null) {

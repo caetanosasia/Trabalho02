@@ -83,20 +83,20 @@ public class ControladorFuncionario {
         }
     }
     
-    public String alteraFuncionario(Integer matricula, String nome, String nascimento, double telefone, Cargo cargo, double cpf) {
-	ArrayList<Funcionario> listaFuncionario = (ArrayList<Funcionario>) funcionarioDAO.getList();
-        for (Funcionario f : listaFuncionario) {
-            if (f.getMatricula() == matricula) {
-       		f.setCargo(cargo);
-		f.setNome(nome);
-		f.setTelefone(telefone);
-                f.setCpf(cpf);
-		this.funcionarioDAO.persist();
-		return "Funcionario " + nome + " alterado com sucesso";
-            }
-        }
-		return "Funcionario não existe ou não pode ser alterado";
-    }
+//    public String alteraFuncionario(Integer matricula, String nome, String nascimento, double telefone, Cargo cargo, double cpf) {
+//	ArrayList<Funcionario> listaFuncionario = (ArrayList<Funcionario>) funcionarioDAO.getList();
+//        for (Funcionario f : listaFuncionario) {
+//            if (f.getMatricula() == matricula) {
+//       		f.setCargo(cargo);
+//		f.setNome(nome);
+//		f.setTelefone(telefone);
+//                f.setCpf(cpf);
+//		funcionarioDAO;
+//		return "Funcionario " + nome + " alterado com sucesso";
+//            }
+//        }
+//		return "Funcionario não existe ou não pode ser alterado";
+//    }
     
     /**
      * Altera o cargo de um funcionario ultilizando-se da sua matricula
@@ -199,7 +199,7 @@ public class ControladorFuncionario {
      */
     public void exibeTelaFuncionario() throws ParseException, CadastroIncorretoException {
 		TelaFuncionario.getInstance().setVisible(true);
-		TelaFuncionario.getInstance().atualizaLista();
+		//TelaFuncionario.getInstance().atualizaLista();
     }
     
     public void exibeTelaCadastroFuncionario(){
@@ -225,7 +225,4 @@ public class ControladorFuncionario {
 	this.telaCadastra.setVisible(true);
     }
 
-    HashMap<Integer, Funcionario> getCargosH() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
 }
