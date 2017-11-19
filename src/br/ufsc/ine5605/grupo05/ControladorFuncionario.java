@@ -9,6 +9,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Vector;
 
 /**
@@ -216,5 +217,15 @@ public class ControladorFuncionario {
         if(funcionario.getErrosAcesso() == 3 && (funcionario.getCargo().getNIVELACESSO() == NivelAcesso.ESPECIAL
                 || funcionario.getCargo().getNIVELACESSO() == NivelAcesso.COMUM))
             TelaFuncionario.getInstance().mensagemFuncionarioBloqueado();
+    }
+
+    public void exibeTelaCadastroFuncionario(Funcionario f) {
+        TelaFuncionario.getInstance().setVisible(false);
+	this.telaCadastra = new TelaCadastroFuncionario();
+	this.telaCadastra.setVisible(true);
+    }
+
+    HashMap<Integer, Funcionario> getCargosH() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 }

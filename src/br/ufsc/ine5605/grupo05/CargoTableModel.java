@@ -85,7 +85,7 @@ public class CargoTableModel extends AbstractTableModel{
                cargo.setNIVELACESSO((NivelAcesso)value);
                break;
         }        
-        owner.atualizaCargo(cargo);
+        owner.atualizaCargo(cargo.getNomeCargo(), cargo.getCodigo());
         fireTableCellUpdated(linha, coluna);
     }
 

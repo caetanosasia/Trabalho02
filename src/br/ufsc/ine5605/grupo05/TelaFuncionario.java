@@ -5,68 +5,62 @@
  */
 package br.ufsc.ine5605.grupo05;
 
-import java.awt.Container;
-import java.awt.Dimension;
-import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-
-import javax.swing.JButton;
-import javax.swing.JComboBox;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JOptionPane;
-import javax.swing.JScrollPane;
-import javax.swing.JTable;
-import javax.swing.JTextField;
-import javax.swing.table.DefaultTableModel;
-
-import java.io.Serializable;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Scanner;
+import br.ufsc.ine5605.grupo05.NivelAcesso;
+import br.ufsc.ine5605.grupo05.ControladorCargo;
+import br.ufsc.ine5605.grupo05.Cargo;
+import java.awt.BorderLayout;
+import java.util.Scanner;
+import java.awt.Container;
+import java.awt.Dimension;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.Toolkit;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.util.HashMap;
+import java.util.Vector;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.DefaultCellEditor;
+import javax.swing.JButton;
+import javax.swing.JComboBox;
+import javax.swing.JFrame;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTable;
+import javax.swing.table.DefaultTableCellRenderer;
+import javax.swing.table.TableColumn;
 /**
  *
  * @author Guilherme
  */
-public class TelaFuncionario extends JFrame implements ActionListener{
-
+public class TelaFuncionario extends JFrame{
+    
+    private ControladorFuncionario owner;
     private Scanner sc;
+    private CargoDAO cargoDAO;
+        
+    private CargoTableModel modelo;    
+    private JPanel painelFundo;
+    private JPanel painelBotoes;
+    private JTable tabela;
+    private JScrollPane barraRolagem;
+    private JButton btCadastrar;
+    private JButton btExcluir;
+    private JButton btVoltar;    
+     
+    private GerenciarBotoes gerenciadorBotoes;
+    private Vector listaCargos = new Vector();
+    
+    private Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
+    
     private static TelaFuncionario instance;
     private FuncionarioDAO funcionarioDAO;
-    
-    private JLabel bemVindo;
-	private JLabel lMatricula;
-	private JLabel lNome;
-	private JLabel lDataNasc;
-	private JLabel lTelefone;
-	private JLabel lCargo;
-	private JLabel lSalario;
-        private JLabel lCPF;
-	private JTextField tMatricula;
-	private JTextField tNome;
-	private JTextField tDataNasc;
-	private JTextField tTelefone;
-        private JTextField tSalario;
-	private JTextField tCPF;
-	private JComboBox<Cargo> cCargo;
-	private JButton bAdicionar;
-	private JButton bEditar;
-	private JButton bRemover;
-	private JButton bVoltar;
-	private JButton bSair;
-	private JTable tbFuncionarios;
-	private JScrollPane scrollPane;
-    
-    
-    public TelaFuncionario(){
-        super("Tela de Funcionarios");
-        //this.sc = new Scanner(System.in);
-        funcionarioDAO = new FuncionarioDAO();
-	this.inic();
-    }
     
     public static TelaFuncionario getInstance() {
         if(instance == null) {
@@ -74,6 +68,79 @@ public class TelaFuncionario extends JFrame implements ActionListener{
         }
         return instance;
     }
+    
+    public TelaFuncionario(){
+        this.sc = new Scanner(System.in);
+    }
+    public TelaFuncionario(ControladorFuncionario owner){
+        super("Menu Funcionario"); 
+        
+        this.owner = owner;
+        cargoDAO = new CargoDAO();
+        listaCargos
+                        
+        this.iniciaComponentes();        
+        
+        setLocation(dim.width/2-this.getSize().width/2, dim.height/2-this.getSize().height/2);
+    }
+    
+    public void iniciaComponentes (){
+        criaJTable();
+        criaJanela();  
+    }
+    
+    public void setupCargo(JTable tabela, TableColumn colunaCargo){
+        JComboBox<Cargo> cbCargo = new JComboBox<>(owner.getCargosH());
+        colunaCargo.setCellEditor(new DefaultCellEditor(cbCargo));
+        DefaultTableCellRenderer renderer = new DefaultTableCellRenderer();
+        renderer.setToolTipText("Click for combo box");
+        colunaCargo.setCellRenderer(renderer);
+    }
+    
+    public void atualizaCargo(String novoNomeCargo, int codigoCargo) {
+        owner.alterarNomeCargoPeloCodigo(novoNomeCargo, codigoCargo);
+        modelo.atualizarDados(owner.getCargosH());
+    }
+    
+    
+    public void criaJTable() {
+        modelo = new FuncionarioTableModel(this, owner.getCargosH());
+        tabela = new JTable(modelo);
+        tabela.setModel(modelo);
+        setupCargo(tabela,tabela.getColumnModel().getColumn(2));
+    }
+    
+    private void criaJanela() {        
+        gerenciadorBotoes = new GerenciarBotoes();
+        
+        btCadastrar = new JButton("Cadastrar");           
+        btVoltar = new JButton("Voltar");               
+        btExcluir = new JButton("Excluir");
+        
+        btCadastrar.setActionCommand("Cadastrar");
+        btVoltar.setActionCommand("Voltar");
+        btExcluir.setActionCommand("Excluir");
+        
+        painelBotoes = new JPanel();
+        barraRolagem = new JScrollPane(tabela);
+        painelFundo = new JPanel();
+        painelFundo.setLayout(new BorderLayout());
+        
+        painelFundo.add(BorderLayout.CENTER, barraRolagem);
+        painelBotoes.add(btCadastrar);
+        painelBotoes.add(btVoltar);
+        painelBotoes.add(btExcluir);
+        painelFundo.add(BorderLayout.SOUTH, painelBotoes);
+
+        getContentPane().add(painelFundo);
+        setSize(500, 320);
+        
+        btCadastrar.addActionListener(gerenciadorBotoes);
+        btVoltar.addActionListener(gerenciadorBotoes);
+        btExcluir.addActionListener(gerenciadorBotoes);
+    }
+    
+    
     
     /**
      * Exibe tela funcionario
@@ -132,113 +199,6 @@ public class TelaFuncionario extends JFrame implements ActionListener{
         }
     }*/
     
-    public void inic() {
-//	Configurando Container e tipo de layout
-		Container container = this.getContentPane();
-		container.setLayout(new GridBagLayout());
-		GridBagConstraints constraints = new GridBagConstraints();
-
-//		Instanciando os componentes
-		this.bemVindo = new JLabel();
-		this.lMatricula = new JLabel();
-		this.tMatricula = new JTextField();
-		this.lNome = new JLabel();
-		this.tNome = new JTextField();
-		this.lDataNasc = new JLabel();
-		this.tDataNasc = new JTextField();
-		this.lTelefone = new JLabel();
-		this.tTelefone = new JTextField();
-		this.lCargo = new JLabel();
-		this.cCargo = new JComboBox<>();
-		this.lSalario = new JLabel();
-		this.bAdicionar = new JButton();
-		this.bRemover = new JButton();
-		this.bVoltar = new JButton();
-		this.bEditar = new JButton();
-		this.bSair = new JButton();
-		this.tbFuncionarios = new JTable();
-
-//		Colocando os textos nos componentes
-		this.bemVindo.setText("Bem vindo a Tela de Funcionários");
-		this.bSair.setText("Sair");
-		this.bEditar.setText("Texto");
-		this.bVoltar.setText("Voltar");
-		this.bRemover.setText("Remover");
-		this.bAdicionar.setText("Adicionar");
-		this.lMatricula.setText("Digite a Matricula");
-		this.lNome.setText("Digite o nome");
-		this.lDataNasc.setText("Digite a Data de Nascimento");
-		this.lTelefone.setText("Digite o Telefone");
-		this.lCargo.setText("Escolha o Cargo");
-		this.lSalario.setText("Escolha o tipo de Veículo");
-		this.bAdicionar.setText("Adicionar Funcionário");
-		this.bEditar.setText("Editar Funcionário");
-		this.bVoltar.setText("Voltar");
-		this.bSair.setText("Sair");
-
-
-//		Colocando as ações nos botões
-		this.bAdicionar.setActionCommand("Adicionar");
-		this.bAdicionar.addActionListener(this);
-
-		this.bEditar.setActionCommand("Editar");
-		this.bEditar.addActionListener(this);
-
-		this.bRemover.setActionCommand("Remover");
-		this.bRemover.addActionListener(this);
-
-		this.bVoltar.setActionCommand("Voltar");
-		this.bVoltar.addActionListener(this);
-
-		this.bSair.setActionCommand("Sair");
-		this.bSair.addActionListener(this);
-
-//        Adicionando e instanciando na Tela os componentes
-		constraints.fill = GridBagConstraints.HORIZONTAL;
-		constraints.gridx = 0;
-		constraints.gridy = 0;
-		container.add(this.bemVindo, constraints);
-		constraints.fill = GridBagConstraints.HORIZONTAL;
-		constraints.gridx = 0;
-		constraints.gridy = 3;
-		container.add(this.bAdicionar, constraints);
-		constraints.fill = GridBagConstraints.HORIZONTAL;
-		constraints.gridx = 1;
-		constraints.gridy = 3;
-		container.add(this.bEditar, constraints);
-		constraints.fill = GridBagConstraints.HORIZONTAL;
-		constraints.gridx = 2;
-		constraints.gridy = 3;
-		container.add(this.bRemover, constraints);
-		constraints.fill = GridBagConstraints.HORIZONTAL;
-		constraints.gridx = 3;
-		constraints.gridy = 3;
-		container.add(this.bSair, constraints);
-		constraints.fill = GridBagConstraints.HORIZONTAL;
-		constraints.gridx = 4;
-		constraints.gridy = 3;
-		container.add(this.bVoltar, constraints);
-		constraints.fill = GridBagConstraints.HORIZONTAL;
-		constraints.gridx = 1;
-		constraints.gridy = 1;
-		container.add(this.tbFuncionarios, constraints);
-//        tabela
-		this.tbFuncionarios.setFillsViewportHeight(true);
-		this.tbFuncionarios.setPreferredScrollableViewportSize(new Dimension(300, 100));
-		constraints.fill = GridBagConstraints.CENTER;
-		constraints.gridy = 3;
-		constraints.gridheight = 6;
-		constraints.gridheight = 5;
-		this.scrollPane = new JScrollPane(this.tbFuncionarios);
-		container.add(this.scrollPane, constraints);
-//        Fim tabela
-
-		this.setSize(800,600);
-
-//		Botão de Fechar
-		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-
-	}
     
     
     /**
@@ -370,60 +330,51 @@ public class TelaFuncionario extends JFrame implements ActionListener{
         System.out.println("Matrícula Invalida");
     }
     
-	public void atualizaLista() {
-		DefaultTableModel tModelo = new DefaultTableModel();
-		tModelo.addColumn("Matricula");
-		tModelo.addColumn("Nome");
-		tModelo.addColumn("Nascimento");
-		tModelo.addColumn("Telefone");
-                tModelo.addColumn("Salario");
-		tModelo.addColumn("Cargo");
-                tModelo.addColumn("CPF");
-                tModelo.addColumn("Erros");
-
-                ArrayList<Funcionario> listaFuncionarios = (ArrayList<Funcionario>) funcionarioDAO.getList();
-		for (Funcionario f : listaFuncionarios){
-			tModelo.addRow(new Object[]{f.getMatricula(), f.getNome(), f.getNascimento(), f.getTelefone(), f.getSalario(), f.getCargo(), f.getCpf(), f.getErrosAcesso()});
-		}
-
-		this.tbFuncionarios.setModel(tModelo);
-		this.repaint();
-
-	}
         
 	public void sair() {
 		this.dispose();
 	}
 
-	@Override
-	public void actionPerformed(ActionEvent e) {
-		/*if (e.getActionCommand().equals("Adicionar")){
-			ControladorFuncionario.getInstance().exibeTelaCadastroFuncionario();
-		}
-		if (e.getActionCommand().equals("Editar")){
-			try {
-				Funcionario f = ControladorFuncionario.getInstance().getFuncionario((Integer) this.tbFuncionarios.getValueAt(this.tbFuncionarios.getSelectedRow(), 0));
-				ControladorFuncionario.getInstance().exibeTelaCadastroFuncionario(f);
-			} catch (ArrayIndexOutOfBoundsException e2) {
-				JOptionPane.showMessageDialog(null, "Selecione um Funcionário");
-			}
+        private class GerenciarBotoes implements ActionListener {
+	
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                    if (e.getActionCommand().equals("Adicionar")){
+                            ControladorFuncionario.getInstance().exibeTelaCadastroFuncionario();
+                    }
+                    if (e.getActionCommand().equals("Editar")){
+                            try {
+                                    Funcionario f = funcionarioDAO.get((Integer) this.tbFuncionarios.getValueAt(this.tbFuncionarios.getSelectedRow(), 0));
+                                    ControladorFuncionario.getInstance().exibeTelaCadastroFuncionario(f);
+                            } catch (ArrayIndexOutOfBoundsException e2) {
+                                    JOptionPane.showMessageDialog(null, "Selecione um Funcionário");
+                            }
 
-		}
-		if (e.getActionCommand().equals("Remover")){
-			Integer m = (Integer) this.tbFuncionarios.getValueAt(this.tbFuncionarios.getSelectedRow(),0);
-			ControladorFuncionario.getInstance().excluiFuncionario(ControladorFuncionario.getInstance().getFuncionario(m));
-		}
-		if (e.getActionCommand().equals("Voltar")){
-			this.setVisible(false);
-			ControladorPrincipal.getInstance().exibeTelaPrincipal();
-		}
-		if (e.getActionCommand().equals("Sair")){
-			this.sair();
-		}
-		if (e.getActionCommand().equals("Ver")) {
-			
-		}*/
-	}
+                    }
+                    if (e.getActionCommand().equals("Remover")){
+                            Integer m = (Integer) this.tbFuncionarios.getValueAt(this.tbFuncionarios.getSelectedRow(),0);
+                            ControladorFuncionario.getInstance().excluiFuncionario(ControladorFuncionario.getInstance().getFuncionario(m));
+                    }
+                    if (e.getActionCommand().equals("Voltar")){
+                            this.setVisible(false);
+                        try {
+                            ControladorPrincipal.getInstance().exibeTelaPrincipal();
+                        } catch (CadastroIncorretoException ex) {
+                            Logger.getLogger(TelaFuncionario.class.getName()).log(Level.SEVERE, null, ex);
+                        } catch (ParseException ex) {
+                            Logger.getLogger(TelaFuncionario.class.getName()).log(Level.SEVERE, null, ex);
+                        }
+                    }
+                    if (e.getActionCommand().equals("Sair")){
+                            this.sair();
+                    }
+            }
+        }
+
+    public void atualizaFuncionario(Funcionario funcionario) {
+        //owner.alterarNomeCargoPeloCodigo(novoNomeCargo, codigoCargo);
+        //modelo.atualizarDados(owner.getCargosH());
+    }
 }
     
 

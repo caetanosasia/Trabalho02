@@ -135,10 +135,6 @@ public class TelaCargo extends JFrame {
         btExcluir.addActionListener(gerenciadorBotoes);
     }
 
-    public void atualizaCargo(Cargo cargo) {
-        
-    }
-
     public void exibeCargo(Cargo cargo) {
     
     }
