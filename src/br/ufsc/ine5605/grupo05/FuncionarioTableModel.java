@@ -46,8 +46,8 @@ public class FuncionarioTableModel extends AbstractTableModel{
         lfuncionarios.removeAll(lfuncionarios);
         Funcionario funcionario;
         int i = 0;
-        for(Integer keyEleitor : novosFuncionarios.keySet()){ 
-            funcionario = novosFuncionarios.get(keyEleitor);      
+        for(Integer keyFuncionario : novosFuncionarios.keySet()){ 
+            funcionario = novosFuncionarios.get(keyFuncionario);      
             if(!lfuncionarios.contains(funcionario)){               
                lfuncionarios.add(i, funcionario);                  
             }

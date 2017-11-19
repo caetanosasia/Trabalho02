@@ -75,7 +75,7 @@ public class TelaCadastroFuncionario extends JFrame{
 	}
         
         public TelaCadastroFuncionario(Funcionario funcionario) {
-            super("Cadastro de Funcionario");
+            super("Editar Funcionario");
             this.f = funcionario;
             container = getContentPane();
             container.setLayout(new GridBagLayout());
@@ -313,7 +313,7 @@ public class TelaCadastroFuncionario extends JFrame{
                             int matricula = Integer.parseInt(matriculaString);
                             //String msg = ControladorFuncionario.getInstance().alteraFuncionario(matricula, tfNome.getText(), tfDataNascimento.getText(), Double.parseDouble(tfTelefone.getText()), (Cargo) bjCargos.getSelectedItem(), Double.parseDouble(tfCPF.getText()));
                             //JOptionPane.showMessageDialog(null, msg);
-                            limpa();
+                            //limpa();
                             setVisible(false);
                         try {
                             ControladorFuncionario.getInstance().exibeTelaFuncionario();
