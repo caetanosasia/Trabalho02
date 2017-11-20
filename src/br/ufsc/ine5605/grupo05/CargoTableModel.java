@@ -37,8 +37,8 @@ public class CargoTableModel extends AbstractTableModel{
         cargos.removeAll(cargos);
         Cargo cargo;
         int i = 0;
-        for(Integer keyEleitor : novosCargos.keySet()){ // Percorrre as chaves do HashMap
-            cargo = novosCargos.get(keyEleitor);      // Seleciona o cargo correspondente 
+        for(Integer keyCargo : novosCargos.keySet()){ // Percorrre as chaves do HashMap
+            cargo = novosCargos.get(keyCargo);      // Seleciona o cargo correspondente 
             if(!cargos.contains(cargo)){              // Se o cargo nao existe  
                cargos.add(i, cargo);                  // Novo cargo 
             }
