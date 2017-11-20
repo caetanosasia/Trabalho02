@@ -5,6 +5,8 @@
  */
 package br.ufsc.ine5605.grupo05;
 
+import javax.swing.JOptionPane;
+
 /**
  *
  * @author Guilherme
@@ -17,5 +19,6 @@ public class CadastroIncorretoException extends Exception {
      */
     public CadastroIncorretoException(String erro){
         super(erro);
+        JOptionPane.showMessageDialog(null, erro);
     }
 }

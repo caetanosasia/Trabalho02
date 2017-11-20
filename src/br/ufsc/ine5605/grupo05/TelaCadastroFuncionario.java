@@ -86,7 +86,7 @@ public class TelaCadastroFuncionario extends JFrame{
 
 
         lbCadastro = new JLabel();
-        lbCadastro.setText("Cadastro de Funcionario");
+        lbCadastro.setText("Cadastro de Funcionario:");
         constraints.fill = GridBagConstraints.HORIZONTAL;
         constraints.gridx = 0;
         constraints.gridy = 0;
@@ -123,12 +123,12 @@ public class TelaCadastroFuncionario extends JFrame{
         container.add(tfTelefone, constraints);
 
         lbDataNascimento = new JLabel();
-        lbDataNascimento.setText("Data de Nascimento /n __/__/____");
+        lbDataNascimento.setText("Data de Nascimento __/__/____");
         constraints.fill = GridBagConstraints.HORIZONTAL;
         constraints.gridx = 0;
         constraints.gridy = 4;
-        lbDataNascimento.setSize(100, 20);
-        lbDataNascimento.setPreferredSize(new Dimension(100,20));
+        lbDataNascimento.setSize(200, 20);
+        lbDataNascimento.setPreferredSize(new Dimension(200,20));
         container.add(lbDataNascimento, constraints);
 
         tfDataNascimento = new JTextField();      
@@ -204,6 +204,9 @@ public class TelaCadastroFuncionario extends JFrame{
         this.tfDataNascimento.setText(null);
         this.tfNome.setText(null);
         this.tfTelefone.setText(null);
+        this.tfCPF.setText(null);
+        this.tfCargo.setText(null);
+        this.tfSalario.setText(null);
     }
 
     public void edita(){
@@ -235,13 +238,12 @@ public class TelaCadastroFuncionario extends JFrame{
                     double cpf = Double.parseDouble(tfCPF.getText());
                     double telefone = Double.parseDouble(tfTelefone.getText());
                     Cargo cargo = ControladorCargo.getInstance().buscarCargoPeloCodigo(Integer.parseInt(tfCargo.getText()));
-
+                    
                     ControladorFuncionario.getInstance().cadastrarFuncionario(nome, dataNascimento, telefone, salario, cargo, cpf);
                     setVisible(false);
                     JOptionPane.showMessageDialog(null, "Cadastro feito com sucesso");
-                    TelaFuncionario.getInstance().atualizaFuncionario();
+                    limpa();    
                     ControladorFuncionario.getInstance().exibeTelaFuncionario();
-                    TelaFuncionario.getInstance().atualizaFuncionario();
                 } catch (ParseException ex) {
                     JOptionPane.showMessageDialog(null, "Data formato inválido");
                     //Logger.getLogger(TelaCadastroFuncionario.class.getName()).log(Level.SEVERE, null, ex);
@@ -253,7 +255,7 @@ public class TelaCadastroFuncionario extends JFrame{
                 //do something! anything to handle the exception.
                 }
             }
-            if(e.getActionCommand().equals("Cancelar")){
+            if(e.getActionCommand().equals("Voltar")){
                     setVisible(false);
                 try {
                     ControladorFuncionario.getInstance().exibeTelaFuncionario();

@@ -71,7 +71,7 @@ public class TelaFuncionario extends JFrame {
     public TelaFuncionario(){
         super("Menu Funcionario"); 
         
-        
+        this.owner = new ControladorFuncionario();
         funcionarioDAO = new FuncionarioDAO();
         
         this.iniciaComponentes();
@@ -92,7 +92,6 @@ public class TelaFuncionario extends JFrame {
     }
     
     public void atualizaFuncionario() {
-       // owner.alterarNomeCargoPeloCodigo(novoNomeCargo, codigoCargo);
         modelo.atualizarDados(funcionarioDAO.getListH());
     }
     
@@ -162,7 +161,7 @@ public class TelaFuncionario extends JFrame {
      * Imprime uma mensagem de funcionário deletado com sucesso
      */
     public void mensagemFuncionarioDeletadoComSucesso() {
-        System.out.println("\nFuncionário deletado com sucesso");
+        JOptionPane.showMessageDialog(null, "\nFuncionário deletado com sucesso");
     }
 
     /**
@@ -182,24 +181,25 @@ public class TelaFuncionario extends JFrame {
         @Override
         public void actionPerformed(ActionEvent e) {
             if (e.getActionCommand().equals("Cadastrar")){
-               // ControladorFuncionario.getInstance().exibeTelaCadastroFuncionario();
+               sair();
                TelaCadastroFuncionario.getInstance().setVisible(true);
-               atualizaFuncionario();
-            }
-            if (e.getActionCommand().equals("Editar")){
-                            
             }
             if (e.getActionCommand().equals("Excluir")){
                 int linhaSelecionada = tabela.getSelectedRow();
                 Funcionario funcRef = modelo.getFuncionario(linhaSelecionada);
                 owner.deletarFuncionarioPelaMatricula(funcRef);
-                modelo.atualizarDados(funcionarioDAO.getListH());
-                modelo.fireTableRowsDeleted(linhaSelecionada, linhaSelecionada);    
+                modelo.fireTableRowsDeleted(linhaSelecionada, linhaSelecionada);
+                sair();
+                try {
+                    ControladorFuncionario.getInstance().exibeTelaFuncionario();
+                } catch (ParseException ex) {
+                    Logger.getLogger(TelaFuncionario.class.getName()).log(Level.SEVERE, null, ex);
+                } catch (CadastroIncorretoException ex) {
+                    Logger.getLogger(TelaFuncionario.class.getName()).log(Level.SEVERE, null, ex);
+                }
             }
             if (e.getActionCommand().equals("Voltar")){
                 setVisible(false);
-            }if (e.getActionCommand().equals("Sair")){
-                sair();
             }
         }
     }

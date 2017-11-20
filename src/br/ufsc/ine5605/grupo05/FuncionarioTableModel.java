@@ -51,7 +51,7 @@ public class FuncionarioTableModel extends AbstractTableModel{
                lfuncionarios.add(i, funcionario);                  
             }
             i++;                                           
-        }        
+        }
     }    
         
 
@@ -89,6 +89,7 @@ public class FuncionarioTableModel extends AbstractTableModel{
                break;
             case CARGO:
                funcionario.setCargo((Cargo)value);
+               break;
         }        
         owner.atualizaFuncionario();
         fireTableCellUpdated(linha, coluna);

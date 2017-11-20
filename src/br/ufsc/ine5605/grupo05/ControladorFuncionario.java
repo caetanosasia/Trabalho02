@@ -22,8 +22,9 @@ public class ControladorFuncionario {
     private int ultimaMatricula = 10000;
     private static ControladorFuncionario instance;
     private TelaCadastroFuncionario telaCadastra;
+    private TelaFuncionario telaFuncionario;
     
-    private ControladorFuncionario() {
+    ControladorFuncionario() {
         this.ultimaMatricula = getUltimaMatricula();
     }
     
@@ -86,8 +87,8 @@ public class ControladorFuncionario {
      * @param funcionario 
      */
     public void deletarFuncionarioPelaMatricula (Funcionario funcionario) {
-        if (funcionario != null && funcionarioDAO.getList().contains(funcionario)) {
-            funcionarioDAO.getList().remove(funcionario);
+        if (funcionario != null) {
+            funcionarioDAO.remove(funcionario);
             TelaFuncionario.getInstance().mensagemFuncionarioDeletadoComSucesso();
 	}
     }
@@ -145,8 +146,9 @@ public class ControladorFuncionario {
      * @throws Exception 
      */
     public void exibeTelaFuncionario() throws ParseException, CadastroIncorretoException {
-		TelaFuncionario.getInstance().setVisible(true);
-		//TelaFuncionario.getInstance().atualizaLista();
+        this.telaFuncionario = new TelaFuncionario();
+        telaFuncionario.setVisible(true);
+        //TelaFuncionario.getInstance().setVisible(true);
     }
     
     public void exibeTelaCadastroFuncionario(){

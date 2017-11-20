@@ -67,5 +67,10 @@ public class Cargo implements Serializable{
     public void setHorarioFinal(Date horarioFinal) {
         this.horarioFinal = horarioFinal;
     }
+    
+    @Override
+    public String toString(){
+        return this.getNomeCargo();
+    }
 
 }

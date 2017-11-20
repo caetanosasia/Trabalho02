@@ -94,10 +94,9 @@ public class ControladorCargo implements IControladorCargo {
         
         if(!funcDAO.getList().isEmpty()){
             for(Funcionario funcRef : funcDAO.getList()){
-                if(funcRef.getCargo().equals(cargo)){
+                if(funcRef.getCargo().toString().equals(cargo.toString())){
                     throw new FuncionarioComCargoException("Cargo não pôde ser deletado"
-                            +"\nExiste pelo menos um funcionario neste cargo.");
-                    
+                            +"\nExiste pelo menos um funcionario neste cargo.");                    
                 }
             }
         }
