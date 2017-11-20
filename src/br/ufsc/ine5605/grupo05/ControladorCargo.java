@@ -64,7 +64,7 @@ public class ControladorCargo implements IControladorCargo {
             return;
         }*/
         for (Cargo cargo : this.cargoDAO.getListC()) {
-             TelaCargo.getInstance().exibeCargo(cargo);
+            // TelaCargo.getInstance().exibeCargo(cargo);
         }
     }
     

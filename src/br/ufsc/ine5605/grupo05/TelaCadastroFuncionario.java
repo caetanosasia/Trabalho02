@@ -50,6 +50,8 @@ public class TelaCadastroFuncionario extends JFrame{
         private JTextField tfCPF;
 	private JComboBox<Cargo> bjCargos;
 	private Funcionario f;
+        private JTextField tfCargo;
+        private static TelaCadastroFuncionario instance;
         
         private GerenciadorDeBotoes gerenciarBotoes;
         private ControladorFuncionario owner;
@@ -68,13 +70,20 @@ public class TelaCadastroFuncionario extends JFrame{
             btCadastro.addActionListener(gerenciarBotoes);
             btEditar.addActionListener(gerenciarBotoes);
             btVoltar.addActionListener(gerenciarBotoes);   
-            bjCargos.addActionListener(gerenciarBotoes);   
+          //  bjCargos.addActionListener(gerenciarBotoes);   
         
-        setSize(350, 150);     
+        setSize(500, 350);     
         setLocation(dim.width/2 - this.getSize().width/2, dim.height/2 - this.getSize().height/2);
+        setVisible(true);
 	}
         
-        public TelaCadastroFuncionario(Funcionario funcionario) {
+      public static TelaCadastroFuncionario getInstance() {
+        if(instance == null) {
+            instance = new TelaCadastroFuncionario();
+        }
+        return instance;
+    }
+       /* public TelaCadastroFuncionario(Funcionario funcionario) {
             super("Editar Funcionario");
             this.f = funcionario;
             container = getContentPane();
@@ -172,7 +181,7 @@ public class TelaCadastroFuncionario extends JFrame{
         container.add(tfCPF, constraints);
         
         lbCargo = new JLabel();
-        lbCargo.setText("Cargo");
+        lbCargo.setText("Codigo Cargo");
         constraints.fill = GridBagConstraints.HORIZONTAL;
         constraints.gridx = 0;
         constraints.gridy = 6;
@@ -180,11 +189,11 @@ public class TelaCadastroFuncionario extends JFrame{
         lbCargo.setPreferredSize(new Dimension(100,20));
         container.add(lbCargo, constraints);
         
-        bjCargos = new JComboBox<Cargo>(listaCargos);        
+        tfCargo = new JTextField();        
         constraints.fill = GridBagConstraints.HORIZONTAL;
         constraints.gridx = 1;
         constraints.gridy = 6;
-        container.add(bjCargos, constraints);
+        container.add(tfCargo, constraints);
         
         lbSalario = new JLabel();
         lbSalario.setText("Salario");
@@ -217,9 +226,17 @@ public class TelaCadastroFuncionario extends JFrame{
         btVoltar.setActionCommand("Voltar");
         container.add(btVoltar, constraints);
         
+        btEditar = new JButton();
+            btEditar.setText("Editar");
+            constraints.fill = GridBagConstraints.HORIZONTAL;
+            constraints.gridx = 2;
+            constraints.gridy = 9;
+            btEditar.setActionCommand("Editar");
+            container.add(btEditar, constraints);
+        
 	}
 
-        private void iniciaEdicao() {
+       /* private void iniciaEdicao() {
             GridBagConstraints constraints = new GridBagConstraints();        
             gerenciarBotoes = new GerenciadorDeBotoes(); 
             
@@ -246,7 +263,7 @@ public class TelaCadastroFuncionario extends JFrame{
             btEditar.setActionCommand("Editar");
             container.add(btEditar, constraints);
         }
-        
+        */
 	public void limpa(){
 		this.tfDataNascimento.setText(null);
 		this.tfNome.setText(null);
@@ -291,12 +308,14 @@ public class TelaCadastroFuncionario extends JFrame{
                             double  salario = Double.parseDouble(tfSalario.getText());
                             double cpf = Double.parseDouble(tfCPF.getText());
                             double telefone = Double.parseDouble(tfTelefone.getText());
-                            Cargo cargo = (Cargo) bjCargos.getSelectedItem();
+                            Cargo cargo = ControladorCargo.getInstance().buscarCargoPeloCodigo(Integer.parseInt(tfCargo.getText()));
 
                             ControladorFuncionario.getInstance().cadastrarFuncionario(nome, dataNascimento, telefone, salario, cargo, cpf);
                             setVisible(false);
                             JOptionPane.showMessageDialog(null, "Cadastro feito com sucesso");
+                            TelaFuncionario.getInstance().atualizaFuncionario();
                             ControladorFuncionario.getInstance().exibeTelaFuncionario();
+                            TelaFuncionario.getInstance().atualizaFuncionario();
                         } catch (ParseException ex) {
                             JOptionPane.showMessageDialog(null, "Data formato inválido");
                             //Logger.getLogger(TelaCadastroFuncionario.class.getName()).log(Level.SEVERE, null, ex);

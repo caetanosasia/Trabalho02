@@ -106,7 +106,7 @@ public class FuncionarioTableModel extends AbstractTableModel{
             case NOME:
                 return funcionario.getNome();
             case CARGO:
-                 return funcionario.getCargo();
+                 return funcionario.getCargo().getNomeCargo();
             case ERROSACESSO:
                 return funcionario.getErrosAcesso();
         }

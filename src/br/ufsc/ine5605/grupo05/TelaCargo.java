@@ -6,28 +6,17 @@
 package br.ufsc.ine5605.grupo05;
 
 import java.text.ParseException;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.Scanner;
-import br.ufsc.ine5605.grupo05.NivelAcesso;
-import br.ufsc.ine5605.grupo05.ControladorCargo;
-import br.ufsc.ine5605.grupo05.Cargo;
 import java.awt.BorderLayout;
 import java.util.Scanner;
-import java.awt.Container;
 import java.awt.Dimension;
-import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
 import java.awt.Toolkit;
 import java.awt.event.ActionListener;
-import java.util.HashMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.DefaultCellEditor;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
@@ -135,9 +124,7 @@ public class TelaCargo extends JFrame {
         btExcluir.addActionListener(gerenciadorBotoes);
     }
 
-    public void exibeCargo(Cargo cargo) {
     
-    }
     
     private class GerenciadorDeBotoes implements ActionListener {
 

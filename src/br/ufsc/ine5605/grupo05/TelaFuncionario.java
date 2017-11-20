@@ -7,39 +7,35 @@ package br.ufsc.ine5605.grupo05;
 
 import java.text.ParseException;
 import java.util.ArrayList;
-import java.util.Date;
-import java.util.Scanner;
-import br.ufsc.ine5605.grupo05.NivelAcesso;
-import br.ufsc.ine5605.grupo05.ControladorCargo;
-import br.ufsc.ine5605.grupo05.Cargo;
 import java.awt.BorderLayout;
-import java.util.Scanner;
+import java.awt.Color;
 import java.awt.Container;
+import java.util.Scanner;
 import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.HashMap;
-import java.util.Vector;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.DefaultCellEditor;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
-import javax.swing.JOptionPane;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
+import javax.swing.JTextField;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.TableColumn;
+
 /**
  *
  * @author Guilherme
  */
-public class TelaFuncionario extends JFrame{
+public class TelaFuncionario extends JFrame {
     
     private ControladorFuncionario owner;
     private Scanner sc;
@@ -52,14 +48,28 @@ public class TelaFuncionario extends JFrame{
     private JScrollPane barraRolagem;
     private JButton btCadastrar;
     private JButton btExcluir;
-    private JButton btVoltar;    
+    private JButton btVoltar;  
+    private Container container;
+    private JButton btEditar;  
+    private Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
+    private JButton btListar;
+    private JLabel lbExcluir;
+    private JTextField tfMatricula;
+    private JLabel lbEspaco;
+    private JLabel lbAlterar;
+    private JTextField tfMatricula2;
+    private JLabel lbCargo;
+    private JTextField tfCargo;
+    
+    
      
     private GerenciarBotoes gerenciadorBotoes;
     
-    private Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
     
     private static TelaFuncionario instance;
     private FuncionarioDAO funcionarioDAO;
+    
+    
     
     public static TelaFuncionario getInstance() {
         if(instance == null) {
@@ -69,23 +79,152 @@ public class TelaFuncionario extends JFrame{
     }
     
     public TelaFuncionario(){
-        this.sc = new Scanner(System.in);
-    }
-    public TelaFuncionario(ControladorFuncionario owner){
         super("Menu Funcionario"); 
         
-        this.owner = owner;
-        cargoDAO = new CargoDAO();
-                        
-        this.iniciaComponentes();        
         
-        setLocation(dim.width/2-this.getSize().width/2, dim.height/2-this.getSize().height/2);
+        cargoDAO = new CargoDAO();
+        funcionarioDAO = new FuncionarioDAO();                
+      //  container = getContentPane();
+       // container.setLayout(new GridBagLayout());
+        
+        this.iniciaComponentes();
+        
+       /* btCadastrar.addActionListener(gerenciadorBotoes);
+        btExcluir.addActionListener(gerenciadorBotoes);
+        btVoltar.addActionListener(gerenciadorBotoes);
+        btEditar.addActionListener(gerenciadorBotoes);
+        btListar.addActionListener(gerenciadorBotoes);
+       */ 
+      //  setSize(350, 225);
+        setLocation(dim.width/2 - this.getSize().width/2, dim.height/2 - this.getSize().height/2);
+       // setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+       // setVisible(true);
     }
-    
     public void iniciaComponentes (){
         criaJTable();
         criaJanela();  
     }
+    /*
+    public void iniciaComponentes (){
+        GridBagConstraints constraints = new GridBagConstraints();
+        gerenciadorBotoes = new GerenciarBotoes();
+        
+        btCadastrar = new JButton();
+        btCadastrar.setText("Cadastrar Funcionario");
+        btCadastrar.setForeground(Color.BLUE);
+        constraints.fill = GridBagConstraints.HORIZONTAL;
+        constraints.gridx = 1;
+        constraints.gridy = 1;
+        btCadastrar.setActionCommand("Cadastrar");
+        container.add(btCadastrar, constraints);
+    
+        btListar = new JButton();
+        btListar.setText("Listar");
+        constraints.fill = GridBagConstraints.HORIZONTAL;
+        constraints.gridx = 1;
+        constraints.gridy = 2;
+        btListar.setActionCommand("Listar");
+        container.add(btListar, constraints);
+        
+        lbEspaco = new JLabel();
+        constraints.fill = GridBagConstraints.HORIZONTAL;
+        constraints.gridx = 1;
+        constraints.gridy = 3;
+        lbEspaco.setSize(200, 10);
+        lbEspaco.setPreferredSize(new Dimension(200,10));
+        container.add(lbEspaco, constraints);
+        
+        lbExcluir = new JLabel();
+        lbExcluir.setText("Insira a matricula");
+        constraints.fill = GridBagConstraints.HORIZONTAL;
+        constraints.gridx = 1;
+        constraints.gridy = 4;
+        lbExcluir.setSize(200, 20);
+        lbExcluir.setPreferredSize(new Dimension(200,20));
+        container.add(lbExcluir, constraints);
+        
+        tfMatricula = new JTextField();      
+        constraints.fill = GridBagConstraints.HORIZONTAL;
+        constraints.gridx = 1;
+        constraints.gridy = 5;
+        container.add(tfMatricula, constraints);
+        
+        btExcluir = new JButton();
+        btExcluir.setText("Excluir funcionario pela matricula");
+        constraints.fill = GridBagConstraints.HORIZONTAL;
+        constraints.gridx = 1;
+        constraints.gridy = 6;
+        btExcluir.setActionCommand("Excluir");
+        container.add(btExcluir, constraints);
+        
+        lbEspaco = new JLabel();
+        constraints.fill = GridBagConstraints.HORIZONTAL;
+        constraints.gridx = 1;
+        constraints.gridy = 7;
+        lbEspaco.setSize(200, 10);
+        lbEspaco.setPreferredSize(new Dimension(200,10));
+        container.add(lbEspaco, constraints);
+        
+        lbAlterar = new JLabel();
+        lbAlterar.setText("Insira a matricula:");
+        constraints.fill = GridBagConstraints.HORIZONTAL;
+        constraints.gridx = 1;
+        constraints.gridy = 8;
+        lbAlterar.setSize(200, 20);
+        lbAlterar.setPreferredSize(new Dimension(200,20));
+        container.add(lbAlterar, constraints);
+        
+        tfMatricula2 = new JTextField();      
+        constraints.fill = GridBagConstraints.HORIZONTAL;
+        constraints.gridx = 1;
+        constraints.gridy = 9;
+        container.add(tfMatricula2, constraints);
+        
+        lbCargo = new JLabel();
+        lbCargo.setText("Insira o cargo");
+        constraints.fill = GridBagConstraints.HORIZONTAL;
+        constraints.gridx = 1;
+        constraints.gridy = 10;
+        lbCargo.setSize(200, 20);
+        lbCargo.setPreferredSize(new Dimension(200,20));
+        container.add(lbCargo, constraints);
+        
+        tfCargo = new JTextField();      
+        constraints.fill = GridBagConstraints.HORIZONTAL;
+        constraints.gridx = 1;
+        constraints.gridy = 11;
+        container.add(tfCargo, constraints);
+        
+        btEditar = new JButton();
+        btEditar.setText("Alterar cargo do funcionario pela matricula");
+        constraints.fill = GridBagConstraints.HORIZONTAL;
+        constraints.gridx = 1;
+        constraints.gridy = 12;
+        btEditar.setActionCommand("Editar");
+        container.add(btEditar, constraints);
+        
+        lbEspaco = new JLabel();
+        constraints.fill = GridBagConstraints.HORIZONTAL;
+        constraints.gridx = 1;
+        constraints.gridy = 13;
+        lbEspaco.setSize(200, 10);
+        lbEspaco.setPreferredSize(new Dimension(200,10));
+        container.add(lbEspaco, constraints);
+        
+        btVoltar = new JButton();
+        btVoltar.setText("Voltar");
+        btVoltar.setForeground(Color.BLUE);
+        constraints.fill = GridBagConstraints.HORIZONTAL;
+        constraints.gridx = 1;
+        constraints.gridy = 14;
+        btVoltar.setActionCommand("Voltar");
+        container.add(btVoltar, constraints);
+        
+        
+        
+        
+        }  */
+    
     
     public void setupCargo(JTable tabela, TableColumn colunaCargo){
         JComboBox<Cargo> cbCargo = new JComboBox<>(ControladorCargo.getInstance().getCargoVector());
@@ -95,10 +234,10 @@ public class TelaFuncionario extends JFrame{
         colunaCargo.setCellRenderer(renderer);
     }
     
-//    public void atualizaCargo(String novoNomeCargo, int codigoCargo) {
-//        owner.alterarNomeCargoPeloCodigo(novoNomeCargo, codigoCargo);
-//        modelo.atualizarDados(owner.getCargosH());
-//    }
+    public void atualizaFuncionario() {
+       // owner.alterarNomeCargoPeloCodigo(novoNomeCargo, codigoCargo);
+        modelo.atualizarDados(funcionarioDAO.getListH());
+    }
     
     
     public void criaJTable() {
@@ -138,7 +277,7 @@ public class TelaFuncionario extends JFrame{
         btExcluir.addActionListener(gerenciadorBotoes);
     }
     
-    
+
     
     /**
      * Exibe tela funcionario
@@ -167,7 +306,7 @@ public class TelaFuncionario extends JFrame{
     
     /**
      * Trata opção da tela
-     * @param opcao
+     * @param 
      * @throws ParseException
      * @throws CadastroIncorretoException
      * @throws FuncionarioComCargoException
@@ -329,28 +468,29 @@ public class TelaFuncionario extends JFrame{
     }
     
         
-	public void sair() {
-		this.dispose();
-	}
+    public void sair() {
+	this.dispose();
+    }
 
-        private class GerenciarBotoes implements ActionListener {
+    private class GerenciarBotoes implements ActionListener {
 	
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                    if (e.getActionCommand().equals("Adicionar")){
-                            ControladorFuncionario.getInstance().exibeTelaCadastroFuncionario();
-                    }
-                    if (e.getActionCommand().equals("Editar")){
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            if (e.getActionCommand().equals("Cadastrar")){
+               // ControladorFuncionario.getInstance().exibeTelaCadastroFuncionario();
+               TelaCadastroFuncionario.getInstance().setVisible(true);
+                }
+                if (e.getActionCommand().equals("Editar")){
                             
-                    }
-                    if (e.getActionCommand().equals("Remover")){
-                        //ControladorFuncionario.getInstance().excluiFuncionario(ControladorFuncionario.getInstance().getFuncionario(m));
-                    }
-                    if (e.getActionCommand().equals("Voltar")){
-                            setVisible(false);
-                        try {
-                            ControladorPrincipal.getInstance().exibeTelaPrincipal();
-                        } catch (CadastroIncorretoException ex) {
+                }
+                if (e.getActionCommand().equals("Remover")){
+                    //ControladorFuncionario.getInstance().excluiFuncionario(ControladorFuncionario.getInstance().getFuncionario(m));
+                }
+                if (e.getActionCommand().equals("Voltar")){
+                    setVisible(false);
+                    try {
+                        ControladorPrincipal.getInstance().exibeTelaPrincipal();
+                    } catch (CadastroIncorretoException ex) {
                             Logger.getLogger(TelaFuncionario.class.getName()).log(Level.SEVERE, null, ex);
                         } catch (ParseException ex) {
                             Logger.getLogger(TelaFuncionario.class.getName()).log(Level.SEVERE, null, ex);
@@ -360,7 +500,7 @@ public class TelaFuncionario extends JFrame{
                             sair();
                     }
             }
-        }
+    }
 
     public void atualizaFuncionario(Funcionario funcionario) {
         //owner.alterarNomeCargoPeloCodigo(novoNomeCargo, codigoCargo);

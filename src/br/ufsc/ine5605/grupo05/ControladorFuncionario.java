@@ -204,8 +204,7 @@ public class ControladorFuncionario {
     
     public void exibeTelaCadastroFuncionario(){
 		TelaFuncionario.getInstance().setVisible(false);
-		this.telaCadastra = new TelaCadastroFuncionario();
-		this.telaCadastra.setVisible(true);
+		TelaCadastroFuncionario.getInstance().setVisible(true);
     }
     
     
