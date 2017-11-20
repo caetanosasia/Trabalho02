@@ -10,9 +10,7 @@ package br.ufsc.ine5605.grupo05;
  * @author Usuário
  */
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashMap;
-import java.util.Vector;
 import javax.swing.table.AbstractTableModel;
 
 /**

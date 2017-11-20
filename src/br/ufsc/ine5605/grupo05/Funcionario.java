@@ -21,6 +21,7 @@ public class Funcionario extends Pessoa implements Serializable{
     private Cargo cargo;
     private double cpf;
     private int errosAcesso;
+    private FuncionarioDAO funcDAO;
 
     public Funcionario(int matricula, String nome, String nascimento, double telefone, double salario, Cargo cargo, double cpf, int errosAcesso) {
         this.matricula = matricula;

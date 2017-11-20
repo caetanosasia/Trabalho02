@@ -388,7 +388,7 @@ public class TelaRelatorio extends JFrame{
                 listaAcessos += (acessoRef.getHorarioDeAcesso()+"| Matricula: "+acessoRef.getFuncionario().getMatricula()+"| Funcionário: "+acessoRef.getFuncionario().getNome()+"\n");
                 numeroDeImpressoes++;
         }
-        if(numeroDeImpressoes == 0){
+        if(numeroDeImpressoes == 0 || listaAcessos == ""){
             listaAcessos += ("Não há acessos negados de funcionários sem acesso");
         }
         JOptionPane.showMessageDialog(null, listaAcessos);
@@ -410,7 +410,7 @@ public class TelaRelatorio extends JFrame{
                 listaAcessos += (acessoRef.getHorarioDeAcesso()+"| Matrícula: "+acessoRef.getFuncionario().getMatricula()+"| Funcionário: "+acessoRef.getFuncionario().getNome()+"\n");
                 numeroDeImpressoes++;
         }
-        if(numeroDeImpressoes == 0){
+        if(numeroDeImpressoes == 0 || listaAcessos == ""){
             listaAcessos +=("Não há acessos negados por horário não permitido");
         }
         JOptionPane.showMessageDialog(null, listaAcessos);
@@ -433,7 +433,7 @@ public class TelaRelatorio extends JFrame{
                 numeroDeImpressoes++;
             }
         }
-        if(numeroDeImpressoes == 0){
+        if(numeroDeImpressoes == 0 || listaAcessos == ""){
             listaAcessos += ("Esse funcionário não tem nenhum acesso negado");
         }
         JOptionPane.showMessageDialog(null, listaAcessos);  
@@ -455,7 +455,7 @@ public class TelaRelatorio extends JFrame{
                 listaAcessos += (acessoRef.getHorarioDeAcesso()+"| Numero de erros do funcionário: "+acessoRef.getFuncionario().getErrosAcesso()+"| Matrícula: "+acessoRef.getFuncionario().getMatricula()+"| Funcionário: "+acessoRef.getFuncionario().getNome()+"\n");
                 numeroDeImpressoes++;
         }
-        if(numeroDeImpressoes == 0){
+        if(numeroDeImpressoes == 0 || listaAcessos == ""){
             listaAcessos += ("Não há acessos negados por acesso bloqueado");
         }
         JOptionPane.showMessageDialog(null, listaAcessos);

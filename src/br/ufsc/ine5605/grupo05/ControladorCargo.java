@@ -6,7 +6,6 @@
 package br.ufsc.ine5605.grupo05;
 
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 
@@ -37,6 +36,7 @@ public class ControladorCargo implements IControladorCargo {
 	this.cargoDAO = new CargoDAO();
         this.cgmodel = new CargoTableModel(telaCargo, cargoDAO.getListH());
         this.ultimoCodigo = getUltimoCodigoPersist();
+        this.funcDAO = new FuncionarioDAO();
     }
     
     public static ControladorCargo getInstance() {
@@ -58,14 +58,7 @@ public class ControladorCargo implements IControladorCargo {
     
     @Override
     public void exibeCargos() {
-        /*if (this.cargoDAO.isEmpty()) {
-            JOptionPane.showMessageDialog(null, "Não existe cargo");
-            //TelaCargo.getInstance().mensagemNaoHaCargos();
-            return;
-        }*/
-        for (Cargo cargo : this.cargoDAO.getListC()) {
-            // TelaCargo.getInstance().exibeCargo(cargo);
-        }
+        
     }
     
     public int getUltimoCodigoPersist() {
@@ -85,14 +78,6 @@ public class ControladorCargo implements IControladorCargo {
     public Cargo buscarCargoPeloCodigo(int codigoCargo) throws CadastroIncorretoException, ParseException{  
         Cargo retornaCargo = cargoDAO.get(codigoCargo);
         return retornaCargo;
-        /*ArrayList<Cargo> listaCargos = (ArrayList<Cargo>) cargoDAO.getListC();
-        for(Cargo cargo : listaCargos){
-            if(cargo.getCodigo() == codigoCargo){
-                return cargo;
-            }
-        }*/
-        //TelaCargo.getInstance().mensagemCodigoInvalido();
-        //TelaCargo.getInstance().exibeTela();
     }
     
     @Override
@@ -105,17 +90,17 @@ public class ControladorCargo implements IControladorCargo {
         }
     }
     
-    public void deletarCargo(Cargo cargo) throws ParseException, CadastroIncorretoException{
+    public void deletarCargo(Cargo cargo) throws ParseException, CadastroIncorretoException, FuncionarioComCargoException{
         
-//        if(!funcDAO.getList().isEmpty()){
-//            for(Funcionario funcRef : funcDAO.getList()){
-//                if(funcRef.getCargo().equals(cargo)){
-//                    JOptionPane.showMessageDialog(null, "Cargo não pôde ser deletado"
-//                            +"\nExiste pelo menos um funcionario neste cargo.");
-//                    return;
-//                }
-//            }
-//        }
+        if(!funcDAO.getList().isEmpty()){
+            for(Funcionario funcRef : funcDAO.getList()){
+                if(funcRef.getCargo().equals(cargo)){
+                    throw new FuncionarioComCargoException("Cargo não pôde ser deletado"
+                            +"\nExiste pelo menos um funcionario neste cargo.");
+                    
+                }
+            }
+        }
         
         this.cargoDAO.remove(cargo);
             
@@ -179,8 +164,6 @@ public class ControladorCargo implements IControladorCargo {
     }
 
     public void exibeTelaHorario() throws CadastroIncorretoException, ParseException{
-        //this.telaHorario = new TelaHorario(this);
-        //telaHorario.setVisible(true);
         TelaHorario.getInstance().setVisible(true);
     }
     

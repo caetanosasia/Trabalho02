@@ -40,10 +40,6 @@ public class Acesso implements Serializable{
         return funcionario;
     }
     
-    /**
-     * Retorna se o funcionario conseguiu acessar
-     * @return true se conseguiu acessar
-     */
     public boolean isConseguiuAcessar() {
         return conseguiuAcessar;
     }

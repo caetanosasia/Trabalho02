@@ -24,6 +24,7 @@ import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
@@ -39,7 +40,6 @@ public class TelaFuncionario extends JFrame {
     
     private ControladorFuncionario owner;
     private Scanner sc;
-    private CargoDAO cargoDAO;
         
     private FuncionarioTableModel modelo;    
     private JPanel painelFundo;
@@ -48,18 +48,8 @@ public class TelaFuncionario extends JFrame {
     private JScrollPane barraRolagem;
     private JButton btCadastrar;
     private JButton btExcluir;
-    private JButton btVoltar;  
-    private Container container;
-    private JButton btEditar;  
+    private JButton btVoltar;
     private Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
-    private JButton btListar;
-    private JLabel lbExcluir;
-    private JTextField tfMatricula;
-    private JLabel lbEspaco;
-    private JLabel lbAlterar;
-    private JTextField tfMatricula2;
-    private JLabel lbCargo;
-    private JTextField tfCargo;
     
     
      
@@ -82,149 +72,16 @@ public class TelaFuncionario extends JFrame {
         super("Menu Funcionario"); 
         
         
-        cargoDAO = new CargoDAO();
-        funcionarioDAO = new FuncionarioDAO();                
-      //  container = getContentPane();
-       // container.setLayout(new GridBagLayout());
+        funcionarioDAO = new FuncionarioDAO();
         
         this.iniciaComponentes();
         
-       /* btCadastrar.addActionListener(gerenciadorBotoes);
-        btExcluir.addActionListener(gerenciadorBotoes);
-        btVoltar.addActionListener(gerenciadorBotoes);
-        btEditar.addActionListener(gerenciadorBotoes);
-        btListar.addActionListener(gerenciadorBotoes);
-       */ 
-      //  setSize(350, 225);
         setLocation(dim.width/2 - this.getSize().width/2, dim.height/2 - this.getSize().height/2);
-       // setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-       // setVisible(true);
     }
     public void iniciaComponentes (){
         criaJTable();
         criaJanela();  
     }
-    /*
-    public void iniciaComponentes (){
-        GridBagConstraints constraints = new GridBagConstraints();
-        gerenciadorBotoes = new GerenciarBotoes();
-        
-        btCadastrar = new JButton();
-        btCadastrar.setText("Cadastrar Funcionario");
-        btCadastrar.setForeground(Color.BLUE);
-        constraints.fill = GridBagConstraints.HORIZONTAL;
-        constraints.gridx = 1;
-        constraints.gridy = 1;
-        btCadastrar.setActionCommand("Cadastrar");
-        container.add(btCadastrar, constraints);
-    
-        btListar = new JButton();
-        btListar.setText("Listar");
-        constraints.fill = GridBagConstraints.HORIZONTAL;
-        constraints.gridx = 1;
-        constraints.gridy = 2;
-        btListar.setActionCommand("Listar");
-        container.add(btListar, constraints);
-        
-        lbEspaco = new JLabel();
-        constraints.fill = GridBagConstraints.HORIZONTAL;
-        constraints.gridx = 1;
-        constraints.gridy = 3;
-        lbEspaco.setSize(200, 10);
-        lbEspaco.setPreferredSize(new Dimension(200,10));
-        container.add(lbEspaco, constraints);
-        
-        lbExcluir = new JLabel();
-        lbExcluir.setText("Insira a matricula");
-        constraints.fill = GridBagConstraints.HORIZONTAL;
-        constraints.gridx = 1;
-        constraints.gridy = 4;
-        lbExcluir.setSize(200, 20);
-        lbExcluir.setPreferredSize(new Dimension(200,20));
-        container.add(lbExcluir, constraints);
-        
-        tfMatricula = new JTextField();      
-        constraints.fill = GridBagConstraints.HORIZONTAL;
-        constraints.gridx = 1;
-        constraints.gridy = 5;
-        container.add(tfMatricula, constraints);
-        
-        btExcluir = new JButton();
-        btExcluir.setText("Excluir funcionario pela matricula");
-        constraints.fill = GridBagConstraints.HORIZONTAL;
-        constraints.gridx = 1;
-        constraints.gridy = 6;
-        btExcluir.setActionCommand("Excluir");
-        container.add(btExcluir, constraints);
-        
-        lbEspaco = new JLabel();
-        constraints.fill = GridBagConstraints.HORIZONTAL;
-        constraints.gridx = 1;
-        constraints.gridy = 7;
-        lbEspaco.setSize(200, 10);
-        lbEspaco.setPreferredSize(new Dimension(200,10));
-        container.add(lbEspaco, constraints);
-        
-        lbAlterar = new JLabel();
-        lbAlterar.setText("Insira a matricula:");
-        constraints.fill = GridBagConstraints.HORIZONTAL;
-        constraints.gridx = 1;
-        constraints.gridy = 8;
-        lbAlterar.setSize(200, 20);
-        lbAlterar.setPreferredSize(new Dimension(200,20));
-        container.add(lbAlterar, constraints);
-        
-        tfMatricula2 = new JTextField();      
-        constraints.fill = GridBagConstraints.HORIZONTAL;
-        constraints.gridx = 1;
-        constraints.gridy = 9;
-        container.add(tfMatricula2, constraints);
-        
-        lbCargo = new JLabel();
-        lbCargo.setText("Insira o cargo");
-        constraints.fill = GridBagConstraints.HORIZONTAL;
-        constraints.gridx = 1;
-        constraints.gridy = 10;
-        lbCargo.setSize(200, 20);
-        lbCargo.setPreferredSize(new Dimension(200,20));
-        container.add(lbCargo, constraints);
-        
-        tfCargo = new JTextField();      
-        constraints.fill = GridBagConstraints.HORIZONTAL;
-        constraints.gridx = 1;
-        constraints.gridy = 11;
-        container.add(tfCargo, constraints);
-        
-        btEditar = new JButton();
-        btEditar.setText("Alterar cargo do funcionario pela matricula");
-        constraints.fill = GridBagConstraints.HORIZONTAL;
-        constraints.gridx = 1;
-        constraints.gridy = 12;
-        btEditar.setActionCommand("Editar");
-        container.add(btEditar, constraints);
-        
-        lbEspaco = new JLabel();
-        constraints.fill = GridBagConstraints.HORIZONTAL;
-        constraints.gridx = 1;
-        constraints.gridy = 13;
-        lbEspaco.setSize(200, 10);
-        lbEspaco.setPreferredSize(new Dimension(200,10));
-        container.add(lbEspaco, constraints);
-        
-        btVoltar = new JButton();
-        btVoltar.setText("Voltar");
-        btVoltar.setForeground(Color.BLUE);
-        constraints.fill = GridBagConstraints.HORIZONTAL;
-        constraints.gridx = 1;
-        constraints.gridy = 14;
-        btVoltar.setActionCommand("Voltar");
-        container.add(btVoltar, constraints);
-        
-        
-        
-        
-        }  */
-    
     
     public void setupCargo(JTable tabela, TableColumn colunaCargo){
         JComboBox<Cargo> cbCargo = new JComboBox<>(ControladorCargo.getInstance().getCargoVector());
@@ -277,158 +134,6 @@ public class TelaFuncionario extends JFrame {
         btExcluir.addActionListener(gerenciadorBotoes);
     }
     
-
-    
-    /**
-     * Exibe tela funcionario
-     * @throws ParseException
-     * @throws CadastroIncorretoException
-     * @throws FuncionarioComCargoException
-     * @throws Exception 
-     */
-    /*public void exibeTela() throws ParseException, CadastroIncorretoException {
-        int opcao = 0;        
-        do{
-            System.out.println("\nMenu dos Funcionarios!");;
-            System.out.println("-----------------------------------");
-            System.out.println("1 - Cadastrar um novo funcionario");
-            System.out.println("2 - Alterar o cargo de um funcionario pela sua matricula");
-            System.out.println("3 - Deletar funcionario pela matricula");
-            System.out.println("4 - Lista de todos os funcionarios");            
-            System.out.println("0 - Voltar");
-            System.out.println("Selecione uma opção:");
-            while (!sc.hasNextInt()) sc.next();
-            opcao = sc.nextInt();
-            ControladorFuncionario.getInstance().trataOpcao(opcao);
-        } while(opcao != -1);     
-        
-    }*/
-    
-    /**
-     * Trata opção da tela
-     * @param 
-     * @throws ParseException
-     * @throws CadastroIncorretoException
-     * @throws FuncionarioComCargoException
-     * @throws Exception 
-     */
-    /*
-    public void trataOpcao(int opcao) throws ParseException, CadastroIncorretoException{
-        switch(opcao){
-        case 1:
-            cadastraFuncionario();
-            break;
-        case 2:
-            alteraCargoFuncionario();
-            exibeTela();
-            break;
-        case 3:
-            deletarFuncionario();
-            break;
-        case 4:
-            listarFuncionarios();
-            break;
-        case 0:
-            ControladorPrincipal.getInstance().exibeTelaPrincipal();
-            break;
-        default:
-            break;
-        }
-    }*/
-    
-    
-    
-    /**
-     * Lista os funcionários
-     * @throws CadastroIncorretoException 
-     */
-    public void listarFuncionarios() throws CadastroIncorretoException {
-        ArrayList<Funcionario> funcionarios = ControladorFuncionario.getInstance().getFuncionarios();
-        if (funcionarios.isEmpty())
-            System.out.println("Não existe nenhum funcionário cadastrado");
-        for (Funcionario funcRef : funcionarios) {
-            System.out.println("Matricula: " + funcRef.getMatricula()+" Cargo: "+funcRef.getCargo().getNomeCargo()+" Nome: "+funcRef.getNome());
-        }
-    }
-    
-    /**
-     * Cadastra um funcionário
-     * @throws ParseException
-     * @throws CadastroIncorretoException
-     * @throws FuncionarioComCargoException
-     * @throws Exception 
-     */
-   /* public void cadastraFuncionario() throws ParseException, CadastroIncorretoException{
-        try {    
-            if(!ControladorCargo.getInstance().getCargosH().isEmpty()) {
-                System.out.println("Digite o nome do Funcionario");
-                sc.nextLine();
-                String nome = sc.nextLine();
-
-                System.out.println("Digite a data de nascimento do Funcionario"+
-                                    "\n__/__/____");
-                String dataNascimento = sc.nextLine();
-                ControladorFuncionario.getInstance().converterData(dataNascimento);
-
-                System.out.println("Digite o telefone do Funcionario");
-                while (!sc.hasNextDouble()) sc.next();
-                double telefone = sc.nextDouble();
-
-                System.out.println("Digite o salario do Funcionario");
-                while (!sc.hasNextDouble()) sc.next();
-                double salario = sc.nextDouble();
-
-                ControladorCargo.getInstance().exibeCargos();
-                System.out.println("Escolha o cargo do funcionário utilizando um dos códigos acima");
-                
-                
-                while (!sc.hasNextInt()) sc.next();
-                int codigo = sc.nextInt();
-                Cargo cargo = ControladorCargo.getInstance().buscarCargoPeloCodigo(codigo);
-                System.out.println("Digite o cpf do Funcionario");
-                while (!sc.hasNextDouble()) sc.next();
-                double cpf = sc.nextDouble();
-
-                ControladorFuncionario.getInstance().cadastrarFuncionario(nome, dataNascimento, telefone, salario, cargo, cpf);
-
-                System.out.println("Funcionário cadastrado com sucesso");
-            } else {
-                System.out.println("Não há cargos cadastrados");
-                exibeTela();
-            } 
-        } catch (Exception e) {
-            System.out.println("Formato Incorreto de Preenchimento");
-            return;
-        }   
-    }*/
-    
-    /**
-     * Altera o cargo de um funcionário
-     * @throws CadastroIncorretoException
-     * @throws Exception 
-     */
-    /*public void alteraCargoFuncionario() throws CadastroIncorretoException, ParseException{
-        System.out.println("Digite a matricula do Funcionario que deseja alterar o Cargo");
-        while (!sc.hasNextInt()) sc.next();
-        int matricula = sc.nextInt();
-        Funcionario func = ControladorFuncionario.getInstance().buscarFuncionarioPelaMatricula(matricula);
-        if(func != null){
-            ControladorCargo.getInstance().exibeCargos();
-            System.out.println("Digite o codigo do novo cargo do Funcionario");
-            while (!sc.hasNextInt()) sc.next();
-            int codigo = sc.nextInt();
-            Cargo cargo = ControladorCargo.getInstance().buscarCargoPeloCodigo(codigo);
-                if(cargo != null){
-                    ControladorFuncionario.getInstance().alterarCargoFuncionarioPelaMatricula(matricula, cargo);
-                    System.out.println("Cargo alterado com sucesso ");
-                }else{
-                    new Exception ("Codigo invalido");
-                }  
-        }else if(func == null){
-                new CadastroIncorretoException("Esse funcionario não existe no nosso sistema");
-        }
-    }*/
-    
     /**
      * Deleta um funcionário
      * @throws CadastroIncorretoException 
@@ -450,7 +155,7 @@ public class TelaFuncionario extends JFrame {
      * Imprime uma mensagem de funcionário bloqueado
      */
     public void mensagemFuncionarioBloqueado() {
-        System.out.println("Após três acessos negados esse funcionário foi bloqueado");
+        JOptionPane.showMessageDialog(null, "Após três acessos negados esse funcionário foi bloqueado");
     }
 
     /**
@@ -479,32 +184,24 @@ public class TelaFuncionario extends JFrame {
             if (e.getActionCommand().equals("Cadastrar")){
                // ControladorFuncionario.getInstance().exibeTelaCadastroFuncionario();
                TelaCadastroFuncionario.getInstance().setVisible(true);
-                }
-                if (e.getActionCommand().equals("Editar")){
-                            
-                }
-                if (e.getActionCommand().equals("Remover")){
-                    //ControladorFuncionario.getInstance().excluiFuncionario(ControladorFuncionario.getInstance().getFuncionario(m));
-                }
-                if (e.getActionCommand().equals("Voltar")){
-                    setVisible(false);
-                    try {
-                        ControladorPrincipal.getInstance().exibeTelaPrincipal();
-                    } catch (CadastroIncorretoException ex) {
-                            Logger.getLogger(TelaFuncionario.class.getName()).log(Level.SEVERE, null, ex);
-                        } catch (ParseException ex) {
-                            Logger.getLogger(TelaFuncionario.class.getName()).log(Level.SEVERE, null, ex);
-                        }
-                    }
-                    if (e.getActionCommand().equals("Sair")){
-                            sair();
-                    }
+               atualizaFuncionario();
             }
-    }
-
-    public void atualizaFuncionario(Funcionario funcionario) {
-        //owner.alterarNomeCargoPeloCodigo(novoNomeCargo, codigoCargo);
-        //modelo.atualizarDados(owner.getCargosH());
+            if (e.getActionCommand().equals("Editar")){
+                            
+            }
+            if (e.getActionCommand().equals("Excluir")){
+                int linhaSelecionada = tabela.getSelectedRow();
+                Funcionario funcRef = modelo.getFuncionario(linhaSelecionada);
+                owner.deletarFuncionarioPelaMatricula(funcRef);
+                modelo.atualizarDados(funcionarioDAO.getListH());
+                modelo.fireTableRowsDeleted(linhaSelecionada, linhaSelecionada);    
+            }
+            if (e.getActionCommand().equals("Voltar")){
+                setVisible(false);
+            }if (e.getActionCommand().equals("Sair")){
+                sair();
+            }
+        }
     }
 }
     

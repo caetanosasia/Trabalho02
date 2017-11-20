@@ -109,6 +109,7 @@ public class ControladorAcesso {
     }
     
     public ArrayList<Acesso> getAcessos() {
+        this.acessos = new ArrayList<Acesso>(acessoDAO.getList());
         return this.acessos;
     }
     

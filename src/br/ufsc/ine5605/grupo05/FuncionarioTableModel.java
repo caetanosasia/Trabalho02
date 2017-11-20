@@ -30,10 +30,9 @@ public class FuncionarioTableModel extends AbstractTableModel{
     private static final int MATRICULA = 0;
     private static final int NOME = 1;
     private static final int CARGO = 2;
-    private static final int ERROSACESSO = 3;
     private TelaFuncionario owner;
     
-    private String[] cabecalho = new String[] {"Codigo", "Nome", "Cargo", "Erros"};
+    private String[] cabecalho = new String[] {"Codigo", "Nome", "Cargo"};
     private ArrayList<Funcionario> lfuncionarios;
     
     public FuncionarioTableModel(TelaFuncionario owner, HashMap<Integer, Funcionario> novosFuncionarios){
@@ -85,11 +84,13 @@ public class FuncionarioTableModel extends AbstractTableModel{
         Funcionario funcionario = (Funcionario) lfuncionarios.get(linha); 
                
         switch(coluna){
-           case NOME:
+            case NOME:
                funcionario.setNome((String)value);                
                break;
+            case CARGO:
+               funcionario.setCargo((Cargo)value);
         }        
-        owner.atualizaFuncionario(funcionario);
+        owner.atualizaFuncionario();
         fireTableCellUpdated(linha, coluna);
     }
 
@@ -106,14 +107,13 @@ public class FuncionarioTableModel extends AbstractTableModel{
             case NOME:
                 return funcionario.getNome();
             case CARGO:
-                 return funcionario.getCargo().getNomeCargo();
-            case ERROSACESSO:
-                return funcionario.getErrosAcesso();
+                return funcionario.getCargo().getNomeCargo();
+            
         }
         return null;
     }
     
-    public Funcionario getCargo(int indiceLinha) {
+    public Funcionario getFuncionario(int indiceLinha) {
         return lfuncionarios.get(indiceLinha);        
     }    
 }

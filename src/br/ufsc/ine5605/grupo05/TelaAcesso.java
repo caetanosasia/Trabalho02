@@ -6,9 +6,6 @@
 package br.ufsc.ine5605.grupo05;
 
 import java.text.ParseException;
-import java.util.Date;
-import java.util.Scanner;
-import java.awt.BorderLayout;
 import java.util.Scanner;
 import java.awt.Container;
 import java.awt.Dimension;
@@ -17,21 +14,13 @@ import java.awt.GridBagLayout;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.HashMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.swing.DefaultCellEditor;
 import javax.swing.JButton;
-import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
-import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-import javax.swing.JTable;
 import javax.swing.JTextField;
-import javax.swing.table.DefaultTableCellRenderer;
-import javax.swing.table.TableColumn;
 
 /**
  *
@@ -123,65 +112,25 @@ public class TelaAcesso extends JFrame{
 
         @Override
         public void actionPerformed(ActionEvent e) {
-            int matricula = -1;
             if(e.getActionCommand().equals("Acessar")){
                 try {
-                    matricula = Integer.parseInt(tfMatricula.getText());
+                    ControladorAcesso.getInstance().tentativaDeAcesso(Integer.parseInt(tfMatricula.getText()));
+                    tfMatricula.setText(null);
+                    setVisible(false);
+                    
                 } catch (NumberFormatException f) {
                     JOptionPane.showMessageDialog(null, "Formato inválido de Matrícula");
-                    //do something! anything to handle the exception.
-                }   
-                try {
-                    ControladorAcesso.getInstance().tentativaDeAcesso(matricula);
-                } catch (ParseException ex) {
+                } catch (ParseException ex) {   
                     Logger.getLogger(TelaAcesso.class.getName()).log(Level.SEVERE, null, ex);
                 } catch (CadastroIncorretoException ex) {
                     Logger.getLogger(TelaAcesso.class.getName()).log(Level.SEVERE, null, ex);
                 }
             } else if(e.getActionCommand().equals("Voltar")){
                 setVisible(false);
-                try {
-                    ControladorPrincipal.getInstance().exibeTelaPrincipal();
-                } catch (CadastroIncorretoException ex) {
-                    Logger.getLogger(TelaCadastroCargo.class.getName()).log(Level.SEVERE, null, ex);
-                } catch (ParseException ex) {
-                    Logger.getLogger(TelaCadastroCargo.class.getName()).log(Level.SEVERE, null, ex);
-                }
             }
             
         }
     }
-    
-    /**
-     * trata a opção da tela
-     * @param opcao
-     * @throws ParseException
-     * @throws CadastroIncorretoException
-     * @throws FuncionarioComCargoException
-     * @throws Exception 
-     */
-    /*public void trataOpcao(int opcao) throws ParseException, CadastroIncorretoException {
-        switch(opcao){
-        case 1:
-            acessarSetorFinanceiro();
-            break;
-        case 2:
-            TelaRelatorio.getInstance().listarAcessos();
-            exibeTela();
-            break;
-        case 0:
-            ControladorPrincipal.getInstance().exibeTelaPrincipal();
-            break;
-        default:
-            break;
-        }
-    }*/
-    
-    /**
-     * Faz o acesso ao setor financeiro
-     * @throws CadastroIncorretoException
-     * @throws ParseException 
-     */
     
     public static TelaAcesso getInstance() {
         if(instance == null) {

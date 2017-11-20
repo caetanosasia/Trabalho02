@@ -7,7 +7,6 @@ package br.ufsc.ine5605.grupo05;
 
 import br.ufsc.ine5605.grupo05.NivelAcesso;
 import br.ufsc.ine5605.grupo05.ControladorCargo;
-import br.ufsc.ine5605.grupo05.Cargo;
 import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.GridBagConstraints;
@@ -16,7 +15,6 @@ import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.text.ParseException;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -40,8 +38,7 @@ public class TelaCadastroCargo extends JFrame {
     private JButton btCadastro;
     private JButton btCancel;
     private JTextField tfNome;
-    private JComboBox<NivelAcesso> bjNiveisAcesso;
-    private JTextField tfNivelAcesso;    
+    private JComboBox<NivelAcesso> bjNiveisAcesso; 
     
     private GerenciadorDeBotoes gerenciadorBotoes;
     private ControladorCargo owner;
@@ -148,15 +145,8 @@ public class TelaCadastroCargo extends JFrame {
                     try {
                         ControladorCargo.getInstance().exibeTelaHorario();
                         TelaHorario.getInstance().semiCadastro(tfNome.getText(), nivel);
-                        //ArrayList<Date> horarioEspecial = ControladorCargo.getInstance().horarioEspecial(nivel);
-                        
-                        //horarioInicio = horarioEspecial.get(0);
-                        //horarioFinal = horarioEspecial.get(1);
-                        
-                        //owner.cadastraCargo(tfNome.getText(), nivel, horarioInicio, horarioFinal);
                         
                         setVisible(false);
-                        //owner.exibeTelaCargo();
                         
                         
                     } catch (ParseException ex) {
@@ -192,29 +182,6 @@ public class TelaCadastroCargo extends JFrame {
                     Logger.getLogger(TelaCadastroCargo.class.getName()).log(Level.SEVERE, null, ex);
                 }
             }   
-                
-
-
-
-
-//owner.cadastraCargo();
-                /*JOptionPane.showMessageDialog(null, "Novo Cargo Cadastrado:\n"
-                        + "\nNome: " + tfNome.getText()
-                        + "\nNivel: " + bjNiveisAcesso.getSelectedItem().toString()
-                        + "\nCodigo: " + codigoCargo );
-                //tfCodigo.setText(null);
-                tfNome.setText(null);
-            }
-            else if(e.getActionCommand().equals("Voltar")){
-                setVisible(false);
-                try {
-                    owner.exibeTelaCargo();
-                } catch (CadastroIncorretoException ex) {
-                    Logger.getLogger(TelaCadastroCargo.class.getName()).log(Level.SEVERE, null, ex);
-                } catch (ParseException ex) {
-                    Logger.getLogger(TelaCadastroCargo.class.getName()).log(Level.SEVERE, null, ex);
-                }
-            }*/            
         }
         
     }

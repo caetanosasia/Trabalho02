@@ -33,12 +33,10 @@ public class AcessoDAO implements Serializable{
                 FileInputStream fin = new  FileInputStream(this.fileName); // tenta abrir fluxo de dados
                 fin.close();
             } catch(FileNotFoundException ex) {
-                //se deu ruim
                 new File(this.fileName);
                 this.persist();
             } catch (IOException ex) {
                 System.out.println(ex);
-		      //Logger.getLogger(FuncionarioDAO.class.getName()).log(Level.SEVERE, null, ex);
             }
             this.load();
     }

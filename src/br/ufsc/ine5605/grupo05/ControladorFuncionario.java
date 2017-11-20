@@ -42,29 +42,6 @@ public class ControladorFuncionario {
         return ultimaMatricula;
     }
     
-    /*public void trataOpcao(int opcao) throws ParseException, CadastroIncorretoException{
-        switch(opcao){
-        case 1:
-            TelaFuncionario.getInstance().cadastraFuncionario();
-            break;
-        case 2:
-            TelaFuncionario.getInstance().alteraCargoFuncionario();
-            TelaFuncionario.getInstance().exibeTela();
-            break;
-        case 3:
-            TelaFuncionario.getInstance().deletarFuncionario();
-            break;
-        case 4:
-            TelaFuncionario.getInstance().listarFuncionarios();
-            break;
-        case 0:
-            ControladorPrincipal.getInstance().exibeTelaPrincipal();
-            break;
-        default:
-            break;
-        }
-    }*/
-    
     /**
      * Cadastra um novo funcionario e inseri no ArrayList de funcionarios
      * @param nome nome do funcionário
@@ -83,43 +60,13 @@ public class ControladorFuncionario {
         }
     }
     
-//    public String alteraFuncionario(Integer matricula, String nome, String nascimento, double telefone, Cargo cargo, double cpf) {
-//	ArrayList<Funcionario> listaFuncionario = (ArrayList<Funcionario>) funcionarioDAO.getList();
-//        for (Funcionario f : listaFuncionario) {
-//            if (f.getMatricula() == matricula) {
-//       		f.setCargo(cargo);
-//		f.setNome(nome);
-//		f.setTelefone(telefone);
-//                f.setCpf(cpf);
-//		funcionarioDAO;
-//		return "Funcionario " + nome + " alterado com sucesso";
-//            }
-//        }
-//		return "Funcionario não existe ou não pode ser alterado";
-//    }
-    
-    /**
-     * Altera o cargo de um funcionario ultilizando-se da sua matricula
-     * @param matriculaFuncionario matricula do funcionario que deseja alterar o cargo
-     * @param cargo novo cargo do funcionario
-     */
-    /*public void alterarCargoFuncionarioPelaMatricula (int matriculaFuncionario, Cargo cargo) {
-        ArrayList<Funcionario> funcLista = (ArrayList<Funcionario>) funcionarioDAO.getList();
-        for (Funcionario funcionario : funcLista){
-            if (funcionario.getMatricula() == matriculaFuncionario){
-                funcionario.setCargo(cargo);
-                break;
-            }
-        }
-    }*/
-    
     /**
      * Busca um funcionario utilizando de sua matricula
      * @param matriculaFuncionario
      * @return retorna um funcionario
      */
     public Funcionario buscarFuncionarioPelaMatricula (int matriculaFuncionario) throws CadastroIncorretoException {
-        Funcionario funcionario = funcionarioDAO.get(ultimaMatricula);
+        Funcionario funcionario = funcionarioDAO.get(matriculaFuncionario);
         if(funcionario !=  null){
             return funcionario;
         }

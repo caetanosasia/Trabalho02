@@ -5,6 +5,8 @@
  */
 package br.ufsc.ine5605.grupo05;
 
+import javax.swing.JOptionPane;
+
 /**
  *
  * @author Guilherme
@@ -16,6 +18,7 @@ public class FuncionarioComCargoException extends Exception {
      */
     public FuncionarioComCargoException(String erro) {
         super(erro);
+        JOptionPane.showMessageDialog(null, erro);
     }
     
 }

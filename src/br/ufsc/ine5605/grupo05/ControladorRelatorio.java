@@ -28,15 +28,6 @@ public class ControladorRelatorio {
     }
     
     /**
-     * Retorna um ArrayList de funcionarios
-     * @return 
-     */
-    public ArrayList<Funcionario> listaFuncionarios(){
-        ArrayList<Funcionario> listaFuncionarios = ControladorFuncionario.getInstance().getFuncionarios();
-        return listaFuncionarios;
-    }
-    
-    /**
      * Exibe a tela de relatórios
      * @throws CadastroIncorretoException
      * @throws ParseException

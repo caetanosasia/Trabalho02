@@ -31,15 +31,13 @@ public class FuncionarioDAO implements Serializable{
     
     public FuncionarioDAO(){
         try{
-                FileInputStream fin = new  FileInputStream(this.fileName); // tenta abrir fluxo de dados
+                FileInputStream fin = new  FileInputStream(this.fileName);
                 fin.close();
             } catch(FileNotFoundException ex) {
-                //se deu ruim
                 new File(this.fileName);
                 this.persist();
             } catch (IOException ex) {
                 System.out.println(ex);
-		      //Logger.getLogger(FuncionarioDAO.class.getName()).log(Level.SEVERE, null, ex);
             }
             this.load();
     }
